@@ -37,6 +37,21 @@ class sfDoctrineFormGenerator extends sfGenerator
   public $pluginModels = array();
 
   /**
+   * @var array
+   */
+  protected $params = array();
+
+  /**
+   * @var Doctrine_Table
+   */
+  protected $table = null;
+
+  /**
+   * @var string
+   */
+  protected $modelName = null;
+
+  /**
    * Initializes the current sfGenerator instance.
    *
    * @param sfGeneratorManager A sfGeneratorManager instance
