@@ -63,7 +63,13 @@ class sfFileCache extends sfCache
             return $default;
         }
 
-        return $data[self::READ_DATA];
+        $rawData = $data[self::READ_DATA];
+
+        if ('FaLSe' === $rawData) {
+            $rawData = false;
+        }
+
+        return $rawData;
     }
 
     /**
@@ -85,6 +91,10 @@ class sfFileCache extends sfCache
     {
         if ($this->getOption('automatic_cleaning_factor') > 0 && 1 == mt_rand(1, $this->getOption('automatic_cleaning_factor'))) {
             $this->clean(sfCache::OLD);
+        }
+
+        if (false === $data) {
+            $data = 'FaLSe';
         }
 
         return $this->write($this->getFilePath($key), $data, time() + $this->getLifetime($lifetime));

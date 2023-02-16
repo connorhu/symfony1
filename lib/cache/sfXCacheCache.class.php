@@ -14,6 +14,8 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * @version    SVN: $Id$
+ *
+ * @deprecated
  */
 class sfXCacheCache extends sfCache
 {

@@ -58,4 +58,4 @@ jobs:
         run: php data/bin/check_configuration.php
 
       - name: Run Tests
-        run: php data/bin/symfony symfony:test --trace
+        run: php vendor/bin/phpunit

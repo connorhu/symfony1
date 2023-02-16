@@ -58,7 +58,7 @@ class sfValidatorTime extends sfValidatorBase
             }
 
             $clean = $this->convertTimeArrayToTimestamp($match);
-        } elseif (!ctype_digit($value)) {
+        } elseif (!ctype_digit((string) $value)) {
             $clean = strtotime($value);
             if (false === $clean) {
                 throw new sfValidatorError($this, 'invalid', array('value' => $value));
@@ -67,7 +67,18 @@ class sfValidatorTime extends sfValidatorBase
             $clean = (int) $value;
         }
 
-        return $clean === $this->getEmptyValue() ? $clean : date($this->getOption('time_output'), $clean);
+        if ($clean === $this->getEmptyValue()) {
+            return $clean;
+        }
+
+        $formattedClean = date($this->getOption('time_output'), $clean);
+
+        // don't change integer type
+        if ('U' === $this->getOption('time_output')) {
+            settype($formattedClean, 'integer');
+        }
+
+        return $formattedClean;
     }
 
     /**

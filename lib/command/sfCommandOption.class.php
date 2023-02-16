@@ -97,7 +97,7 @@ class sfCommandOption
      */
     public function acceptParameter()
     {
-        return $this->isParameterRequired() || $this->isParameterOptional();
+        return self::PARAMETER_NONE !== (self::PARAMETER_NONE & $this->mode);
     }
 
     /**

@@ -354,6 +354,10 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 
     protected function getBytes($value)
     {
+        if (empty($value)) {
+            return 0;
+        }
+
         $value = trim($value);
         $number = (float) $value;
         $modifier = strtolower($value[strlen($value) - 1]);

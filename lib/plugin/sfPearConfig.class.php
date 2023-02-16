@@ -23,6 +23,8 @@ class sfPearConfig extends PEAR_Config
     {
         $class = 'sfPearRest'.str_replace('.', '', $version);
 
-        return new $class($this, $options);
+        $instance = new $class($this, $options);
+
+        return $instance;
     }
 }

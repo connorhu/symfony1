@@ -8,7 +8,10 @@
         "swiftmailer/swiftmailer": "~5.2 || ^6.0"
     },
     "require-dev": {
-        "psr/log": "*"
+        "ext-zlib": "*",
+        "ext-apcu": "*",
+        "psr/log": "*",
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "files": ["autoload.php"]
@@ -25,6 +28,10 @@
     },
     "replace": {
         "lexpress/symfony1": "^1.5"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "php-cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix"
     },
     "bin": ["data/bin/symfony"]
 }

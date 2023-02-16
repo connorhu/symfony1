@@ -313,12 +313,12 @@ class sfI18N
      * @param string $time    The formatted date as string
      * @param string $culture The culture
      *
-     * @return array An array with the hour and minute
+     * @return array|null An array with the hour and minute
      */
     public function getTimeForCulture($time, $culture = null)
     {
         if (!$time) {
-            return 0;
+            return null;
         }
 
         $culture = null === $culture ? $this->culture : $culture;

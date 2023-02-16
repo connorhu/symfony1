@@ -24,6 +24,8 @@
  * @author     Sean Kerr <sean@code-box.org>
  *
  * @version    SVN: $Id$
+ *
+ * @deprecated
  */
 class sfMySQLDatabase extends sfDatabase
 {
@@ -31,9 +33,13 @@ class sfMySQLDatabase extends sfDatabase
      * Connects to the database.
      *
      * @throws <b>sfDatabaseException</b> If a connection could not be created
+     *
+     * @deprecated
      */
     public function connect()
     {
+        @trigger_error('sfMySQLDatabase storage is deprecated. use sfMySQLiDatabase instead.', \E_USER_DEPRECATED);
+
         $database = $this->getParameter('database');
         $host = $this->getParameter('host', 'localhost');
         $password = $this->getParameter('password');
@@ -78,9 +84,13 @@ class sfMySQLDatabase extends sfDatabase
      * Execute the shutdown procedure.
      *
      * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this database
+     *
+     * @deprecated
      */
     public function shutdown()
     {
+        @trigger_error('sfMySQLDatabase storage is deprecated. use sfMySQLiDatabase instead.', \E_USER_DEPRECATED);
+
         if (null != $this->connection) {
             @mysql_close($this->connection);
         }
@@ -92,9 +102,13 @@ class sfMySQLDatabase extends sfDatabase
      * @param bool $persistent wether persistent connections are use or not
      *
      * @return string name of connect method
+     *
+     * @deprecated
      */
     protected function getConnectMethod($persistent)
     {
+        @trigger_error('sfMySQLDatabase storage is deprecated. use sfMySQLiDatabase instead.', \E_USER_DEPRECATED);
+
         return $persistent ? 'mysql_pconnect' : 'mysql_connect';
     }
 
@@ -104,9 +118,13 @@ class sfMySQLDatabase extends sfDatabase
      * @param string $database Name of database to be connected
      *
      * @return bool true if this was successful
+     *
+     * @deprecated
      */
     protected function selectDatabase($database)
     {
+        @trigger_error('sfMySQLDatabase storage is deprecated. use sfMySQLiDatabase instead.', \E_USER_DEPRECATED);
+
         return null != $database && !@mysql_select_db($database, $this->connection);
     }
 }

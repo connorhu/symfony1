@@ -10,8 +10,8 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('task/generator/skeleton/')
     ->exclude('plugins/sfDoctrinePlugin/data/generator/')
     // Exclude generated files (single files)
-    ->notPath('unit/config/fixtures/sfDefineEnvironmentConfigHandler/prefix_result.php')
-    ->notPath('unit/config/fixtures/sfFilterConfigHandler/result.php')
+    ->notPath('fixtures/sfDefineEnvironmentConfigHandler/prefix_result.php')
+    ->notPath('fixtures/sfFilterConfigHandler/result.php')
 ;
 
 $config = new PhpCsFixer\Config();
