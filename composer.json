@@ -15,7 +15,10 @@
         "symfony/phpunit-bridge": "^7.0"
     },
     "autoload": {
-        "files": ["autoload.php"]
+        "files": ["autoload.php"],
+        "psr-4": {
+            "Symfony1\\": "src/"
+        }
     },
     "suggest": {
         "friendsofsymfony1/doctrine1": "Doctrine plugin",
