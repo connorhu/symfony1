@@ -42,7 +42,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "json,memcached,apcu"
-          ini-values: date.timezone=UTC,memory_limit=-1
+          ini-values: date.timezone=UTC,memory_limit=-1,apc.enable_cli=1
           tools: pecl
 
       - name: Get composer cache directory
