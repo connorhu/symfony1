@@ -28,6 +28,8 @@ jobs:
     services:
       memcached:
         image: "memcached:${{ matrix.memcached-version }}"
+        ports:
+          - 11211:11211
 
     steps:
       - name: Checkout
@@ -39,6 +41,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php-version }}"
+          extensions: "json,memcached,apcu"
+          ini-values: date.timezone=UTC,memory_limit=-1
+          tools: pecl
 
       - name: Get composer cache directory
         id: composer-cache
@@ -59,3 +64,5 @@ jobs:
 
       - name: Run Tests
         run: php vendor/bin/phpunit
+        env:
+          MEMCACHED_HOST: 'localhost:11211'
