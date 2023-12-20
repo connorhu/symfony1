@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Bridge\PhpUnit\DeprecationErrorHandler;
+
 // setup expected test environment (per check_configuration.php)
 ini_set('magic_quotes_runtime', 'off');
 ini_set('session.auto_start', 'off');
@@ -64,4 +66,8 @@ function sf_unit_test_shutdown()
 function fix_linebreaks($content)
 {
     return str_replace(array("\r\n", "\n", "\r"), "\n", $content);
+}
+
+if ('disabled' !== getenv('SYMFONY_DEPRECATIONS_HELPER')) {
+    DeprecationErrorHandler::register(getenv('SYMFONY_DEPRECATIONS_HELPER'));
 }

@@ -11,7 +11,8 @@
         "ext-zlib": "*",
         "ext-apcu": "*",
         "psr/log": "*",
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^9.6",
+        "symfony/phpunit-bridge": "^7.0"
     },
     "autoload": {
         "files": ["autoload.php"]
