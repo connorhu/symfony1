@@ -2,30 +2,16 @@
 
 /*
  * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-/**
- * sfComponents.
- *
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
- */
-abstract class sfComponents extends sfComponent
-{
-    /**
-     * @param sfRequest $request
-     *
-     * @throws sfInitializationException
-     *
-     * @see sfComponent
-     */
-    public function execute($request)
-    {
-        throw new sfInitializationException('sfComponents initialization failed.');
-    }
-}
+use Symfony1\Components\Action\Components;
+
+$errorMessage = sprintf('Using the "%s" class is deprecated since symfony1 version 1.6, use "%s" instead.', sfComponents::class, Components::class);
+@trigger_error($errorMessage, \E_USER_DEPRECATED);
+
+/** @deprecated since symfony1 1.6, use "Symfony1\Components\Action\Components" instead */
+abstract class sfComponents extends Components {}

@@ -2,8 +2,7 @@
 
 /*
  * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,30 +11,26 @@
 namespace Symfony1\Components\Action;
 
 /**
- * \sfAction executes all the logic for the current request.
+ * sfAction executes all the logic for the current request.
  *
- * @package    symfony
- * @subpackage action
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
+ *
  * @version    SVN: $Id$
  *
  * @method \sfWebController getController()
- * @method \sfWebResponse getResponse()
+ * @method \sfWebResponse   getResponse()
  */
 abstract class Action extends \sfComponent
 {
-    protected
-        $security = array();
+    protected $security = array();
 
     /**
      * Initializes this action.
      *
-     * @param \sfContext $context The current application context.
-     * @param string $moduleName The module name.
-     * @param string $actionName The action name.
-     *
-     * @return void
+     * @param \sfContext $context    the current application context
+     * @param string     $moduleName the module name
+     * @param string     $actionName the action name
      */
     public function initialize($context, $moduleName, $actionName)
     {
@@ -43,7 +38,7 @@ abstract class Action extends \sfComponent
 
         // include security configuration
         if ($file = $context->getConfigCache()->checkConfig('modules/'.$this->getModuleName().'/config/security.yml', true)) {
-            require($file);
+            require $file;
         }
     }
 
@@ -52,18 +47,14 @@ abstract class Action extends \sfComponent
      *
      * By default, this method is empty.
      */
-    public function preExecute()
-    {
-    }
+    public function preExecute() {}
 
     /**
      * Execute an application defined process immediately after execution of this \sfAction object.
      *
      * By default, this method is empty.
      */
-    public function postExecute()
-    {
-    }
+    public function postExecute() {}
 
     /**
      * Forwards current action to the default 404 error action.
@@ -71,7 +62,6 @@ abstract class Action extends \sfComponent
      * @param string $message Message of the generated exception
      *
      * @throws \sfError404Exception
-     *
      */
     public function forward404($message = null)
     {
@@ -81,8 +71,8 @@ abstract class Action extends \sfComponent
     /**
      * Forwards current action to the default 404 error action unless the specified condition is true.
      *
-     * @param bool $condition A condition that evaluates to true or false
-     * @param string $message Message of the generated exception
+     * @param bool   $condition A condition that evaluates to true or false
+     * @param string $message   Message of the generated exception
      *
      * @throws \sfError404Exception
      */
@@ -96,8 +86,8 @@ abstract class Action extends \sfComponent
     /**
      * Forwards current action to the default 404 error action if the specified condition is true.
      *
-     * @param bool $condition A condition that evaluates to true or false
-     * @param string $message Message of the generated exception
+     * @param bool   $condition A condition that evaluates to true or false
+     * @param string $message   Message of the generated exception
      *
      * @throws \sfError404Exception
      */
@@ -115,7 +105,7 @@ abstract class Action extends \sfComponent
      */
     public function redirect404()
     {
-        return $this->redirect('/'.\sfConfig::get('\sf_error_404_module').'/'.\sfConfig::get('\sf_error_404_action'));
+        return $this->redirect('/'.\sfConfig::get('sf_error_404_module').'/'.\sfConfig::get('sf_error_404_action'));
     }
 
     /**
@@ -130,7 +120,7 @@ abstract class Action extends \sfComponent
      */
     public function forward($module, $action)
     {
-        if (\sfConfig::get('\sf_logging_enabled')) {
+        if (\sfConfig::get('sf_logging_enabled')) {
             $this->dispatcher->notify(new \sfEvent($this, 'application.log', array(sprintf('Forward to action "%s/%s"', $module, $action))));
         }
 
@@ -144,9 +134,9 @@ abstract class Action extends \sfComponent
      *
      * This method stops the action. So, no code is executed after a call to this method.
      *
-     * @param bool $condition A condition that evaluates to true or false
-     * @param string $module A module name
-     * @param string $action An action name
+     * @param bool   $condition A condition that evaluates to true or false
+     * @param string $module    A module name
+     * @param string $action    An action name
      *
      * @throws \sfStopException
      */
@@ -162,9 +152,9 @@ abstract class Action extends \sfComponent
      *
      * This method stops the action. So, no code is executed after a call to this method.
      *
-     * @param bool $condition A condition that evaluates to true or false
-     * @param string $module A module name
-     * @param string $action An action name
+     * @param bool   $condition A condition that evaluates to true or false
+     * @param string $module    A module name
+     * @param string $action    An action name
      *
      * @throws \sfStopException
      */
@@ -184,8 +174,8 @@ abstract class Action extends \sfComponent
      *
      * This method stops the action. So, no code is executed after a call to this method.
      *
-     * @param string $url Url
-     * @param int $statusCode Status code (default to 302)
+     * @param string $url        Url
+     * @param int    $statusCode Status code (default to 302)
      *
      * @throws \sfStopException
      */
@@ -193,7 +183,7 @@ abstract class Action extends \sfComponent
     {
         // compatibility with url_for2() style signature
         if (is_object($statusCode) || is_array($statusCode)) {
-            $url = array_merge(array('\sf_route' => $url), is_object($statusCode) ? array('\sf_subject' => $statusCode) : $statusCode);
+            $url = array_merge(array('sf_route' => $url), is_object($statusCode) ? array('sf_subject' => $statusCode) : $statusCode);
             $statusCode = func_num_args() >= 3 ? func_get_arg(2) : 302;
         }
 
@@ -207,9 +197,9 @@ abstract class Action extends \sfComponent
      *
      * This method stops the action. So, no code is executed after a call to this method.
      *
-     * @param bool $condition A condition that evaluates to true or false
-     * @param string $url Url
-     * @param int $statusCode Status code (default to 302)
+     * @param bool   $condition  A condition that evaluates to true or false
+     * @param string $url        Url
+     * @param int    $statusCode Status code (default to 302)
      *
      * @throws \sfStopException
      *
@@ -229,9 +219,9 @@ abstract class Action extends \sfComponent
      *
      * This method stops the action. So, no code is executed after a call to this method.
      *
-     * @param bool $condition A condition that evaluates to true or false
-     * @param string $url Url
-     * @param int $statusCode Status code (default to 302)
+     * @param bool   $condition  A condition that evaluates to true or false
+     * @param string $url        Url
+     * @param int    $statusCode Status code (default to 302)
      *
      * @throws \sfStopException
      *
@@ -291,7 +281,7 @@ abstract class Action extends \sfComponent
      * available in the partial.
      *
      * @param string $templateName partial name
-     * @param array $vars vars
+     * @param array  $vars         vars
      *
      * @return string The partial content
      */
@@ -312,7 +302,7 @@ abstract class Action extends \sfComponent
      * <code>return $this->renderPartial('foo/bar')</code>
      *
      * @param string $templateName partial name
-     * @param array $vars vars
+     * @param array  $vars         vars
      *
      * @return string \sfView::NONE
      *
@@ -332,11 +322,11 @@ abstract class Action extends \sfComponent
      * If the vars parameter is set then only those values are
      * available in the component.
      *
-     * @param string $moduleName module name
+     * @param string $moduleName    module name
      * @param string $componentName component name
-     * @param array $vars vars
+     * @param array  $vars          vars
      *
-     * @return string  The component rendered content
+     * @return string The component rendered content
      */
     public function getComponent($moduleName, $componentName, $vars = null)
     {
@@ -354,11 +344,11 @@ abstract class Action extends \sfComponent
      *
      * <code>return $this->renderComponent('foo', 'bar')</code>
      *
-     * @param string $moduleName module name
+     * @param string $moduleName    module name
      * @param string $componentName component name
-     * @param array $vars vars
+     * @param array  $vars          vars
      *
-     * @return string  \sfView::NONE
+     * @return string \sfView::NONE
      *
      * @see    getComponent
      */
@@ -390,10 +380,8 @@ abstract class Action extends \sfComponent
     /**
      * Returns a value from security.yml.
      *
-     * @param string $name The name of the value to pull from security.yml
-     * @param mixed $default The default value to return if none is found in security.yml
-     *
-     * @return mixed
+     * @param string $name    The name of the value to pull from security.yml
+     * @param mixed  $default The default value to return if none is found in security.yml
      */
     public function getSecurityValue($name, $default = null)
     {
@@ -413,7 +401,7 @@ abstract class Action extends \sfComponent
     /**
      * Indicates that this action requires security.
      *
-     * @return bool true, if this action requires security, otherwise false.
+     * @return bool true, if this action requires security, otherwise false
      */
     public function isSecure()
     {
@@ -435,15 +423,13 @@ abstract class Action extends \sfComponent
      *
      * See 'Naming Conventions' in the 'Symfony View' documentation.
      *
-     * @param string $name Template name
+     * @param string $name   Template name
      * @param string $module The module (current if null)
      */
     public function setTemplate($name, $module = null)
     {
-        if (\sfConfig::get('\sf_logging_enabled')) {
-            $this->dispatcher->notify(
-                new \sfEvent($this, 'application.log', array(sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name)))
-            );
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', array(sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name))));
         }
 
         if (null !== $module) {
@@ -480,7 +466,7 @@ abstract class Action extends \sfComponent
      */
     public function setLayout($name)
     {
-        if (\sfConfig::get('\sf_logging_enabled')) {
+        if (\sfConfig::get('sf_logging_enabled')) {
             $this->dispatcher->notify(new \sfEvent($this, 'application.log', array(sprintf('Change layout to "%s"', $name))));
         }
 
@@ -511,13 +497,13 @@ abstract class Action extends \sfComponent
     }
 
     /**
-     * Returns the current route for this request
+     * Returns the current route for this request.
      *
      * @return \sfRoute The route for the request
      */
     public function getRoute()
     {
-        return $this->getRequest()->getAttribute('\sf_route');
+        return $this->getRequest()->getAttribute('sf_route');
     }
 
     /**
@@ -529,10 +515,6 @@ abstract class Action extends \sfComponent
      */
     protected function get404Message($message = null)
     {
-        return null === $message ? sprintf(
-            'This request has been forwarded to a 404 error page by the action "%s/%s".',
-            $this->getModuleName(),
-            $this->getActionName()
-        ) : $message;
+        return null === $message ? sprintf('This request has been forwarded to a 404 error page by the action "%s/%s".', $this->getModuleName(), $this->getActionName()) : $message;
     }
 }
