@@ -9,8 +9,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
-
-require_once __DIR__.'/../PhpUnitSfTestHelperTrait.php';
+use Symfony1\Components\Util\Finder;
 
 /**
  * @internal
@@ -19,8 +18,6 @@ require_once __DIR__.'/../PhpUnitSfTestHelperTrait.php';
  */
 class sfFinderTest extends TestCase
 {
-    use PhpUnitSfTestHelperTrait;
-
     protected $fixtureDir = null;
     protected $permissionDir = null;
 
@@ -110,7 +107,7 @@ class sfFinderTest extends TestCase
 
     public function testTypeReturnValue()
     {
-        $this->assertInstanceOf(sfFinder::class, sfFinder::type('file'), '::type() returns a sfFinder instance');
+        $this->assertInstanceOf(Finder::class, Finder::type('file'), '::type() returns a Finder instance');
     }
 
     /**
@@ -118,7 +115,7 @@ class sfFinderTest extends TestCase
      */
     public function testTypeValues($type, $expectedValue)
     {
-        $finder = sfFinder::type($type);
+        $finder = Finder::type($type);
         $this->assertSame($expectedValue, $finder->get_type(), '::type() takes a file, dir, or any as its first argument');
     }
 
@@ -132,7 +129,7 @@ class sfFinderTest extends TestCase
 
     public function testSetGetType()
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
         $finder->setType('dir');
         $this->assertSame('directory', $finder->get_type(), '->getType() returns the type of searched files');
         $this->assertSame($finder, $finder->setType('file'), '->setType() implements a fluent interface');
@@ -140,13 +137,13 @@ class sfFinderTest extends TestCase
 
     public function testNameReturnType()
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
         $this->assertSame($finder, $finder->name('*.php'), '->name() implements the fluent interface');
     }
 
     public function testNameFileNameSupport()
     {
-        $finder = sfFinder::type('file')->name('file21.php')->relative();
+        $finder = Finder::type('file')->name('file21.php')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -156,7 +153,7 @@ class sfFinderTest extends TestCase
 
     public function testNameGlobSupport()
     {
-        $finder = sfFinder::type('file')->name('*.php')->relative();
+        $finder = Finder::type('file')->name('*.php')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -166,7 +163,7 @@ class sfFinderTest extends TestCase
 
     public function testNameRegexSupport()
     {
-        $finder = sfFinder::type('file')->name('/^file2.*$/')->relative();
+        $finder = Finder::type('file')->name('/^file2.*$/')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -176,7 +173,7 @@ class sfFinderTest extends TestCase
 
     public function testNameRegexSupportWithModifier()
     {
-        $finder = sfFinder::type('file')->name('/^file(2|5).*$/i')->relative();
+        $finder = Finder::type('file')->name('/^file(2|5).*$/i')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -186,7 +183,7 @@ class sfFinderTest extends TestCase
 
     public function testNameArgumentArray()
     {
-        $finder = sfFinder::type('file')->name(array('*.php', '*.txt'))->relative();
+        $finder = Finder::type('file')->name(array('*.php', '*.txt'))->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -199,7 +196,7 @@ class sfFinderTest extends TestCase
 
     public function testNameTwoArguments()
     {
-        $finder = sfFinder::type('file')->name('*.php', '*.txt')->relative();
+        $finder = Finder::type('file')->name('*.php', '*.txt')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -212,7 +209,7 @@ class sfFinderTest extends TestCase
 
     public function testNameChaining()
     {
-        $finder = sfFinder::type('file')->name('*.php')->name('*.txt')->relative();
+        $finder = Finder::type('file')->name('*.php')->name('*.txt')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -225,13 +222,13 @@ class sfFinderTest extends TestCase
 
     public function testNotName()
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
         $this->assertSame($finder, $finder->not_name('*.php'), '->not_name() implements the fluent interface');
     }
 
     public function testNotNameFilenameSupport()
     {
-        $finder = sfFinder::type('file')->not_name('file21.php')->relative();
+        $finder = Finder::type('file')->not_name('file21.php')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -244,7 +241,7 @@ class sfFinderTest extends TestCase
 
     public function testNotNameGlobSupport()
     {
-        $finder = sfFinder::type('file')->not_name('*.php')->relative();
+        $finder = Finder::type('file')->not_name('*.php')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -257,7 +254,7 @@ class sfFinderTest extends TestCase
 
     public function testNotNameRegexSupport()
     {
-        $finder = sfFinder::type('file')->not_name('/^file2.*$/')->relative();
+        $finder = Finder::type('file')->not_name('/^file2.*$/')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -270,7 +267,7 @@ class sfFinderTest extends TestCase
 
     public function testNotNameArgumentArray()
     {
-        $finder = sfFinder::type('file')->not_name(array('*.php', '*.txt'))->relative();
+        $finder = Finder::type('file')->not_name(array('*.php', '*.txt'))->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -283,7 +280,7 @@ class sfFinderTest extends TestCase
 
     public function testNotNameTwoArguments()
     {
-        $finder = sfFinder::type('file')->not_name('*.php', '*.txt')->relative();
+        $finder = Finder::type('file')->not_name('*.php', '*.txt')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -296,7 +293,7 @@ class sfFinderTest extends TestCase
 
     public function testNotNameChaining()
     {
-        $finder = sfFinder::type('file')->not_name('*.php')->not_name('*.txt')->relative();
+        $finder = Finder::type('file')->not_name('*.php')->not_name('*.txt')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -309,7 +306,7 @@ class sfFinderTest extends TestCase
 
     public function testNameNotNameSameQuery()
     {
-        $finder = sfFinder::type('file')->not_name('/^file2.*$/')->name('*.php')->relative();
+        $finder = Finder::type('file')->not_name('/^file2.*$/')->name('*.php')->relative();
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -321,14 +318,14 @@ class sfFinderTest extends TestCase
 
     public function testSizeReturnValue()
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
         $this->assertSame($finder, $finder->size('> 2K'), '->size() implements the fluent interface');
     }
 
     /** @dataProvider sizeDataProvider */
     public function testSize($query, $expected)
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
 
         foreach ($query as $stringSize) {
             $finder->size($stringSize);
@@ -347,28 +344,28 @@ class sfFinderTest extends TestCase
 
     public function testDeptReturnValue()
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
         $this->assertSame($finder, $finder->mindepth(1), '->mindepth() implements the fluent interface');
         $this->assertSame($finder, $finder->maxdepth(1), '->maxdepth() implements the fluent interface');
     }
 
     public function testMinDept()
     {
-        $result = sfFinder::type('file')->relative()->mindepth(1)->in($this->fixtureDir);
+        $result = Finder::type('file')->relative()->mindepth(1)->in($this->fixtureDir);
         sort($result);
         $this->assertSame($this->minDepth1Files, $result, '->mindepth() takes a minimum depth as its argument');
     }
 
     public function testMaxDept()
     {
-        $result = sfFinder::type('file')->relative()->maxdepth(2)->in($this->fixtureDir);
+        $result = Finder::type('file')->relative()->maxdepth(2)->in($this->fixtureDir);
         sort($result);
         $this->assertSame($this->maxDepth2Files, $result, '->maxdepth() takes a maximum depth as its argument');
     }
 
     public function testMaxAndMinDept()
     {
-        $result = sfFinder::type('file')->relative()->mindepth(1)->maxdepth(2)->in($this->fixtureDir);
+        $result = Finder::type('file')->relative()->mindepth(1)->maxdepth(2)->in($this->fixtureDir);
         sort($result);
 
         $expected = array_values(array_intersect($this->minDepth1Files, $this->maxDepth2Files));
@@ -379,13 +376,13 @@ class sfFinderTest extends TestCase
 
     public function testDiscardReturnValue()
     {
-        $finder = sfFinder::type('file');
+        $finder = Finder::type('file');
         $this->assertSame($finder, $finder->discard('file2.txt'), '->discard() implements the fluent interface');
     }
 
     public function testDiscardFilename()
     {
-        $finder = sfFinder::type('file')->relative()->discard('file2.txt');
+        $finder = Finder::type('file')->relative()->discard('file2.txt');
 
         $result = $finder->in($this->fixtureDir);
         sort($result);
@@ -398,7 +395,7 @@ class sfFinderTest extends TestCase
 
     public function testDiscardGlobSupport()
     {
-        $finder = sfFinder::type('file')->relative()->discard('*.php');
+        $finder = Finder::type('file')->relative()->discard('*.php');
         $result = $finder->in($this->fixtureDir);
         sort($result);
 
@@ -410,7 +407,7 @@ class sfFinderTest extends TestCase
 
     public function testDiscardRegexSupport()
     {
-        $finder = sfFinder::type('file')->relative()->discard('/^file2.*$/');
+        $finder = Finder::type('file')->relative()->discard('/^file2.*$/');
         $result = $finder->in($this->fixtureDir);
         sort($result);
 
@@ -422,13 +419,13 @@ class sfFinderTest extends TestCase
 
     public function testPruneReturnValue()
     {
-        $finder = sfFinder::type('file');
-        $this->is($finder->prune('dir2'), $finder, '->prune() implements the fluent interface');
+        $finder = Finder::type('file');
+        $this->assertSame($finder, $finder->prune('dir2'), '->prune() implements the fluent interface');
     }
 
     public function testPrune()
     {
-        $finder = sfFinder::type('any')->relative()->prune('dir2');
+        $finder = Finder::type('any')->relative()->prune('dir2');
         $result = $finder->in($this->fixtureDir);
         sort($result);
 
@@ -439,7 +436,7 @@ class sfFinderTest extends TestCase
     {
         chmod($this->permissionDir.'/secret', 0000);
 
-        $result = sfFinder::type('file')->relative()->in($this->permissionDir);
+        $result = Finder::type('file')->relative()->in($this->permissionDir);
         sort($result);
 
         $this->assertSame(array(), $result, '->in() ignores directories it cannot read');
