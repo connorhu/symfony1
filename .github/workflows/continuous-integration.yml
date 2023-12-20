@@ -30,8 +30,18 @@ jobs:
         image: "memcached:${{ matrix.memcached-version }}"
         ports:
           - 11211:11211
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
 
     steps:
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -66,3 +76,6 @@ jobs:
         run: php vendor/bin/phpunit
         env:
           MEMCACHED_HOST: 'localhost:11211'
+          MYSQL_HOST: '127.0.0.1'
+          MYSQL_USER: 'root'
+          MYSQL_PASSWORD: 'root'
