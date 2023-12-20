@@ -245,6 +245,10 @@ class sfToolkit
      */
     public static function stringToArray($string)
     {
+        if (null === $string) {
+            return array();
+        }
+
         preg_match_all('/
       \s*((?:\w+-)*\w+)     # key                               \\1
       \s*=\s*               # =

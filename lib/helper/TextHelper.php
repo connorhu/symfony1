@@ -50,7 +50,7 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
 
     if ($strlen($text) > $length) {
         if ($truncate_pattern) {
-            $length_min = null !== $length_max && (0 == $length_max || $length_max > $length) ? $length : null;
+            $length_min = null !== $length_max && (0 == $length_max || $length_max > $length) ? $length : 0;
 
             preg_match($truncate_pattern, $text, $matches, PREG_OFFSET_CAPTURE, $length_min);
 
