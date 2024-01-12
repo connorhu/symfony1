@@ -2,7 +2,7 @@
 
 namespace Symfony1\Components\Validator;
 
-use Symfony1\Components\Util\Callable;
+use Symfony1\Components\Util\CallableWrapper;
 use function sprintf;
 use function implode;
 /*
@@ -54,7 +54,7 @@ class ValidatorUrl extends ValidatorRegex
     {
         parent::configure($options, $messages);
         $this->addOption('protocols', array('http', 'https', 'ftp', 'ftps'));
-        $this->setOption('pattern', new Callable(array($this, 'generateRegex')));
+        $this->setOption('pattern', new CallableWrapper(array($this, 'generateRegex')));
     }
 }
 class_alias(ValidatorUrl::class, 'sfValidatorUrl', false);

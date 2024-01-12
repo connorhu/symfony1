@@ -2,7 +2,7 @@
 
 namespace Symfony1\Components\Widget;
 
-use Symfony1\Components\Util\Callable;
+use Symfony1\Components\Util\CallableWrapper;
 use InvalidArgumentException;
 use ArrayAccess;
 use Symfony1\Components\Validator\ValidatorError;
@@ -79,7 +79,7 @@ abstract class WidgetFormSchemaFormatter
             return strtr($subject, $parameters);
         }
         $catalogue = $this->getTranslationCatalogue();
-        if (self::$translationCallable instanceof Callable) {
+        if (self::$translationCallable instanceof CallableWrapper) {
             return self::$translationCallable->call($subject, $parameters, $catalogue);
         }
         return call_user_func(self::$translationCallable, $subject, $parameters, $catalogue);
@@ -98,7 +98,7 @@ abstract class WidgetFormSchemaFormatter
      */
     public static function setTranslationCallable($callable)
     {
-        if (!$callable instanceof Callable && !is_callable($callable)) {
+        if (!$callable instanceof CallableWrapper && !is_callable($callable)) {
             throw new InvalidArgumentException('Provided i18n callable should be either an instance of sfCallable or a valid PHP callable');
         }
         self::$translationCallable = $callable;

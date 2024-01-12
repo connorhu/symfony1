@@ -2,7 +2,7 @@
 
 namespace Symfony1\Components\Widget;
 
-use Symfony1\Components\Util\Callable;
+use Symfony1\Components\Util\CallableWrapper;
 use function is_array;
 /*
  * This file is part of the symfony package.
@@ -25,11 +25,11 @@ abstract class WidgetFormChoiceBase extends WidgetForm
      */
     public function __clone()
     {
-        if ($this->getOption('choices') instanceof Callable) {
+        if ($this->getOption('choices') instanceof CallableWrapper) {
             $callable = $this->getOption('choices')->getCallable();
             if (is_array($callable) && $callable[0] instanceof self) {
                 $callable[0] = $this;
-                $this->setOption('choices', new Callable($callable));
+                $this->setOption('choices', new CallableWrapper($callable));
             }
         }
     }
@@ -41,7 +41,7 @@ abstract class WidgetFormChoiceBase extends WidgetForm
     public function getChoices()
     {
         $choices = $this->getOption('choices');
-        if ($choices instanceof Callable) {
+        if ($choices instanceof CallableWrapper) {
             $choices = $choices->call();
         }
         if (!$this->getOption('translate_choices')) {

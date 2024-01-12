@@ -7,6 +7,10 @@ $finder->in('lib');
 
 return (new \LesPhp\PSR4Converter\Config())
     ->setClassNameFilter(function (string $className) {
+        if ($className === 'sfCallable') {
+            return 'CallableWrapper';
+        }
+
         if (str_starts_with($className, 'sf')) {
             return ucfirst(substr($className, 2));
         }

@@ -2,7 +2,7 @@
 
 namespace Symfony1\Components\Validator;
 
-use Symfony1\Components\Util\Callable;
+use Symfony1\Components\Util\CallableWrapper;
 use function preg_match;
 /*
  * This file is part of the symfony package.
@@ -28,7 +28,7 @@ class ValidatorRegex extends ValidatorString
     public function getPattern()
     {
         $pattern = $this->getOption('pattern');
-        return $pattern instanceof Callable ? $pattern->call() : $pattern;
+        return $pattern instanceof CallableWrapper ? $pattern->call() : $pattern;
     }
     /**
     * Configures the current validator.

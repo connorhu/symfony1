@@ -2,7 +2,7 @@
 
 namespace Symfony1\Components\Validator;
 
-use Symfony1\Components\Util\Callable;
+use Symfony1\Components\Util\CallableWrapper;
 use function is_array;
 use function count;
 /*
@@ -29,7 +29,7 @@ class ValidatorChoice extends ValidatorBase
     public function getChoices()
     {
         $choices = $this->getOption('choices');
-        if ($choices instanceof Callable) {
+        if ($choices instanceof CallableWrapper) {
             $choices = $choices->call();
         }
         return $choices;

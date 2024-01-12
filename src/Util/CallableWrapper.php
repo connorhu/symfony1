@@ -25,7 +25,7 @@ use function call_user_func_array;
  *
  * @version SVN: $Id$
  */
-class Callable
+class CallableWrapper
 {
     protected $callable;
     /**
@@ -64,4 +64,4 @@ class Callable
         return call_user_func_array($this->callable, $arguments);
     }
 }
-class_alias(Callable::class, 'sfCallable', false);
+class_alias(CallableWrapper::class, 'sfCallable', false);

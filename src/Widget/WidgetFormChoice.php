@@ -2,7 +2,7 @@
 
 namespace Symfony1\Components\Widget;
 
-use Symfony1\Components\Util\Callable;
+use Symfony1\Components\Util\CallableWrapper;
 use function substr;
 use function sprintf;
 use function ucfirst;
@@ -87,7 +87,7 @@ class WidgetFormChoice extends WidgetFormChoiceBase
             $class = sprintf('sfWidgetFormSelect%s', ucfirst($type));
         }
         $options = $this->options['renderer_options'];
-        $options['choices'] = new Callable(array($this, 'getChoices'));
+        $options['choices'] = new CallableWrapper(array($this, 'getChoices'));
         $renderer = new $class($options, $this->getAttributes());
         // choices returned by the callback will already be translated (so we need to avoid double-translation)
         if ($renderer->hasOption('translate_choices')) {
