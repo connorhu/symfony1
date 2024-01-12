@@ -1,0 +1,53 @@
+<?php
+
+namespace Symfony1\Components\Escaper;
+
+/*
+ * This file is part of the symfony package.
+ * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * Abstract output escaping decorator class for "getter" objects.
+ *
+ * @see sfOutputEscaper
+ *
+ * @author Mike Squire <mike@somosis.co.uk>
+ *
+ * @version SVN: $Id$
+ */
+abstract class OutputEscaperGetterDecorator extends OutputEscaper
+{
+    /**
+    * Returns the raw, unescaped value associated with the key supplied.
+    *
+    * The key might be an index into an array or a value to be passed to the
+    decorated object's get() method.
+    *
+    * @param string $key The key to retrieve
+    *
+    * @return mixed The value
+    */
+    public abstract function getRaw($key);
+    /**
+    * Returns the escaped value associated with the key supplied.
+    *
+    * Typically (using this implementation) the raw value is obtained using the
+    {@link getRaw()} method, escaped and the result returned.
+    *
+    * @param string $key The key to retieve
+    * @param string $escapingMethod The escaping method (a PHP function) to use
+    *
+    * @return mixed The escaped value
+    */
+    public function get($key, $escapingMethod = null)
+    {
+        if (!$escapingMethod) {
+            $escapingMethod = $this->escapingMethod;
+        }
+        return OutputEscaper::escape($escapingMethod, $this->getRaw($key));
+    }
+}
+class_alias(OutputEscaperGetterDecorator::class, 'sfOutputEscaperGetterDecorator', false);

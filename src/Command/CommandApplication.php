@@ -1,0 +1,605 @@
+<?php
+
+namespace Symfony1\Components\Command;
+
+use Symfony1\Components\Task\Task;
+use Symfony1\Components\Event\EventDispatcher;
+use ReflectionClass;
+use Symfony1\Components\Event\Event;
+use Exception;
+use function sprintf;
+use function get_class;
+use function get_declared_classes;
+use function explode;
+use function max;
+use function str_repeat;
+use function fwrite;
+use function array_unshift;
+use function count;
+use function strpos;
+use function substr;
+use function in_array;
+use function implode;
+use function function_exists;
+use function strlen;
+use function mb_detect_encoding;
+use function mb_strlen;
+use function ob_get_level;
+use function ob_end_flush;
+use function ob_implicit_flush;
+use function set_time_limit;
+use function ini_set;
+use function define;
+use function fopen;
+use function chdir;
+use function register_shutdown_function;
+use function fclose;
+use function array_key_exists;
+use function getenv;
+use function posix_isatty;
+use const STDOUT;
+use const STDERR;
+use const PHP_SAPI;
+use const STDIN;
+use const DIRECTORY_SEPARATOR;
+/*
+ * This file is part of the symfony package.
+ * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * sfCommandApplication manages the lifecycle of a CLI application.
+ *
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @version SVN: $Id$
+ */
+abstract class CommandApplication
+{
+    /**
+     * @var CommandManager
+     */
+    protected $commandManager;
+    /**
+     * @var bool
+     */
+    protected $trace = false;
+    /**
+     * @var bool
+     */
+    protected $verbose = true;
+    /**
+     * @var bool
+     */
+    protected $debug = true;
+    /**
+     * @var bool
+     */
+    protected $nowrite = false;
+    /**
+     * @var string
+     */
+    protected $name = 'UNKNOWN';
+    /**
+     * @var string
+     */
+    protected $version = 'UNKNOWN';
+    /**
+     * @var array
+     */
+    protected $tasks = array();
+    /**
+     * @var Task
+     */
+    protected $currentTask;
+    /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
+    /**
+     * @var array
+     */
+    protected $options = array();
+    /**
+     * @var Formatter
+     */
+    protected $formatter;
+    protected $commandOptions;
+    /**
+     * Constructor.
+     *
+     * @param EventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param Formatter $formatter A sfFormatter instance
+     * @param array $options An array of options
+     */
+    public function __construct(EventDispatcher $dispatcher, Formatter $formatter = null, $options = array())
+    {
+        $this->dispatcher = $dispatcher;
+        $this->formatter = null === $formatter ? $this->guessBestFormatter(STDOUT) : $formatter;
+        $this->options = $options;
+        $this->fixCgi();
+        $argumentSet = new CommandArgumentSet(array(new CommandArgument('task', CommandArgument::REQUIRED, 'The task to execute')));
+        $optionSet = new CommandOptionSet(array(new CommandOption('--help', '-H', CommandOption::PARAMETER_NONE, 'Display this help message.'), new CommandOption('--quiet', '-q', CommandOption::PARAMETER_NONE, 'Do not log messages to standard output.'), new CommandOption('--trace', '-t', CommandOption::PARAMETER_NONE, 'Turn on invoke/execute tracing, enable full backtrace.'), new CommandOption('--version', '-V', CommandOption::PARAMETER_NONE, 'Display the program version.'), new CommandOption('--color', '', CommandOption::PARAMETER_NONE, 'Forces ANSI color output.'), new CommandOption('--no-debug', '', CommandOption::PARAMETER_NONE, 'Disable debug')));
+        $this->commandManager = new CommandManager($argumentSet, $optionSet);
+        $this->configure();
+        $this->registerTasks();
+    }
+    /**
+     * Configures the current command application.
+     */
+    public abstract function configure();
+    /**
+     * Returns the value of a given option.
+     *
+     * @param string $name The option name
+     *
+     * @return mixed The option value
+     */
+    public function getOption($name)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : null;
+    }
+    /**
+     * Returns the formatter instance.
+     *
+     * @return Formatter The formatter instance
+     */
+    public function getFormatter()
+    {
+        return $this->formatter;
+    }
+    /**
+     * Sets the formatter instance.
+     *
+     * @param Formatter $formatter The formatter instance
+     */
+    public function setFormatter(Formatter $formatter)
+    {
+        $this->formatter = $formatter;
+        foreach ($this->getTasks() as $task) {
+            $task->setFormatter($formatter);
+        }
+    }
+    public function clearTasks()
+    {
+        $this->tasks = array();
+    }
+    /**
+     * Registers an array of task objects.
+     *
+     * If you pass null, this method will register all available tasks.
+     *
+     * @param array $tasks An array of tasks
+     */
+    public function registerTasks($tasks = null)
+    {
+        if (null === $tasks) {
+            $tasks = $this->autodiscoverTasks();
+        }
+        foreach ($tasks as $task) {
+            $this->registerTask($task);
+        }
+    }
+    /**
+     * Registers a task object.
+     *
+     * @param Task $task An sfTask object
+     *
+     * @throws CommandException
+     */
+    public function registerTask(Task $task)
+    {
+        if (isset($this->tasks[$task->getFullName()])) {
+            throw new CommandException(sprintf('The task named "%s" in "%s" task is already registered by the "%s" task.', $task->getFullName(), get_class($task), get_class($this->tasks[$task->getFullName()])));
+        }
+        $this->tasks[$task->getFullName()] = $task;
+        foreach ($task->getAliases() as $alias) {
+            if (isset($this->tasks[$alias])) {
+                throw new CommandException(sprintf('A task named "%s" is already registered.', $alias));
+            }
+            $this->tasks[$alias] = $task;
+        }
+    }
+    /**
+     * Autodiscovers task classes.
+     *
+     * @return array An array of tasks instances
+     */
+    public function autodiscoverTasks()
+    {
+        $tasks = array();
+        foreach (get_declared_classes() as $class) {
+            $r = new ReflectionClass($class);
+            if ($r->isSubclassOf('sfTask') && !$r->isAbstract()) {
+                $tasks[] = new $class($this->dispatcher, $this->formatter);
+            }
+        }
+        return $tasks;
+    }
+    /**
+     * Returns all registered tasks.
+     *
+     * @return array An array of sfTask objects
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
+    /**
+     * Returns a registered task by name or alias.
+     *
+     * @param string $name The task name or alias
+     *
+     * @return Task An sfTask object
+     *
+     * @throws CommandException
+     */
+    public function getTask($name)
+    {
+        if (!isset($this->tasks[$name])) {
+            throw new CommandException(sprintf('The task "%s" does not exist.', $name));
+        }
+        return $this->tasks[$name];
+    }
+    /**
+     * Runs the current application.
+     *
+     * @param mixed $options The command line options
+     *
+     * @return int 0 if everything went fine, or an error code
+     */
+    public function run($options = null)
+    {
+        $this->handleOptions($options);
+        $arguments = $this->commandManager->getArgumentValues();
+        $this->currentTask = $this->getTaskToExecute($arguments['task']);
+        $ret = $this->currentTask->runFromCLI($this->commandManager, $this->commandOptions);
+        $this->currentTask = null;
+        return $ret;
+    }
+    /**
+     * Gets the name of the application.
+     *
+     * @return string The application name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * Sets the application name.
+     *
+     * @param string $name The application name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    /**
+     * Gets the application version.
+     *
+     * @return string The application version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+    /**
+     * Sets the application version.
+     *
+     * @param string $version The application version
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    }
+    /**
+     * Returns the long version of the application.
+     *
+     * @return string The long application version
+     */
+    public function getLongVersion()
+    {
+        return sprintf('%s version %s', $this->getName(), $this->formatter->format($this->getVersion(), 'INFO')) . "\n";
+    }
+    /**
+     * Returns whether the application must be verbose.
+     *
+     * @return bool true if the application must be verbose, false otherwise
+     */
+    public function isVerbose()
+    {
+        return $this->verbose;
+    }
+    /**
+     * Returns whether the application must activate the trace.
+     *
+     * @return bool true if the application must activate the trace, false otherwise
+     */
+    public function withTrace()
+    {
+        return $this->trace;
+    }
+    /**
+     * Returns whether the application must be verbose.
+     *
+     * @return bool true if the application is in debug mode, false otherwise
+     */
+    public function isDebug()
+    {
+        return $this->debug;
+    }
+    /**
+     * Outputs a help message for the current application.
+     */
+    public function help()
+    {
+        $messages = array($this->formatter->format('Usage:', 'COMMENT'), sprintf("  %s [options] task_name [arguments]\n", $this->getName()), $this->formatter->format('Options:', 'COMMENT'));
+        foreach ($this->commandManager->getOptionSet()->getOptions() as $option) {
+            $messages[] = sprintf('  %-24s %s  %s', $this->formatter->format('--' . $option->getName(), 'INFO'), $option->getShortcut() ? $this->formatter->format('-' . $option->getShortcut(), 'INFO') : '  ', $option->getHelp());
+        }
+        $this->dispatcher->notify(new Event($this, 'command.log', $messages));
+    }
+    /**
+     * Renders an exception.
+     *
+     * @param Exception $e An exception object
+     */
+    public function renderException($e)
+    {
+        $title = sprintf('  [%s]  ', get_class($e));
+        $len = $this->strlen($title);
+        $lines = array();
+        foreach (explode("\n", $e->getMessage()) as $line) {
+            $lines[] = sprintf('  %s  ', $line);
+            $len = max($this->strlen($line) + 4, $len);
+        }
+        $messages = array(str_repeat(' ', $len));
+        if ($this->trace) {
+            $messages[] = $title . str_repeat(' ', $len - $this->strlen($title));
+        }
+        foreach ($lines as $line) {
+            $messages[] = $line . str_repeat(' ', $len - $this->strlen($line));
+        }
+        $messages[] = str_repeat(' ', $len);
+        fwrite(STDERR, "\n");
+        foreach ($messages as $message) {
+            fwrite(STDERR, $this->formatter->format($message, 'ERROR', STDERR) . "\n");
+        }
+        fwrite(STDERR, "\n");
+        if (null !== $this->currentTask && $e instanceof CommandArgumentsException) {
+            fwrite(STDERR, $this->formatter->format(sprintf($this->currentTask->getSynopsis(), $this->getName()), 'INFO', STDERR) . "\n");
+            fwrite(STDERR, "\n");
+        }
+        if ($this->trace) {
+            fwrite(STDERR, $this->formatter->format("Exception trace:\n", 'COMMENT'));
+            // exception related properties
+            $trace = $e->getTrace();
+            array_unshift($trace, array('function' => '', 'file' => null != $e->getFile() ? $e->getFile() : 'n/a', 'line' => null != $e->getLine() ? $e->getLine() : 'n/a', 'args' => array()));
+            for ($i = 0, $count = count($trace); $i < $count; ++$i) {
+                $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
+                $type = isset($trace[$i]['type']) ? $trace[$i]['type'] : '';
+                $function = $trace[$i]['function'];
+                $file = isset($trace[$i]['file']) ? $trace[$i]['file'] : 'n/a';
+                $line = isset($trace[$i]['line']) ? $trace[$i]['line'] : 'n/a';
+                fwrite(STDERR, sprintf(" %s%s%s at %s:%s\n", $class, $type, $function, $this->formatter->format($file, 'INFO', STDERR), $this->formatter->format($line, 'INFO', STDERR)));
+            }
+            fwrite(STDERR, "\n");
+        }
+        $this->dispatcher->notify(new Event($e, 'application.throw_exception'));
+    }
+    /**
+     * Gets a task from a task name or a shortcut.
+     *
+     * @param string $name The task name or a task shortcut
+     *
+     * @return Task A sfTask object
+     *
+     * @throws CommandException
+     */
+    public function getTaskToExecute($name)
+    {
+        // namespace
+        if (false !== ($pos = strpos($name, ':'))) {
+            $namespace = substr($name, 0, $pos);
+            $name = substr($name, $pos + 1);
+            $namespaces = array();
+            foreach ($this->tasks as $task) {
+                if ($task->getNamespace() && !in_array($task->getNamespace(), $namespaces)) {
+                    $namespaces[] = $task->getNamespace();
+                }
+            }
+            $abbrev = $this->getAbbreviations($namespaces);
+            if (!isset($abbrev[$namespace])) {
+                throw new CommandException(sprintf('There are no tasks defined in the "%s" namespace.', $namespace));
+            }
+            if (count($abbrev[$namespace]) > 1) {
+                throw new CommandException(sprintf('The namespace "%s" is ambiguous (%s).', $namespace, implode(', ', $abbrev[$namespace])));
+            }
+            $namespace = $abbrev[$namespace][0];
+        } else {
+            $namespace = '';
+        }
+        // name
+        $tasks = array();
+        foreach ($this->tasks as $taskName => $task) {
+            if ($taskName == $task->getFullName() && $task->getNamespace() == $namespace) {
+                $tasks[] = $task->getName();
+            }
+        }
+        $abbrev = $this->getAbbreviations($tasks);
+        if (isset($abbrev[$name]) && 1 == count($abbrev[$name])) {
+            return $this->getTask($namespace ? $namespace . ':' . $abbrev[$name][0] : $abbrev[$name][0]);
+        }
+        // aliases
+        $aliases = array();
+        foreach ($this->tasks as $taskName => $task) {
+            if ($taskName == $task->getFullName()) {
+                foreach ($task->getAliases() as $alias) {
+                    $aliases[] = $alias;
+                }
+            }
+        }
+        $abbrev = $this->getAbbreviations($aliases);
+        $fullName = $namespace ? $namespace . ':' . $name : $name;
+        if (!isset($abbrev[$fullName])) {
+            throw new CommandException(sprintf('Task "%s" is not defined.', $fullName));
+        }
+        if (count($abbrev[$fullName]) > 1) {
+            throw new CommandException(sprintf('Task "%s" is ambiguous (%s).', $fullName, implode(', ', $abbrev[$fullName])));
+        }
+        return $this->getTask($abbrev[$fullName][0]);
+    }
+    /**
+     * Parses and handles command line options.
+     *
+     * @param mixed $options The command line options
+     */
+    protected function handleOptions($options = null)
+    {
+        $this->commandManager->process($options);
+        $this->commandOptions = $options;
+        // the order of option processing matters
+        if ($this->commandManager->getOptionSet()->hasOption('color') && false !== $this->commandManager->getOptionValue('color')) {
+            $this->setFormatter(new AnsiColorFormatter());
+        }
+        if ($this->commandManager->getOptionSet()->hasOption('quiet') && false !== $this->commandManager->getOptionValue('quiet')) {
+            $this->verbose = false;
+        }
+        if ($this->commandManager->getOptionSet()->hasOption('no-debug') && false !== $this->commandManager->getOptionValue('no-debug')) {
+            $this->debug = false;
+        }
+        if ($this->commandManager->getOptionSet()->hasOption('trace') && false !== $this->commandManager->getOptionValue('trace')) {
+            $this->verbose = true;
+            $this->trace = true;
+        }
+        if ($this->commandManager->getOptionSet()->hasOption('help') && false !== $this->commandManager->getOptionValue('help')) {
+            $this->help();
+            exit(0);
+        }
+        if ($this->commandManager->getOptionSet()->hasOption('version') && false !== $this->commandManager->getOptionValue('version')) {
+            echo $this->getLongVersion();
+            exit(0);
+        }
+    }
+    protected function strlen($string)
+    {
+        if (!function_exists('mb_strlen')) {
+            return strlen($string);
+        }
+        if (false === ($encoding = mb_detect_encoding($string))) {
+            return strlen($string);
+        }
+        return mb_strlen($string, $encoding);
+    }
+    /**
+     * Fixes php behavior if using cgi php.
+     *
+     * @see http://www.sitepoint.com/article/php-command-line-1/3
+     */
+    protected function fixCgi()
+    {
+        // handle output buffering
+        if (ob_get_level() > 0) {
+            @ob_end_flush();
+        }
+        ob_implicit_flush(true);
+        // PHP ini settings
+        set_time_limit(0);
+        ini_set('track_errors', true);
+        ini_set('html_errors', false);
+        ini_set('magic_quotes_runtime', false);
+        if (false === strpos(PHP_SAPI, 'cgi')) {
+            return;
+        }
+        // define stream constants
+        define('STDIN', fopen('php://stdin', 'r'));
+        define('STDOUT', fopen('php://stdout', 'w'));
+        define('STDERR', fopen('php://stderr', 'w'));
+        // change directory
+        if (isset($_SERVER['PWD'])) {
+            chdir($_SERVER['PWD']);
+        }
+        // close the streams on script termination
+        register_shutdown_function(function () {
+            fclose(STDIN);
+            fclose(STDOUT);
+            fclose(STDERR);
+            return true;
+        });
+    }
+    /**
+     * Returns an array of possible abbreviations given a set of names.
+     *
+     * @see Text::Abbrev perl module for the algorithm
+     *
+     * @param string[] $names
+     *
+     * @return string[]
+     */
+    protected function getAbbreviations($names)
+    {
+        $abbrevs = array();
+        $table = array();
+        foreach ($names as $name) {
+            for ($len = strlen($name) - 1; $len > 0; --$len) {
+                $abbrev = substr($name, 0, $len);
+                if (!array_key_exists($abbrev, $table)) {
+                    $table[$abbrev] = 1;
+                } else {
+                    ++$table[$abbrev];
+                }
+                $seen = $table[$abbrev];
+                if (1 == $seen) {
+                    // We're the first word so far to have this abbreviation.
+                    $abbrevs[$abbrev] = array($name);
+                } elseif (2 == $seen) {
+                    // We're the second word to have this abbreviation, so we can't use it.
+                    // unset($abbrevs[$abbrev]);
+                    $abbrevs[$abbrev][] = $name;
+                } else {
+                    // We're the third word to have this abbreviation, so skip to the next word.
+                    continue;
+                }
+            }
+        }
+        // Non-abbreviations always get entered, even if they aren't unique
+        foreach ($names as $name) {
+            $abbrevs[$name] = array($name);
+        }
+        return $abbrevs;
+    }
+    /**
+    * Returns true if the stream supports colorization.
+    *
+    * Colorization is disabled if not supported by the stream:
+    *
+    * -  windows without ansicon
+    -  non tty consoles
+    *
+    * @param mixed $stream A stream
+    *
+    * @return bool true if the stream supports colorization, false otherwise
+    */
+    protected function isStreamSupportsColors($stream)
+    {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            return false !== getenv('ANSICON');
+        }
+        return function_exists('posix_isatty') && @posix_isatty($stream);
+    }
+    /**
+     * Guesses the best formatter for the stream.
+     *
+     * @param mixed $stream A stream
+     *
+     * @return Formatter A formatter instance
+     */
+    protected function guessBestFormatter($stream)
+    {
+        return $this->isStreamSupportsColors($stream) ? new AnsiColorFormatter() : new Formatter();
+    }
+}
+class_alias(CommandApplication::class, 'sfCommandApplication', false);

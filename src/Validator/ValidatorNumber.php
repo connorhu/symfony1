@@ -1,0 +1,66 @@
+<?php
+
+namespace Symfony1\Components\Validator;
+
+use function is_numeric;
+/*
+ * This file is part of the symfony package.
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * sfValidatorNumber validates a number (integer or float). It also converts the input value to a float.
+ *
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @version SVN: $Id$
+ */
+class ValidatorNumber extends ValidatorBase
+{
+    /**
+    * Configures the current validator.
+    *
+    * Available options:
+    *
+    * * max: The maximum value allowed
+    min: The minimum value allowed
+    *
+    * Available error codes:
+    *
+    * * max
+    min
+    *
+    * @param array $options An array of options
+    * @param array $messages An array of error messages
+    *
+    * @see sfValidatorBase
+    */
+    protected function configure($options = array(), $messages = array())
+    {
+        $this->addMessage('max', '"%value%" must be at most %max%.');
+        $this->addMessage('min', '"%value%" must be at least %min%.');
+        $this->addOption('min');
+        $this->addOption('max');
+        $this->setMessage('invalid', '"%value%" is not a number.');
+    }
+    /**
+     * @see sfValidatorBase
+     */
+    protected function doClean($value)
+    {
+        if (!is_numeric($value)) {
+            throw new ValidatorError($this, 'invalid', array('value' => $value));
+        }
+        $clean = (float) $value;
+        if ($this->hasOption('max') && $clean > $this->getOption('max')) {
+            throw new ValidatorError($this, 'max', array('value' => $value, 'max' => $this->getOption('max')));
+        }
+        if ($this->hasOption('min') && $clean < $this->getOption('min')) {
+            throw new ValidatorError($this, 'min', array('value' => $value, 'min' => $this->getOption('min')));
+        }
+        return $clean;
+    }
+}
+class_alias(ValidatorNumber::class, 'sfValidatorNumber', false);

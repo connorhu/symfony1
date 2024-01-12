@@ -1,0 +1,163 @@
+<?php
+
+namespace Symfony1\Components\Command;
+
+use function substr;
+use function is_string;
+use function sprintf;
+use function is_array;
+/*
+ * This file is part of the symfony package.
+ * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * Represents a command line option.
+ *
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @version SVN: $Id$
+ */
+class CommandOption
+{
+    public const PARAMETER_NONE = 1;
+    public const PARAMETER_REQUIRED = 2;
+    public const PARAMETER_OPTIONAL = 4;
+    public const IS_ARRAY = 8;
+    protected $name;
+    protected $shortcut;
+    protected $mode;
+    protected $default;
+    protected $help = '';
+    /**
+     * Constructor.
+     *
+     * @param string $name The option name
+     * @param string $shortcut The shortcut (can be null)
+     * @param int $mode The option mode: self::PARAMETER_REQUIRED, self::PARAMETER_NONE or self::PARAMETER_OPTIONAL
+     * @param string $help A help text
+     * @param mixed $default The default value (must be null for self::PARAMETER_REQUIRED or self::PARAMETER_NONE)
+     *
+     * @throws CommandException
+     */
+    public function __construct($name, $shortcut = null, $mode = null, $help = '', $default = null)
+    {
+        if ('--' == substr($name, 0, 2)) {
+            $name = substr($name, 2);
+        }
+        if (empty($shortcut)) {
+            $shortcut = null;
+        }
+        if (null !== $shortcut) {
+            if ('-' == $shortcut[0]) {
+                $shortcut = substr($shortcut, 1);
+            }
+        }
+        if (null === $mode) {
+            $mode = self::PARAMETER_NONE;
+        } elseif (is_string($mode) || $mode > 15) {
+            throw new CommandException(sprintf('Option mode "%s" is not valid.', $mode));
+        }
+        $this->name = $name;
+        $this->shortcut = $shortcut;
+        $this->mode = $mode;
+        $this->help = $help;
+        $this->setDefault($default);
+    }
+    /**
+     * Returns the shortcut.
+     *
+     * @return string The shortcut
+     */
+    public function getShortcut()
+    {
+        return $this->shortcut;
+    }
+    /**
+     * Returns the name.
+     *
+     * @return string The name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * Returns true if the option accept a parameter.
+     *
+     * @return bool true if parameter mode is not self::PARAMETER_NONE, false otherwise
+     */
+    public function acceptParameter()
+    {
+        return self::PARAMETER_NONE !== (self::PARAMETER_NONE & $this->mode);
+    }
+    /**
+     * Returns true if the option requires a parameter.
+     *
+     * @return bool true if parameter mode is self::PARAMETER_REQUIRED, false otherwise
+     */
+    public function isParameterRequired()
+    {
+        return self::PARAMETER_REQUIRED === (self::PARAMETER_REQUIRED & $this->mode);
+    }
+    /**
+     * Returns true if the option takes an optional parameter.
+     *
+     * @return bool true if parameter mode is self::PARAMETER_OPTIONAL, false otherwise
+     */
+    public function isParameterOptional()
+    {
+        return self::PARAMETER_OPTIONAL === (self::PARAMETER_OPTIONAL & $this->mode);
+    }
+    /**
+     * Returns true if the option can take multiple values.
+     *
+     * @return bool true if mode is self::IS_ARRAY, false otherwise
+     */
+    public function isArray()
+    {
+        return self::IS_ARRAY === (self::IS_ARRAY & $this->mode);
+    }
+    /**
+     * Sets the default value.
+     *
+     * @param mixed $default The default value
+     *
+     * @throws CommandException
+     */
+    public function setDefault($default = null)
+    {
+        if (self::PARAMETER_NONE === (self::PARAMETER_NONE & $this->mode) && null !== $default) {
+            throw new CommandException('Cannot set a default value when using sfCommandOption::PARAMETER_NONE mode.');
+        }
+        if ($this->isArray()) {
+            if (null === $default) {
+                $default = array();
+            } elseif (!is_array($default)) {
+                throw new CommandException('A default value for an array option must be an array.');
+            }
+        }
+        $this->default = $this->acceptParameter() ? $default : false;
+    }
+    /**
+     * Returns the default value.
+     *
+     * @return mixed The default value
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+    /**
+     * Returns the help text.
+     *
+     * @return string The help text
+     */
+    public function getHelp()
+    {
+        return $this->help;
+    }
+}
+class_alias(CommandOption::class, 'sfCommandOption', false);

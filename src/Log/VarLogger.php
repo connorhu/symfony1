@@ -1,0 +1,160 @@
+<?php
+
+namespace Symfony1\Components\Log;
+
+use Symfony1\Components\Event\EventDispatcher;
+use function in_array;
+use function sort;
+use function preg_match;
+use function time;
+use function function_exists;
+use function debug_backtrace;
+use function substr;
+use function basename;
+use function strpos;
+use function class_exists;
+use function is_subclass_of;
+use function array_slice;
+/*
+ * This file is part of the symfony package.
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * sfVarLogger logs messages within its instance for later use.
+ *
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @version SVN: $Id$
+ */
+class VarLogger extends Logger
+{
+    protected $logs = array();
+    protected $xdebugLogging = false;
+    /**
+     * Initializes this logger.
+     *
+     * Available options:
+     *
+     * - xdebug_logging: Whether to add xdebug trace to the logs (false by default).
+     *
+     * @param EventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array $options an array of options
+     */
+    public function initialize(EventDispatcher $dispatcher, $options = array())
+    {
+        $this->xdebugLogging = isset($options['xdebug_logging']) ? $options['xdebug_logging'] : false;
+        // disable xdebug when an HTTP debug session exists (crashes Apache, see #2438)
+        if (isset($_GET['XDEBUG_SESSION_START']) || isset($_COOKIE['XDEBUG_SESSION'])) {
+            $this->xdebugLogging = false;
+        }
+        parent::initialize($dispatcher, $options);
+    }
+    /**
+    * Gets the logs.
+    *
+    * Each log entry has the following attributes:
+    *
+    * * priority
+    time
+    message
+    type
+    debugStack
+    *
+    * @return array An array of logs
+    */
+    public function getLogs()
+    {
+        return $this->logs;
+    }
+    /**
+     * Returns all the types in the logs.
+     *
+     * @return array An array of types
+     */
+    public function getTypes()
+    {
+        $types = array();
+        foreach ($this->logs as $log) {
+            if (!in_array($log['type'], $types)) {
+                $types[] = $log['type'];
+            }
+        }
+        sort($types);
+        return $types;
+    }
+    /**
+     * Returns all the priorities in the logs.
+     *
+     * @return array An array of priorities
+     */
+    public function getPriorities()
+    {
+        $priorities = array();
+        foreach ($this->logs as $log) {
+            if (!in_array($log['priority'], $priorities)) {
+                $priorities[] = $log['priority'];
+            }
+        }
+        sort($priorities);
+        return $priorities;
+    }
+    /**
+     * Returns the highest priority in the logs.
+     *
+     * @return int The highest priority
+     */
+    public function getHighestPriority()
+    {
+        $priority = 1000;
+        foreach ($this->logs as $log) {
+            if ($log['priority'] < $priority) {
+                $priority = $log['priority'];
+            }
+        }
+        return $priority;
+    }
+    /**
+     * Logs a message.
+     *
+     * @param string $message Message
+     * @param int $priority Message priority
+     */
+    protected function doLog($message, $priority)
+    {
+        // get log type in {}
+        $type = 'sfOther';
+        if (preg_match('/^\\s*{([^}]+)}\\s*(.+?)$/s', $message, $matches)) {
+            $type = $matches[1];
+            $message = $matches[2];
+        }
+        $this->logs[] = array('priority' => $priority, 'priority_name' => $this->getPriorityName($priority), 'time' => time(), 'message' => $message, 'type' => $type, 'debug_backtrace' => $this->getDebugBacktrace());
+    }
+    /**
+     * Returns the debug stack.
+     *
+     * @return array
+     *
+     * @see debug_backtrace()
+     */
+    protected function getDebugBacktrace()
+    {
+        // if we have xdebug and dev has not disabled the feature, add some stack information
+        if (!$this->xdebugLogging || !function_exists('debug_backtrace')) {
+            return array();
+        }
+        $traces = debug_backtrace();
+        // remove sfLogger and sfEventDispatcher from the top of the trace
+        foreach ($traces as $i => $trace) {
+            $class = isset($trace['class']) ? $trace['class'] : substr($file = basename($trace['file']), 0, strpos($file, '.'));
+            if (!class_exists($class) || !in_array($class, array('sfLogger', 'sfEventDispatcher')) && !is_subclass_of($class, 'sfLogger') && !is_subclass_of($class, 'sfEventDispatcher')) {
+                $traces = array_slice($traces, $i);
+                break;
+            }
+        }
+        return $traces;
+    }
+}
+class_alias(VarLogger::class, 'sfVarLogger', false);

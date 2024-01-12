@@ -1,0 +1,127 @@
+<?php
+
+namespace Symfony1\Components\Database;
+
+use Symfony1\Components\Config\ProjectConfiguration;
+use Symfony1\Components\Config\ApplicationConfiguration;
+use Symfony1\Components\Config\DatabaseConfigHandler;
+use Symfony1\Components\Exception\DatabaseException;
+use function register_shutdown_function;
+use function sprintf;
+use function array_keys;
+/*
+ * This file is part of the symfony package.
+ * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+* sfDatabaseManager allows you to setup your database connectivity before the
+request is handled. This eliminates the need for a filter to manage database
+connections.
+*
+* @author Fabien Potencier <fabien.potencier@symfony-project.com>
+* @author Sean Kerr <sean@code-box.org>
+*
+* @version SVN: $Id$
+*/
+class DatabaseManager
+{
+    /**
+     * @var ProjectConfiguration
+     */
+    protected $configuration;
+    protected $databases = array();
+    /**
+     * Class constructor.
+     *
+     * @see initialize()
+     *
+     * @param array $options
+     */
+    public function __construct(ProjectConfiguration $configuration, $options = array())
+    {
+        $this->initialize($configuration);
+        if (!isset($options['auto_shutdown']) || $options['auto_shutdown']) {
+            register_shutdown_function(array($this, 'shutdown'));
+        }
+    }
+    /**
+     * Initializes this sfDatabaseManager object.
+     *
+     * @param ProjectConfiguration $configuration A sfProjectConfiguration instance
+     *
+     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabaseManager object
+     */
+    public function initialize(ProjectConfiguration $configuration)
+    {
+        $this->configuration = $configuration;
+        $this->loadConfiguration();
+    }
+    /**
+     * Loads database configuration.
+     */
+    public function loadConfiguration()
+    {
+        if ($this->configuration instanceof ApplicationConfiguration) {
+            $databases = (include $this->configuration->getConfigCache()->checkConfig('config/databases.yml'));
+        } else {
+            $configHandler = new DatabaseConfigHandler();
+            $databases = $configHandler->evaluate(array($this->configuration->getRootDir() . '/config/databases.yml'));
+        }
+        foreach ($databases as $name => $database) {
+            $this->setDatabase($name, $database);
+        }
+    }
+    /**
+     * Sets a database connection.
+     *
+     * @param string $name The database name
+     * @param Database $database A sfDatabase instance
+     */
+    public function setDatabase($name, Database $database)
+    {
+        $this->databases[$name] = $database;
+    }
+    /**
+     * Retrieves the database connection associated with this sfDatabase implementation.
+     *
+     * @param string $name A database name
+     *
+     * @return mixed A Database instance
+     *
+     * @throws <b>sfDatabaseException</b> If the requested database name does not exist
+     */
+    public function getDatabase($name = 'default')
+    {
+        if (isset($this->databases[$name])) {
+            return $this->databases[$name];
+        }
+        // nonexistent database name
+        throw new DatabaseException(sprintf('Database "%s" does not exist.', $name));
+    }
+    /**
+     * Returns the names of all database connections.
+     *
+     * @return array An array containing all database connection names
+     */
+    public function getNames()
+    {
+        return array_keys($this->databases);
+    }
+    /**
+     * Executes the shutdown procedure.
+     *
+     * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this DatabaseManager
+     */
+    public function shutdown()
+    {
+        // loop through databases and shutdown connections
+        foreach ($this->databases as $database) {
+            $database->shutdown();
+        }
+    }
+}
+class_alias(DatabaseManager::class, 'sfDatabaseManager', false);

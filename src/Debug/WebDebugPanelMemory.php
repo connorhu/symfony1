@@ -1,0 +1,35 @@
+<?php
+
+namespace Symfony1\Components\Debug;
+
+use function sprintf;
+use function memory_get_peak_usage;
+/*
+ * This file is part of the symfony package.
+ * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * sfWebDebugPanelMemory adds a panel to the web debug toolbar with the memory used by the script.
+ *
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @version SVN: $Id$
+ */
+class WebDebugPanelMemory extends WebDebugPanel
+{
+    public function getTitle()
+    {
+        $totalMemory = sprintf('%.1f', memory_get_peak_usage(true) / 1024);
+        return '<img src="' . $this->webDebug->getOption('image_root_path') . '/memory.png" alt="Memory" /> ' . $totalMemory . ' KB';
+    }
+    public function getPanelTitle()
+    {
+    }
+    public function getPanelContent()
+    {
+    }
+}
+class_alias(WebDebugPanelMemory::class, 'sfWebDebugPanelMemory', false);

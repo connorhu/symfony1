@@ -1,0 +1,317 @@
+<?php
+
+namespace Symfony1\Components\Cache;
+
+use Symfony1\Components\Exception\InitializationException;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Symfony1\Components\Util\Toolkit;
+use Symfony1\Components\Exception\CacheException;
+use function is_file;
+use function mt_rand;
+use function time;
+use function unlink;
+use function strpos;
+use function str_replace;
+use function preg_match;
+use function glob;
+use function is_dir;
+use function fopen;
+use function sprintf;
+use function flock;
+use function stream_get_contents;
+use function fseek;
+use function ftell;
+use function fread;
+use function fclose;
+use function umask;
+use function dirname;
+use function mkdir;
+use function tempnam;
+use function basename;
+use function fwrite;
+use function str_pad;
+use function rename;
+use function copy;
+use function chmod;
+use function substr;
+use const DIRECTORY_SEPARATOR;
+use const LOCK_SH;
+use const SEEK_END;
+use const LOCK_UN;
+use const STR_PAD_LEFT;
+/*
+ * This file is part of the symfony package.
+ * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * Cache class that stores content in files.
+ *
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @version SVN: $Id$
+ */
+class FileCache extends Cache
+{
+    public const READ_DATA = 1;
+    public const READ_TIMEOUT = 2;
+    public const READ_LAST_MODIFIED = 4;
+    public const EXTENSION = '.cache';
+    /**
+     * Initializes this sfCache instance.
+     *
+     * Available options:
+     *
+     * * cache_dir: The directory where to put cache files
+     *
+     * * see sfCache for options available for all drivers
+     *
+     * @see sfCache
+     */
+    public function initialize($options = array())
+    {
+        parent::initialize($options);
+        if (!$this->getOption('cache_dir')) {
+            throw new InitializationException('You must pass a "cache_dir" option to initialize a sfFileCache object.');
+        }
+        $this->setcache_dir($this->getOption('cache_dir'));
+    }
+    /**
+     * @see sfCache
+     *
+     * @param (mixed | null) $default
+     */
+    public function get($key, $default = null)
+    {
+        $file_path = $this->getFilePath($key);
+        if (!is_file($file_path)) {
+            return $default;
+        }
+        $data = $this->read($file_path, self::READ_DATA);
+        if (null === $data[self::READ_DATA]) {
+            return $default;
+        }
+        $rawData = $data[self::READ_DATA];
+        if ('FaLSe' === $rawData) {
+            $rawData = false;
+        }
+        return $rawData;
+    }
+    /**
+     * @see sfCache
+     */
+    public function has($key)
+    {
+        $path = $this->getFilePath($key);
+        return is_file($path) && $this->isValid($path);
+    }
+    /**
+     * @see sfCache
+     *
+     * @param (mixed | null) $lifetime
+     */
+    public function set($key, $data, $lifetime = null)
+    {
+        if ($this->getOption('automatic_cleaning_factor') > 0 && 1 == mt_rand(1, $this->getOption('automatic_cleaning_factor'))) {
+            $this->clean(Cache::OLD);
+        }
+        if (false === $data) {
+            $data = 'FaLSe';
+        }
+        return $this->write($this->getFilePath($key), $data, time() + $this->getLifetime($lifetime));
+    }
+    /**
+     * @see sfCache
+     */
+    public function remove($key)
+    {
+        return @unlink($this->getFilePath($key));
+    }
+    /**
+     * @see sfCache
+     */
+    public function removePattern($pattern)
+    {
+        if (false !== strpos($pattern, '**')) {
+            $pattern = str_replace(Cache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern) . self::EXTENSION;
+            $regexp = self::patternToRegexp($pattern);
+            $paths = array();
+            foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $path) {
+                if (preg_match($regexp, str_replace($this->getOption('cache_dir') . DIRECTORY_SEPARATOR, '', $path))) {
+                    $paths[] = $path;
+                }
+            }
+        } else {
+            $paths = glob($this->getOption('cache_dir') . DIRECTORY_SEPARATOR . str_replace(Cache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern) . self::EXTENSION);
+        }
+        foreach ($paths as $path) {
+            if (is_dir($path)) {
+                Toolkit::clearDirectory($path);
+            } else {
+                @unlink($path);
+            }
+        }
+    }
+    /**
+     * @see sfCache
+     */
+    public function clean($mode = Cache::ALL)
+    {
+        if (!is_dir($this->getOption('cache_dir'))) {
+            return true;
+        }
+        $result = true;
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $file) {
+            if (Cache::ALL == $mode || !$this->isValid($file)) {
+                $result = @unlink($file) && $result;
+            }
+        }
+        return $result;
+    }
+    /**
+     * @see sfCache
+     */
+    public function getTimeout($key)
+    {
+        $path = $this->getFilePath($key);
+        if (!is_file($path)) {
+            return 0;
+        }
+        $data = $this->read($path, self::READ_TIMEOUT);
+        return $data[self::READ_TIMEOUT] < time() ? 0 : $data[self::READ_TIMEOUT];
+    }
+    /**
+     * @see sfCache
+     */
+    public function getLastModified($key)
+    {
+        $path = $this->getFilePath($key);
+        if (!is_file($path)) {
+            return 0;
+        }
+        $data = $this->read($path, self::READ_TIMEOUT | self::READ_LAST_MODIFIED);
+        if ($data[self::READ_TIMEOUT] < time()) {
+            return 0;
+        }
+        return $data[self::READ_LAST_MODIFIED];
+    }
+    protected function isValid($path)
+    {
+        $data = $this->read($path, self::READ_TIMEOUT);
+        return time() < $data[self::READ_TIMEOUT];
+    }
+    /**
+     * Converts a cache key to a full path.
+     *
+     * @param string $key The cache key
+     *
+     * @return string The full path to the cache file
+     */
+    protected function getFilePath($key)
+    {
+        return $this->getOption('cache_dir') . DIRECTORY_SEPARATOR . str_replace(Cache::SEPARATOR, DIRECTORY_SEPARATOR, $key) . self::EXTENSION;
+    }
+    /**
+    * Reads the cache file and returns the content.
+    *
+    * @param string $path The file path
+    * @param mixed $type The type of data you want to be returned
+    sfFileCache::READ_DATA: The cache content
+    sfFileCache::READ_TIMEOUT: The timeout
+    sfFileCache::READ_LAST_MODIFIED: The last modification timestamp
+    *
+    * @return array the (meta)data of the cache file. E.g. $data[sfFileCache::READ_DATA]
+    *
+    * @throws CacheException
+    */
+    protected function read($path, $type = self::READ_DATA)
+    {
+        if (!($fp = @fopen($path, 'rb'))) {
+            throw new CacheException(sprintf('Unable to read cache file "%s".', $path));
+        }
+        @flock($fp, LOCK_SH);
+        $data[self::READ_TIMEOUT] = (int) @stream_get_contents($fp, 12, 0);
+        if (self::READ_TIMEOUT != $type && time() < $data[self::READ_TIMEOUT]) {
+            if ($type & self::READ_LAST_MODIFIED) {
+                $data[self::READ_LAST_MODIFIED] = (int) @stream_get_contents($fp, 12, 12);
+            }
+            if ($type & self::READ_DATA) {
+                fseek($fp, 0, SEEK_END);
+                $length = ftell($fp) - 24;
+                fseek($fp, 24);
+                if ($length > 0) {
+                    $data[self::READ_DATA] = @fread($fp, $length);
+                } else {
+                    $data[self::READ_DATA] = '';
+                }
+            }
+        } else {
+            $data[self::READ_LAST_MODIFIED] = null;
+            $data[self::READ_DATA] = null;
+        }
+        @flock($fp, LOCK_UN);
+        @fclose($fp);
+        return $data;
+    }
+    /**
+     * Writes the given data in the cache file.
+     *
+     * @param string $path The file path
+     * @param string $data The data to put in cache
+     * @param int $timeout The timeout timestamp
+     *
+     * @return bool true if ok, otherwise false
+     *
+     * @throws CacheException
+     */
+    protected function write($path, $data, $timeout)
+    {
+        $current_umask = umask();
+        umask(00);
+        $cacheDir = dirname($path);
+        if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true) && !is_dir($cacheDir)) {
+            throw new CacheException(sprintf('Cache was not able to create a directory "%s".', $cacheDir));
+        }
+        $tmpFile = tempnam($cacheDir, basename($path));
+        if (!($fp = @fopen($tmpFile, 'wb'))) {
+            throw new CacheException(sprintf('Unable to write cache file "%s".', $tmpFile));
+        }
+        @fwrite($fp, str_pad($timeout, 12, 0, STR_PAD_LEFT));
+        @fwrite($fp, str_pad(time(), 12, 0, STR_PAD_LEFT));
+        @fwrite($fp, $data);
+        @fclose($fp);
+        // Hack from Agavi (http://trac.agavi.org/changeset/3979)
+        // With php < 5.2.6 on win32, renaming to an already existing file doesn't work, but copy does,
+        // so we simply assume that when rename() fails that we are on win32 and try to use copy()
+        if (!@rename($tmpFile, $path)) {
+            if (copy($tmpFile, $path)) {
+                unlink($tmpFile);
+            }
+        }
+        chmod($path, 0666);
+        umask($current_umask);
+        return true;
+    }
+    /**
+     * Sets the cache root directory.
+     *
+     * @param string $cache_dir The directory where to put the cache files
+     */
+    protected function setcache_dir($cache_dir)
+    {
+        // remove last DIRECTORY_SEPARATOR
+        if (DIRECTORY_SEPARATOR == substr($cache_dir, -1)) {
+            $cache_dir = substr($cache_dir, 0, -1);
+        }
+        // create cache dir if needed
+        if (!is_dir($cache_dir)) {
+            $current_umask = umask(00);
+            @mkdir($cache_dir, 0777, true);
+            umask($current_umask);
+        }
+    }
+}
+class_alias(FileCache::class, 'sfFileCache', false);
