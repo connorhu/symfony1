@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-require_once 'PEAR/REST.php';
-
 /**
  * sfPearRest interacts with a PEAR channel.
  *

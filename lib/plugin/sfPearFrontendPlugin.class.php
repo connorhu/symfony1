@@ -8,10 +8,6 @@
  * file that was distributed with this source code.
  */
 
-require_once 'PEAR/Frontend.php';
-
-require_once 'PEAR/Frontend/CLI.php';
-
 /**
  * The PEAR Frontend object.
  *

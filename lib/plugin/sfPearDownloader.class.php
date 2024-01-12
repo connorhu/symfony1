@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-require_once 'PEAR/Downloader.php';
-
 /**
  * sfPearDownloader downloads files from the Internet.
  *
