@@ -25,7 +25,7 @@ abstract class sfResponse implements Serializable
     protected $dispatcher;
 
     /** @var string */
-    protected $content = '';
+    protected $content;
 
     /**
      * Class constructor.

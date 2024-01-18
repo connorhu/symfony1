@@ -97,15 +97,14 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
     protected function doClean($values)
     {
         if (null === $values) {
-            $values = array();
-        }
-
-        if (!is_array($values)) {
+            $leftValue = null;
+            $rightValue = null;
+        } elseif (!is_array($values)) {
             throw new InvalidArgumentException('You must pass an array parameter to the clean() method');
+        } else {
+            $leftValue = isset($values[$this->getOption('left_field')]) ? $values[$this->getOption('left_field')] : null;
+            $rightValue = isset($values[$this->getOption('right_field')]) ? $values[$this->getOption('right_field')] : null;
         }
-
-        $leftValue = isset($values[$this->getOption('left_field')]) ? $values[$this->getOption('left_field')] : null;
-        $rightValue = isset($values[$this->getOption('right_field')]) ? $values[$this->getOption('right_field')] : null;
 
         switch ($this->getOption('operator')) {
             case self::GREATER_THAN:

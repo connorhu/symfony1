@@ -387,7 +387,7 @@ class sfViewCacheManager
     public function has($internalUri)
     {
         if (!$this->isCacheable($internalUri) || $this->ignore()) {
-            return null;
+            return false;
         }
 
         return $this->cache->has($this->generateCacheKey($internalUri));

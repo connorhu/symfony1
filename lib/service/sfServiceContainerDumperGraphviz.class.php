@@ -23,6 +23,7 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
 {
     protected $nodes;
     protected $edges;
+    /* array */ protected $options;
 
     /**
      * Dumps the service container as a graphviz graph.

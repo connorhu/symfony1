@@ -165,17 +165,28 @@ class sfToolkit
     /**
      * Strip slashes recursively from array.
      *
-     * @param array $value the value to strip
+     * @param mixed $value the value to strip
      *
-     * @return array clean value with slashes stripped
+     * @return mixed clean value with slashes stripped
      */
     public static function stripslashesDeep($value)
     {
-        return is_array($value) ? array_map(array('sfToolkit', 'stripslashesDeep'), $value) : stripslashes($value);
+        if (is_array($value)) {
+            return array_map(array('sfToolkit', 'stripslashesDeep'), $value);
+        }
+
+        if ($value === null) {
+            return ''; // because of BC
+        }
+
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        return stripslashes($value);
     }
 
-    // code from php at moechofe dot com (array_merge comment on php.net)
-    /*
+    /**
      * array arrayDeepMerge ( array array1 [, array array2 [, array ...]] )
      *
      * Like array_merge
@@ -192,6 +203,8 @@ class sfToolkit
      *
      * Different from array_merge
      *  If string keys have arrays for values, these arrays will merge recursively.
+     *
+     * @author array_merge comment on php.net <php at moechofe dot com>
      */
     public static function arrayDeepMerge()
     {
@@ -245,6 +258,10 @@ class sfToolkit
      */
     public static function stringToArray($string)
     {
+        if (null === $string) {
+            return array();
+        }
+
         preg_match_all('/
       \s*((?:\w+-)*\w+)     # key                               \\1
       \s*=\s*               # =

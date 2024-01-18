@@ -101,7 +101,15 @@ class sfYamlInline
                 return is_string($value) ? "'{$value}'" : (int) $value;
 
             case is_numeric($value) && false === strpbrk($value, "\f\n\r\t\v"):
-                return is_infinite($value) ? str_ireplace('INF', '.Inf', (string) $value) : (is_string($value) ? "'{$value}'" : $value);
+                if (is_infinite($value)) {
+                    return str_ireplace('INF', '.Inf', (string) $value);
+                }
+
+                if (is_float($value)) {
+                    return strval($value);
+                }
+
+                return is_string($value) ? "'{$value}'" : $value;
 
             case false !== strpos($value, "\n") || false !== strpos($value, "\r"):
                 return sprintf('"%s"', str_replace(array('"', "\n", "\r"), array('\\"', '\n', '\r'), $value));

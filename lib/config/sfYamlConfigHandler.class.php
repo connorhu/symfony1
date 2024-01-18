@@ -18,15 +18,17 @@
  */
 abstract class sfYamlConfigHandler extends sfConfigHandler
 {
-    /** @var array */
+    /**
+     * @var array<string, mixed>
+     */
     protected $yamlConfig;
 
     /**
      * Parses an array of YAMLs files and merges them in one configuration array.
      *
-     * @param array $configFiles An array of configuration file paths
+     * @param array<int, string> $configFiles An array of configuration file paths
      *
-     * @return array A merged configuration array
+     * @return array<int, mixed> A merged configuration array
      */
     public static function parseYamls($configFiles)
     {
@@ -74,6 +76,10 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
         return null === $config ? array() : $config;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     * @return mixed
+     */
     public static function flattenConfiguration($config)
     {
         $config['all'] = sfToolkit::arrayDeepMerge(
@@ -130,9 +136,9 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
      *
      * @param string $keyName      The key name
      * @param string $category     The category name
-     * @param string $defaultValue The default value
+     * @param string|null $defaultValue The default value
      *
-     * @return string The value associated with this key name and category
+     * @return string|null The value associated with this key name and category
      */
     protected function getConfigValue($keyName, $category, $defaultValue = null)
     {

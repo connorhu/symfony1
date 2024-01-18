@@ -507,8 +507,17 @@ class sfForm implements ArrayAccess, Iterator, Countable
             $this->validatorSchema[$field] = $validator;
         }
 
-        $this->getWidgetSchema()->setLabels($form->getWidgetSchema()->getLabels() + $this->getWidgetSchema()->getLabels());
-        $this->getWidgetSchema()->setHelps($form->getWidgetSchema()->getHelps() + $this->getWidgetSchema()->getHelps());
+        $labels = $this->getWidgetSchema()->getLabels();
+        foreach ($form->getWidgetSchema()->getLabels() as $name => $label) {
+            $labels[$name] = $label;
+        }
+        $this->getWidgetSchema()->setLabels($labels);
+
+        $helps = $this->getWidgetSchema()->getHelps();
+        foreach ($form->getWidgetSchema()->getHelps() as $name => $help) {
+            $helps[$name] = $help;
+        }
+        $this->getWidgetSchema()->setHelps($helps);
 
         $this->mergePreValidator($form->getValidatorSchema()->getPreValidator());
         $this->mergePostValidator($form->getValidatorSchema()->getPostValidator());

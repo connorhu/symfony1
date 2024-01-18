@@ -139,6 +139,10 @@ class sfValidatorDate extends sfValidatorBase
 
         $format = $this->getOption('with_time') ? $this->getOption('datetime_output') : $this->getOption('date_output');
 
+        if ('U' === $format) {
+            return isset($date) ? (int) $date->format($format) : (int) date($format, $cleanTime);
+        }
+
         return isset($date) ? $date->format($format) : date($format, $cleanTime);
     }
 

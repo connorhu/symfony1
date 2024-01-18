@@ -8,6 +8,8 @@
         "swiftmailer/swiftmailer": "~5.2 || ^6.0"
     },
     "require-dev": {
+        "ext-zlib": "*",
+        "ext-apcu": "*",
         "psr/log": "*",
         "phpunit/phpunit": "^9.6",
         "symfony/phpunit-bridge": "^7.0"

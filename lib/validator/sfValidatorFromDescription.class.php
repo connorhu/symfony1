@@ -305,6 +305,7 @@ class sfValidatorFDTokenOperator
     protected $class;
     protected $operator;
     protected $token;
+    protected $arguments = array();
 
     public function __construct($operator, $arguments = array())
     {

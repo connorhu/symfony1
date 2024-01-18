@@ -430,7 +430,8 @@ class sfPluginManager
      */
     protected function checkDependency($dependency)
     {
-        $dependencyChecker = new PEAR_Dependency2($this->environment->getConfig(), array(), array('package' => '', 'channel' => ''));
+        $config = $this->environment->getConfig();
+        $dependencyChecker = new PEAR_Dependency2($config, array(), array('package' => '', 'channel' => ''));
 
         PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
         $e = $dependencyChecker->validatePackageDependency($dependency, true, array());

@@ -29,7 +29,7 @@ sfCoreAutoload::register();
 require_once $libDir.'/util/sfToolkit.class.php';
 sfConfig::set('sf_test_cache_dir', sys_get_temp_dir().'/sf_test_project');
 
-// TODO enable later require_once __DIR__.'/fixtures/symfony/config/ProjectConfiguration.class.php';
+require_once __DIR__.'/fixtures/symfony/config/ProjectConfiguration.class.php';
 
 // remove all test cache
 sf_unit_test_shutdown();

@@ -32,7 +32,7 @@ class sfAPCCache extends sfCache
     {
         parent::initialize($options);
 
-        $this->enabled = function_exists('apc_store') && ini_get('apc.enabled');
+        $this->enabled = function_exists('apcu_store') && apcu_enabled();
     }
 
     /**
@@ -69,6 +69,8 @@ class sfAPCCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $lifetime
+     *
+     * @return bool|array
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -76,7 +78,7 @@ class sfAPCCache extends sfCache
             return true;
         }
 
-        return apc_store($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
+        return apcu_store($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
     }
 
     /**
@@ -88,7 +90,7 @@ class sfAPCCache extends sfCache
             return true;
         }
 
-        return apc_delete($this->getOption('prefix').$key);
+        return apcu_delete($this->getOption('prefix').$key);
     }
 
     /**
@@ -101,7 +103,7 @@ class sfAPCCache extends sfCache
         }
 
         if (sfCache::ALL === $mode) {
-            return apc_clear_cache('user');
+            return apcu_clear_cache();
         }
     }
 
@@ -138,7 +140,7 @@ class sfAPCCache extends sfCache
             return true;
         }
 
-        $infos = apc_cache_info('user');
+        $infos = apcu_cache_info();
         if (!is_array($infos['cache_list'])) {
             return;
         }
@@ -147,7 +149,7 @@ class sfAPCCache extends sfCache
 
         foreach ($infos['cache_list'] as $info) {
             if (preg_match($regexp, $info['info'])) {
-                apc_delete($info['info']);
+                apcu_delete($info['info']);
             }
         }
     }
@@ -165,7 +167,7 @@ class sfAPCCache extends sfCache
             return false;
         }
 
-        $infos = apc_cache_info('user');
+        $infos = apcu_cache_info();
 
         if (is_array($infos['cache_list'])) {
             foreach ($infos['cache_list'] as $info) {
@@ -181,7 +183,7 @@ class sfAPCCache extends sfCache
     private function fetch($key, &$success)
     {
         $has = null;
-        $value = apc_fetch($key, $has);
+        $value = apcu_fetch($key, $has);
         // the second argument was added in APC 3.0.17. If it is still null we fall back to the value returned
         if (null !== $has) {
             $success = $has;
