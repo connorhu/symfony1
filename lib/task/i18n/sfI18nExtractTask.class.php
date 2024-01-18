@@ -1,9 +1,12 @@
 <?php
 
 /*
- * Current known limitations:
- *   - Can only works with the default "messages" catalogue
- *   - For file backends (XLIFF and gettext), it only saves/deletes strings in the "most global" file
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /*
