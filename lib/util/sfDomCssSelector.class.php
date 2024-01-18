@@ -256,7 +256,7 @@ class sfDomCssSelector implements \Countable, \Iterator
                                     break;
 
                                 case '^': // Match starts with value
-                                    $ok = 0 === strpos($found->getAttribute($attrName), $attrValue);
+                                    $ok =   str_starts_with($found->getAttribute($attrName), $attrValue);
 
                                     break;
 
@@ -266,7 +266,7 @@ class sfDomCssSelector implements \Countable, \Iterator
                                     break;
 
                                 case '*': // Match ends with value
-                                    $ok = false !== strpos($found->getAttribute($attrName), $attrValue);
+                                    $ok =   str_contains($found->getAttribute($attrName), $attrValue);
 
                                     break;
 
@@ -460,7 +460,7 @@ class sfDomCssSelector implements \Countable, \Iterator
         for ($i = 0, $max = count($nodes); $i < $max; ++$i) {
             switch ($selector['selector']) {
                 case 'contains':
-                    if (false !== strpos($nodes[$i]->textContent, $selector['parameter'])) {
+                    if (str_contains($nodes[$i]->textContent, $selector['parameter'])) {
                         $matchingNodes[] = $nodes[$i];
                     }
 

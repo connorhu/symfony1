@@ -278,7 +278,7 @@ abstract class sfModelGeneratorConfiguration
 
     public function getCredentials($action)
     {
-        if (0 === strpos($action, '_')) {
+        if (str_starts_with($action, '_')) {
             $action = substr($action, 1);
         }
 
@@ -403,7 +403,7 @@ abstract class sfModelGeneratorConfiguration
         foreach ($this->getListBatchActions() as $action => $parameters) {
             $parameters = $this->fixActionParameters($action, $parameters);
 
-            $action = 'batch'.ucfirst(0 === strpos($action, '_') ? substr($action, 1) : $action);
+            $action = 'batch'.ucfirst(str_starts_with($action, '_') ? substr($action, 1) : $action);
 
             $this->configuration['list']['batch_actions'][$action] = $parameters;
         }
@@ -442,7 +442,7 @@ abstract class sfModelGeneratorConfiguration
             'delete' => [],
         ];
         foreach ($this->getActionsDefault() as $action => $params) {
-            if (0 === strpos($action, '_')) {
+            if (str_starts_with($action, '_')) {
                 $action = substr($action, 1);
             }
 
