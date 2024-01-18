@@ -19,22 +19,22 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineDataLoadTask extends sfDoctrineBaseTask
+class sfDoctrineDataLoadTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('dir_or_file', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Directory or file to load'),
+            new \sfCommandArgument('dir_or_file', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'Directory or file to load'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('append', null, sfCommandOption::PARAMETER_NONE, 'Don\'t delete current data in the database'),
-            new sfCommandOption('charset', null, sfCommandOption::PARAMETER_OPTIONAL, 'Specify charset'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('append', null, \sfCommandOption::PARAMETER_NONE, 'Don\'t delete current data in the database'),
+            new \sfCommandOption('charset', null, \sfCommandOption::PARAMETER_OPTIONAL, 'Specify charset'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -61,14 +61,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
         if (!count($arguments['dir_or_file'])) {
             // pull default from CLI config array

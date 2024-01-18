@@ -1,6 +1,6 @@
 <?php
 
-class frontendConfiguration extends sfApplicationConfiguration
+class frontendConfiguration extends \sfApplicationConfiguration
 {
     public function configure()
     {
@@ -9,7 +9,7 @@ class frontendConfiguration extends sfApplicationConfiguration
         $this->dispatcher->connect('view.configure_format', [$this, 'configure_iphone_format']);
     }
 
-    public function filter_parameters(sfEvent $event, $parameters)
+    public function filter_parameters(\sfEvent $event, $parameters)
     {
         if (false !== stripos((string) $event->getSubject()->getHttpHeader('user-agent'), 'iPhone')) {
             $event->getSubject()->setRequestFormat('iphone');
@@ -18,7 +18,7 @@ class frontendConfiguration extends sfApplicationConfiguration
         return $parameters;
     }
 
-    public function configure_iphone_format(sfEvent $event)
+    public function configure_iphone_format(\sfEvent $event)
     {
         if ('iphone' == $event['format']) {
             $event['response']->addStylesheet('iphone.css');
@@ -27,7 +27,7 @@ class frontendConfiguration extends sfApplicationConfiguration
         }
     }
 
-    public function configure_format_foo(sfEvent $event)
+    public function configure_format_foo(\sfEvent $event)
     {
         if ('foo' != $event['format']) {
             return;

@@ -12,9 +12,9 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once $_test_dir.'/unit/sfContextMock.class.php';
 
-$t = new lime_test(21);
+$t = new \lime_test(21);
 
-$context = sfContext::getInstance();
+$context = \sfContext::getInstance();
 
 require_once __DIR__.'/../../../lib/helper/TagHelper.php';
 

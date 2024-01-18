@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfRouteCollection implements Iterator
+class sfRouteCollection implements \Iterator
 {
     protected $count = 0;
     protected $options = [];
@@ -29,7 +29,7 @@ class sfRouteCollection implements Iterator
     public function __construct(array $options)
     {
         if (!isset($options['name'])) {
-            throw new InvalidArgumentException('You must pass a "name" option to sfRouteCollection');
+            throw new \InvalidArgumentException('You must pass a "name" option to sfRouteCollection');
         }
 
         $this->options = $options;

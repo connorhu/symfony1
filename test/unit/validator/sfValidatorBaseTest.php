@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(47);
+$t = new \lime_test(47);
 
-class ValidatorIdentity extends sfValidatorBase
+class ValidatorIdentity extends \sfValidatorBase
 {
     public function testIsEmpty($value)
     {
@@ -31,7 +31,7 @@ class ValidatorIdentity extends sfValidatorBase
     }
 }
 
-class ValidatorIdentityWithRequired extends sfValidatorBase
+class ValidatorIdentityWithRequired extends \sfValidatorBase
 {
     protected function configure($options = [], $messages = [])
     {
@@ -46,46 +46,46 @@ class ValidatorIdentityWithRequired extends sfValidatorBase
 
 // ->configure()
 $t->diag('->configure()');
-$v = new ValidatorIdentity();
+$v = new \ValidatorIdentity();
 $t->is($v->getOption('foo'), 'bar', '->configure() can add some options');
-$v = new ValidatorIdentity(['foo' => 'foobar']);
+$v = new \ValidatorIdentity(['foo' => 'foobar']);
 $t->is($v->getOption('foo'), 'foobar', '->configure() takes an options array as its first argument and values override default option values');
-$v = new ValidatorIdentity();
+$v = new \ValidatorIdentity();
 $t->is($v->getMessage('foo'), 'bar', '->configure() can add some message');
-$v = new ValidatorIdentity([], ['foo' => 'foobar']);
+$v = new \ValidatorIdentity([], ['foo' => 'foobar']);
 $t->is($v->getMessage('foo'), 'foobar', '->configure() takes a messages array as its second argument and values override default message values');
 
 try {
-    new ValidatorIdentity(['nonexistant' => false, 'foo' => 'foobar', 'anothernonexistant' => 'bar', 'required' => true]);
+    new \ValidatorIdentity(['nonexistant' => false, 'foo' => 'foobar', 'anothernonexistant' => 'bar', 'required' => true]);
     $t->fail('__construct() throws an InvalidArgumentException if you pass some non existant options');
     $t->skip();
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('__construct() throws an InvalidArgumentException if you pass some non existant options');
     $t->like($e->getMessage(), '/ \'nonexistant\', \'anothernonexistant\'/', 'The exception contains the non existant option names');
 }
 
 try {
-    new ValidatorIdentity([], ['required' => 'This is required.', 'nonexistant' => 'foo', 'anothernonexistant' => false]);
+    new \ValidatorIdentity([], ['required' => 'This is required.', 'nonexistant' => 'foo', 'anothernonexistant' => false]);
     $t->fail('__construct() throws an InvalidArgumentException if you pass some non existant error codes');
     $t->skip();
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('__construct() throws an InvalidArgumentException if you pass some non existant error codes');
     $t->like($e->getMessage(), '/ \'nonexistant\', \'anothernonexistant\'/', 'The exception contains the non existant error codes');
 }
 
 // ->getRequiredOptions()
 $t->diag('getRequiredOptions');
-$v = new ValidatorIdentityWithRequired(['foo' => 'bar']);
+$v = new \ValidatorIdentityWithRequired(['foo' => 'bar']);
 $t->is($v->getRequiredOptions(), ['foo'], '->getRequiredOptions() returns an array of required option names');
 
 try {
-    new ValidatorIdentityWithRequired();
+    new \ValidatorIdentityWithRequired();
     $t->fail('__construct() throws an RuntimeException if you don\'t pass a required option');
-} catch (RuntimeException $e) {
+} catch (\RuntimeException $e) {
     $t->pass('__construct() throws an RuntimeException if you don\'t pass a required option');
 }
 
-$v = new ValidatorIdentity();
+$v = new \ValidatorIdentity();
 
 // ->clean()
 $t->diag('->clean()');
@@ -95,7 +95,7 @@ try {
     $t->is($v->clean(''), '');
     $t->fail('->clean() throws a sfValidatorError exception if the data does not validate');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError exception if the data does not validate');
     $t->is($e->getCode(), 'required', '->clean() throws a sfValidatorError');
 }
@@ -125,7 +125,7 @@ $t->is($v->clean('  foo  '), 'foo', '->setOption() can turn on whitespace trimmi
 try {
     $v->setOption('foobar', 'foo');
     $t->fail('->setOption() throws an InvalidArgumentException if the option is not registered');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->setOption() throws an InvalidArgumentException if the option is not registered');
 }
 
@@ -166,14 +166,14 @@ $v->setMessage('required', 'The field is required.');
 try {
     $v->clean('');
     $t->isnt($e->getMessage(), 'The field is required.', '->setMessage() changes the default error message string');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->is($e->getMessage(), 'The field is required.', '->setMessage() changes the default error message string');
 }
 
 try {
     $v->setMessage('foobar', 'foo');
     $t->fail('->setMessage() throws an InvalidArgumentException if the message is not registered');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->setMessage() throws an InvalidArgumentException if the message is not registered');
 }
 
@@ -194,13 +194,13 @@ $t->is($v->getErrorCodes(), ['required', 'invalid', 'foo'], '->getErrorCodes() r
 
 // ::getCharset() ::setCharset()
 $t->diag('::getCharset() ::setCharset()');
-$t->is(sfValidatorBase::getCharset(), 'UTF-8', '::getCharset() returns the charset to use for validators');
-sfValidatorBase::setCharset('ISO-8859-1');
-$t->is(sfValidatorBase::getCharset(), 'ISO-8859-1', '::setCharset() changes the charset to use for validators');
+$t->is(\sfValidatorBase::getCharset(), 'UTF-8', '::getCharset() returns the charset to use for validators');
+\sfValidatorBase::setCharset('ISO-8859-1');
+$t->is(\sfValidatorBase::getCharset(), 'ISO-8859-1', '::setCharset() changes the charset to use for validators');
 
 // ->asString()
 $t->diag('->asString()');
-$v = new ValidatorIdentity();
+$v = new \ValidatorIdentity();
 $t->is($v->asString(), 'ValidatorIdentity()', '->asString() returns a string representation of the validator');
 $v->setOption('required', false);
 $v->setOption('foo', 'foo');
@@ -209,20 +209,20 @@ $t->is($v->asString(), 'ValidatorIdentity({ required: false, foo: foo })', '->as
 $v->setMessage('required', 'This is required.');
 $t->is($v->asString(), 'ValidatorIdentity({ required: false, foo: foo }, { required: \'This is required.\' })', '->asString() returns a string representation of the validator');
 
-$v = new ValidatorIdentity();
+$v = new \ValidatorIdentity();
 $v->setMessage('required', 'This is required.');
 $t->is($v->asString(), 'ValidatorIdentity({}, { required: \'This is required.\' })', '->asString() returns a string representation of the validator');
 
 // ::setDefaultMessage()
 $t->diag('::setDefaultMessage()');
-ValidatorIdentity::setDefaultMessage('required', 'This field is required.');
-ValidatorIdentity::setDefaultMessage('invalid', 'This field is invalid.');
-ValidatorIdentity::setDefaultMessage('foo', 'Foo bar.');
-$v = new ValidatorIdentity();
+\ValidatorIdentity::setDefaultMessage('required', 'This field is required.');
+\ValidatorIdentity::setDefaultMessage('invalid', 'This field is invalid.');
+\ValidatorIdentity::setDefaultMessage('foo', 'Foo bar.');
+$v = new \ValidatorIdentity();
 $t->is($v->getMessage('required'), 'This field is required.', '::setDefaultMessage() sets the default message for an error');
 $t->is($v->getMessage('invalid'), 'This field is invalid.', '::setDefaultMessage() sets the default message for an error');
 $t->is($v->getMessage('foo'), 'Foo bar.', '::setDefaultMessage() sets the default message for an error');
 
-$v = new ValidatorIdentity([], ['required' => 'Yep, this is required!', 'foo' => 'Yep, this is a foo error!']);
+$v = new \ValidatorIdentity([], ['required' => 'Yep, this is required!', 'foo' => 'Yep, this is a foo error!']);
 $t->is($v->getMessage('required'), 'Yep, this is required!', '::setDefaultMessage() is ignored if the validator explicitly overrides the message');
 $t->is($v->getMessage('foo'), 'Yep, this is a foo error!', '::setDefaultMessage() is ignored if the validator explicitly overrides the message');

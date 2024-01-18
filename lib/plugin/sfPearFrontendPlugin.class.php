@@ -19,16 +19,16 @@ require_once 'PEAR/Frontend/CLI.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearFrontendPlugin extends PEAR_Frontend_CLI
+class sfPearFrontendPlugin extends \PEAR_Frontend_CLI
 {
     protected $dispatcher;
 
     /**
      * Sets the sfEventDispatcher object for this frontend.
      *
-     * @param sfEventDispatcher $dispatcher The sfEventDispatcher instance
+     * @param \sfEventDispatcher $dispatcher The sfEventDispatcher instance
      */
-    public function setEventDispatcher(sfEventDispatcher $dispatcher)
+    public function setEventDispatcher(\sfEventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
@@ -40,7 +40,7 @@ class sfPearFrontendPlugin extends PEAR_Frontend_CLI
 
     public function _display($text)
     {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', $this->splitLongLine($text)));
+        $this->dispatcher->notify(new \sfEvent($this, 'application.log', $this->splitLongLine($text)));
     }
 
     protected function splitLongLine($text)

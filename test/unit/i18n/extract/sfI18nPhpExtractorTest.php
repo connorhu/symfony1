@@ -10,12 +10,12 @@
 
 require_once __DIR__.'/../../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new \lime_test(7);
 
 // __construct()
 $t->diag('__construct()');
-$e = new sfI18nPhpExtractor();
-$t->ok($e instanceof sfI18nExtractorInterface, 'sfI18nPhpExtractor implements the sfI18nExtractorInterface interface');
+$e = new \sfI18nPhpExtractor();
+$t->ok($e instanceof \sfI18nExtractorInterface, 'sfI18nPhpExtractor implements the sfI18nExtractorInterface interface');
 
 // ->extract();
 $t->diag('->extract()');

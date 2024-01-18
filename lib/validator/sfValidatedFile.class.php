@@ -65,7 +65,7 @@ class sfValidatedFile
      *
      * @return string The filename without the $this->path prefix
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function save($file = null, $fileMode = 0666, $create = true, $dirMode = 0777)
     {
@@ -75,7 +75,7 @@ class sfValidatedFile
 
         if ('/' != $file[0] && '\\' != $file[0] && !(strlen($file) > 3 && ctype_alpha($file[0]) && ':' == $file[1] && ('\\' == $file[2] || '/' == $file[2]))) {
             if (null === $this->path) {
-                throw new RuntimeException('You must give a "path" when you give a relative file name.');
+                throw new \RuntimeException('You must give a "path" when you give a relative file name.');
             }
 
             $file = $this->path.DIRECTORY_SEPARATOR.$file;
@@ -96,12 +96,12 @@ class sfValidatedFile
 
         if (!is_dir($directory)) {
             // the directory path exists but it's not a directory
-            throw new Exception(sprintf('File upload path "%s" exists, but is not a directory.', $directory));
+            throw new \Exception(sprintf('File upload path "%s" exists, but is not a directory.', $directory));
         }
 
         if (!is_writable($directory)) {
             // the directory isn't writable
-            throw new Exception(sprintf('File upload path "%s" is not writable.', $directory));
+            throw new \Exception(sprintf('File upload path "%s" is not writable.', $directory));
         }
 
         // copy the temp file to the destination file
@@ -214,7 +214,7 @@ class sfValidatedFile
      *
      * @param string $type
      *
-     * @return sfValidatedFile
+     * @return \sfValidatedFile
      */
     public function resetType($type)
     {

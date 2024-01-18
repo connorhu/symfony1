@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormTime extends sfWidgetForm
+class sfWidgetFormTime extends \sfWidgetForm
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormTime extends sfWidgetForm
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -49,16 +49,16 @@ class sfWidgetFormTime extends sfWidgetForm
         $emptyValues = $this->getOption('empty_values');
 
         // hours
-        $widget = new sfWidgetFormSelect(['choices' => $this->getOption('can_be_empty') ? ['' => $emptyValues['hour']] + $this->getOption('hours') : $this->getOption('hours'), 'id_format' => $this->getOption('id_format')], array_merge($this->attributes, $attributes));
+        $widget = new \sfWidgetFormSelect(['choices' => $this->getOption('can_be_empty') ? ['' => $emptyValues['hour']] + $this->getOption('hours') : $this->getOption('hours'), 'id_format' => $this->getOption('id_format')], array_merge($this->attributes, $attributes));
         $time['%hour%'] = $widget->render($name.'[hour]', $value['hour']);
 
         // minutes
-        $widget = new sfWidgetFormSelect(['choices' => $this->getOption('can_be_empty') ? ['' => $emptyValues['minute']] + $this->getOption('minutes') : $this->getOption('minutes'), 'id_format' => $this->getOption('id_format')], array_merge($this->attributes, $attributes));
+        $widget = new \sfWidgetFormSelect(['choices' => $this->getOption('can_be_empty') ? ['' => $emptyValues['minute']] + $this->getOption('minutes') : $this->getOption('minutes'), 'id_format' => $this->getOption('id_format')], array_merge($this->attributes, $attributes));
         $time['%minute%'] = $widget->render($name.'[minute]', $value['minute']);
 
         if ($this->getOption('with_seconds')) {
             // seconds
-            $widget = new sfWidgetFormSelect(['choices' => $this->getOption('can_be_empty') ? ['' => $emptyValues['second']] + $this->getOption('seconds') : $this->getOption('seconds'), 'id_format' => $this->getOption('id_format')], array_merge($this->attributes, $attributes));
+            $widget = new \sfWidgetFormSelect(['choices' => $this->getOption('can_be_empty') ? ['' => $emptyValues['second']] + $this->getOption('seconds') : $this->getOption('seconds'), 'id_format' => $this->getOption('id_format')], array_merge($this->attributes, $attributes));
             $time['%second%'] = $widget->render($name.'[second]', $value['second']);
         }
 
@@ -82,7 +82,7 @@ class sfWidgetFormTime extends sfWidgetForm
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {

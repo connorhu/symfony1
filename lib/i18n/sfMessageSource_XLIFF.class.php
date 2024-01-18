@@ -32,7 +32,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:18:44 EST 2004
  */
-class sfMessageSource_XLIFF extends sfMessageSource_File
+class sfMessageSource_XLIFF extends \sfMessageSource_File
 {
     /**
      * Message data filename extension.
@@ -94,7 +94,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         }
 
         if (false == is_writable($filename)) {
-            throw new sfException(sprintf('Unable to save to file %s, file must be writable.', $filename));
+            throw new \sfException(sprintf('Unable to save to file %s, file must be writable.', $filename));
         }
 
         // create a new dom, import the existing xml
@@ -102,14 +102,14 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         @$dom->load($filename);
 
         // find the body element
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $body = $xpath->query('//body')->item(0);
 
         if (null === $body) {
             // create and try again
             $this->createMessageTemplate($catalogue);
             $dom->load($filename);
-            $xpath = new DOMXPath($dom);
+            $xpath = new \DOMXPath($dom);
             $body = $xpath->query('//body')->item(0);
         }
 
@@ -171,7 +171,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         }
 
         if (false == is_writable($filename)) {
-            throw new sfException(sprintf('Unable to update file %s, file must be writable.', $filename));
+            throw new \sfException(sprintf('Unable to update file %s, file must be writable.', $filename));
         }
 
         // create a new dom, import the existing xml
@@ -179,7 +179,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         $dom->load($filename);
 
         // find the body element
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $units = $xpath->query('//trans-unit');
 
         // for each of the existin units
@@ -264,7 +264,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         }
 
         if (false == is_writable($filename)) {
-            throw new sfException(sprintf('Unable to modify file %s, file must be writable.', $filename));
+            throw new \sfException(sprintf('Unable to modify file %s, file must be writable.', $filename));
         }
 
         // create a new dom, import the existing xml
@@ -272,7 +272,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         $dom->load($filename);
 
         // find the body element
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $units = $xpath->query('//trans-unit');
 
         // for each of the existin units
@@ -309,11 +309,11 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
      *
      * @param string $xml XML string
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     protected function createDOMDocument($xml = null)
     {
-        $domimp = new DOMImplementation();
+        $domimp = new \DOMImplementation();
         $doctype = $domimp->createDocumentType('xliff', '-//XLIFF//DTD XLIFF//EN', 'http://www.oasis-open.org/committees/xliff/documents/xliff.dtd');
         $dom = $domimp->createDocument('', '', $doctype);
         $dom->formatOutput = true;
@@ -374,7 +374,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         }
 
         if (!is_dir($dir)) {
-            throw new sfException(sprintf('Unable to create directory %s.', $dir));
+            throw new \sfException(sprintf('Unable to create directory %s.', $dir));
         }
 
         $dom = $this->createDOMDocument($this->getTemplate($catalogue));

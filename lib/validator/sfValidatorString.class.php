@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorString extends sfValidatorBase
+class sfValidatorString extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -33,7 +33,7 @@ class sfValidatorString extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -47,9 +47,7 @@ class sfValidatorString extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
@@ -58,11 +56,11 @@ class sfValidatorString extends sfValidatorBase
         $length = function_exists('mb_strlen') ? mb_strlen($clean, $this->getCharset()) : strlen($clean);
 
         if ($this->hasOption('max_length') && $length > $this->getOption('max_length')) {
-            throw new sfValidatorError($this, 'max_length', ['value' => $value, 'max_length' => $this->getOption('max_length')]);
+            throw new \sfValidatorError($this, 'max_length', ['value' => $value, 'max_length' => $this->getOption('max_length')]);
         }
 
         if ($this->hasOption('min_length') && $length < $this->getOption('min_length')) {
-            throw new sfValidatorError($this, 'min_length', ['value' => $value, 'min_length' => $this->getOption('min_length')]);
+            throw new \sfValidatorError($this, 'min_length', ['value' => $value, 'min_length' => $this->getOption('min_length')]);
         }
 
         return $clean;

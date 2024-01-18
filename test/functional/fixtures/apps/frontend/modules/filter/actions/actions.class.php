@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class filterActions extends sfActions
+class filterActions extends \sfActions
 {
     public function executeIndex()
     {

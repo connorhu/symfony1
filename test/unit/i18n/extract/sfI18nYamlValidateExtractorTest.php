@@ -10,12 +10,12 @@
 
 require_once __DIR__.'/../../../bootstrap/unit.php';
 
-$t = new lime_test(2);
+$t = new \lime_test(2);
 
 // __construct()
 $t->diag('__construct()');
-$e = new sfI18nYamlValidateExtractor();
-$t->ok($e instanceof sfI18nExtractorInterface, 'sfI18nYamlValidateExtractor implements the sfI18nExtractorInterface interface');
+$e = new \sfI18nYamlValidateExtractor();
+$t->ok($e instanceof \sfI18nExtractorInterface, 'sfI18nYamlValidateExtractor implements the sfI18nExtractorInterface interface');
 
 // ->extract();
 $t->diag('->extract()');

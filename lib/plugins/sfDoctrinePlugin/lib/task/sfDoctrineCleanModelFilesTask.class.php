@@ -17,12 +17,12 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineCleanModelFilesTask extends sfDoctrineBaseTask
+class sfDoctrineCleanModelFilesTask extends \sfDoctrineBaseTask
 {
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Do not ask for confirmation'),
+            new \sfCommandOption('no-confirmation', null, \sfCommandOption::PARAMETER_NONE, 'Do not ask for confirmation'),
         ]);
 
         $this->aliases = ['doctrine:clean'];
@@ -39,17 +39,14 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         $config = $this->getCliConfig();
         $changed = false;
 
-        $deleteModelFiles = new sfDoctrineDeleteModelFilesTask($this->dispatcher, $this->formatter);
+        $deleteModelFiles = new \sfDoctrineDeleteModelFilesTask($this->dispatcher, $this->formatter);
         $deleteModelFiles->setCommandApplication($this->commandApplication);
         $deleteModelFiles->setConfiguration($this->configuration);
 
@@ -84,8 +81,6 @@ EOF;
     /**
      * Returns models defined in YAML.
      *
-     * @param mixed $yamlSchemaPath
-     *
      * @return array
      */
     protected function getYamlModels($yamlSchemaPath)
@@ -96,26 +91,22 @@ EOF;
     /**
      * Returns the schema as defined in YAML.
      *
-     * @param mixed $yamlSchemaPath
-     *
      * @return array
      */
     protected function getYamlSchema($yamlSchemaPath)
     {
-        return (array) sfYaml::load($this->prepareSchemaFile($yamlSchemaPath));
+        return (array) \sfYaml::load($this->prepareSchemaFile($yamlSchemaPath));
     }
 
     /**
      * Returns models that have class files.
      *
-     * @param mixed $modelsPath
-     *
      * @return array
      */
     protected function getFileModels($modelsPath)
     {
-        Doctrine_Core::loadModels($modelsPath);
+        \Doctrine_Core::loadModels($modelsPath);
 
-        return Doctrine_Core::getLoadedModels();
+        return \Doctrine_Core::getLoadedModels();
     }
 }

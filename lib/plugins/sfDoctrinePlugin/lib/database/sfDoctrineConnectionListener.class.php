@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineConnectionListener extends Doctrine_EventListener
+class sfDoctrineConnectionListener extends \Doctrine_EventListener
 {
     protected $connection;
     protected $encoding;
@@ -28,7 +28,7 @@ class sfDoctrineConnectionListener extends Doctrine_EventListener
         $this->encoding = $encoding;
     }
 
-    public function postConnect(Doctrine_Event $event)
+    public function postConnect(\Doctrine_Event $event)
     {
         $this->connection->setCharset($this->encoding);
         $this->connection->setDateFormat();

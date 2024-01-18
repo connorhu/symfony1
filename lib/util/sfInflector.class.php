@@ -39,7 +39,7 @@ class sfInflector
     {
         $tmp = (string) $camel_cased_word;
         $tmp = str_replace('::', '/', $tmp);
-        $tmp = sfToolkit::pregtr($tmp, ['/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
+        $tmp = \sfToolkit::pregtr($tmp, ['/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
             '/([a-z\d])([A-Z])/' => '\\1_\\2']);
 
         return strtolower($tmp);
@@ -68,7 +68,7 @@ class sfInflector
      */
     public static function foreign_key($class_name, $separate_with_underscore = true)
     {
-        return sfInflector::underscore(sfInflector::demodulize($class_name)).($separate_with_underscore ? '_id' : 'id');
+        return \sfInflector::underscore(\sfInflector::demodulize($class_name)).($separate_with_underscore ? '_id' : 'id');
     }
 
     /**
@@ -80,7 +80,7 @@ class sfInflector
      */
     public static function tableize($class_name)
     {
-        return sfInflector::underscore($class_name);
+        return \sfInflector::underscore($class_name);
     }
 
     /**
@@ -92,7 +92,7 @@ class sfInflector
      */
     public static function classify($table_name)
     {
-        return sfInflector::camelize($table_name);
+        return \sfInflector::camelize($table_name);
     }
 
     /**

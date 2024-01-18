@@ -10,12 +10,12 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
 // initialize the storage
-$storage = new sfNoStorage();
+$storage = new \sfNoStorage();
 
-$t->ok($storage instanceof sfStorage, 'sfNoStorage is an instance of sfStorage');
+$t->ok($storage instanceof \sfStorage, 'sfNoStorage is an instance of sfStorage');
 
 // shutdown the storage
 $storage->shutdown();

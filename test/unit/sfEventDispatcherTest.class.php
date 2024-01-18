@@ -27,7 +27,7 @@ class sfEventDispatcherTest
         try {
             $object->nonexistantmethodname();
             $this->t->fail('__call() throws an exception if the method does not exist as a sfEventDispatcher listener');
-        } catch (sfException $e) {
+        } catch (\sfException $e) {
             $this->t->pass('__call() throws an exception if the method does not exist as a sfEventDispatcher listener');
         }
     }
@@ -35,7 +35,7 @@ class sfEventDispatcherTest
 
 class myEventDispatcherTest
 {
-    public static function newMethod(sfEvent $event)
+    public static function newMethod(\sfEvent $event)
     {
         if ('newMethod' == $event['method']) {
             $arguments = $event['arguments'];

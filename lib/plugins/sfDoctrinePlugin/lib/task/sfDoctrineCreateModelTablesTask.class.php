@@ -17,18 +17,18 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineCreateModelTables extends sfDoctrineBaseTask
+class sfDoctrineCreateModelTables extends \sfDoctrineBaseTask
 {
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('models', sfCommandArgument::IS_ARRAY, 'The list of models', []),
+            new \sfCommandArgument('models', \sfCommandArgument::IS_ARRAY, 'The list of models', []),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', 'frontend'),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('skip-build', null, sfCommandOption::PARAMETER_NONE, 'Skip the doctrine:build-model task.'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', 'frontend'),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('skip-build', null, \sfCommandOption::PARAMETER_NONE, 'Skip the doctrine:build-model task.'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -44,10 +44,10 @@ EOF;
 
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
         if (!$options['skip-build']) {
-            $buildModel = new sfDoctrineBuildModelTask($this->dispatcher, $this->formatter);
+            $buildModel = new \sfDoctrineBuildModelTask($this->dispatcher, $this->formatter);
             $buildModel->setCommandApplication($this->commandApplication);
             $buildModel->setConfiguration($this->configuration);
             $buildModel->run();
@@ -57,32 +57,32 @@ EOF;
         $models = $arguments['models'];
         foreach ($models as $key => $model) {
             $model = trim($model);
-            $conn = Doctrine_Core::getTable($model)->getConnection();
+            $conn = \Doctrine_Core::getTable($model)->getConnection();
             $connections[$conn->getName()][] = $model;
         }
 
         foreach ($connections as $name => $models) {
             $this->logSection('doctrine', 'dropping model tables for connection "'.$name.'"');
 
-            $conn = Doctrine_Manager::getInstance()->getConnection($name);
+            $conn = \Doctrine_Manager::getInstance()->getConnection($name);
             $models = $conn->unitOfWork->buildFlushTree($models);
             $models = array_reverse($models);
 
             foreach ($models as $model) {
-                $tableName = Doctrine_Core::getTable($model)->getOption('tableName');
+                $tableName = \Doctrine_Core::getTable($model)->getOption('tableName');
 
                 $this->logSection('doctrine', 'dropping table "'.$tableName.'"');
 
                 try {
                     $conn->export->dropTable($tableName);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->logSection('doctrine', 'dropping table failed: '.$e->getMessage());
                 }
             }
 
             $this->logSection('doctrine', 'recreating tables for models');
 
-            Doctrine_Core::createTablesFromArray($models);
+            \Doctrine_Core::createTablesFromArray($models);
         }
     }
 }

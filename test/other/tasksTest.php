@@ -31,7 +31,7 @@ class sf_test_project
         $this->current_dir = getcwd();
         chdir($this->tmp_dir);
 
-        $this->php_cli = sfToolkit::getPhpCli();
+        $this->php_cli = \sfToolkit::getPhpCli();
     }
 
     public function shutdown()
@@ -62,12 +62,12 @@ class sf_test_project
     protected function clearTmpDir()
     {
         require_once __DIR__.'/../../lib/util/sfToolkit.class.php';
-        sfToolkit::clearDirectory($this->tmp_dir);
+        \sfToolkit::clearDirectory($this->tmp_dir);
     }
 }
 
 $plan = 18;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
     $t->skip('You need SQLite to run these tests', $plan);
@@ -75,7 +75,7 @@ if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
     return;
 }
 
-$c = new sf_test_project();
+$c = new \sf_test_project();
 $c->initialize($t);
 
 // generate:*

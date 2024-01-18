@@ -1,6 +1,6 @@
 <?php
 
-class i18nConfiguration extends sfApplicationConfiguration
+class i18nConfiguration extends \sfApplicationConfiguration
 {
     public function setup()
     {

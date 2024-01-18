@@ -15,18 +15,18 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectSendEmailsTask extends sfBaseTask
+class sfProjectSendEmailsTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('message-limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'The maximum number of messages to send', 0),
-            new sfCommandOption('time-limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'The time limit for sending messages (in seconds)', 0),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('message-limit', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The maximum number of messages to send', 0),
+            new \sfCommandOption('time-limit', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The time limit for sending messages (in seconds)', 0),
         ]);
 
         $this->namespace = 'project';
@@ -51,7 +51,7 @@ EOF;
 
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
         $spool = $this->getMailer()->getSpool();
         $spool->setMessageLimit($options['message-limit']);

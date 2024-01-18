@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSecurityConfigHandler extends sfYamlConfigHandler
+class sfSecurityConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -46,7 +46,7 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

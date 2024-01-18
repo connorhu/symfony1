@@ -17,14 +17,14 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
+class sfDoctrineFormFilterGenerator extends \sfDoctrineFormGenerator
 {
     /**
      * Initializes the current sfGenerator instance.
      *
-     * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
+     * @param \sfGeneratorManager $generatorManager A sfGeneratorManager instance
      */
-    public function initialize(sfGeneratorManager $generatorManager)
+    public function initialize(\sfGeneratorManager $generatorManager)
     {
         parent::initialize($generatorManager);
 
@@ -53,7 +53,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
         $models = $this->loadModels();
 
         // create the project base class for all forms
-        $file = sfConfig::get('sf_lib_dir').'/filter/doctrine/BaseFormFilterDoctrine.class.php';
+        $file = \sfConfig::get('sf_lib_dir').'/filter/doctrine/BaseFormFilterDoctrine.class.php';
         if (!file_exists($file)) {
             if (!is_dir($directory = dirname($file))) {
                 mkdir($directory, 0777, true);
@@ -66,10 +66,10 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
 
         // create a form class for every Doctrine class
         foreach ($models as $model) {
-            $this->table = Doctrine_Core::getTable($model);
+            $this->table = \Doctrine_Core::getTable($model);
             $this->modelName = $model;
 
-            $baseDir = sfConfig::get('sf_lib_dir').'/filter/doctrine';
+            $baseDir = \sfConfig::get('sf_lib_dir').'/filter/doctrine';
 
             $isPluginModel = $this->isPluginModel($model);
             if ($isPluginModel) {
@@ -105,7 +105,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     /**
      * Returns a sfWidgetForm class name for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The name of a subclass of sfWidgetForm
      */
@@ -143,7 +143,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     /**
      * Returns a PHP string representing options to pass to a widget for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The options to pass to the widget as a PHP string
      */
@@ -189,7 +189,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     /**
      * Returns a sfValidator class name for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The name of a subclass of sfValidator
      */
@@ -238,7 +238,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     /**
      * Returns a PHP string representing options to pass to a validator for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The options to pass to the validator as a PHP string
      */
@@ -355,14 +355,12 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     /**
      * Filter out models that have disabled generation of form classes.
      *
-     * @param mixed $models
-     *
      * @return array $models Array of models to generate forms for
      */
     protected function filterModels($models)
     {
         foreach ($models as $key => $model) {
-            $table = Doctrine_Core::getTable($model);
+            $table = \Doctrine_Core::getTable($model);
             $symfonyOptions = (array) $table->getOption('symfony');
 
             if ($table->isGenerator()) {

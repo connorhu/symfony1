@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class presentationActions extends sfActions
+class presentationActions extends \sfActions
 {
     public function executeIndex()
     {

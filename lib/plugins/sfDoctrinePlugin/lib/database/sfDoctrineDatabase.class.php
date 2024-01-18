@@ -17,18 +17,18 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineDatabase extends sfDatabase
+class sfDoctrineDatabase extends \sfDatabase
 {
     /**
      * Instance of the Doctrine_Connection for this instance of sfDoctrineDatabase.
      * Connection can be accessed by the getDoctrineConnection() accessor method.
      *
-     * @var Doctrine_Connection
+     * @var \Doctrine_Connection
      */
     protected $_doctrineConnection;
 
     /**
-     * @var sfDoctrineConnectionProfiler
+     * @var \sfDoctrineConnectionProfiler
      */
     protected $profiler;
 
@@ -62,9 +62,9 @@ class sfDoctrineDatabase extends sfDatabase
         }
 
         // Make the Doctrine connection for $dsn and $name
-        $configuration = sfProjectConfiguration::getActive();
+        $configuration = \sfProjectConfiguration::getActive();
         $dispatcher = $configuration->getEventDispatcher();
-        $manager = Doctrine_Manager::getInstance();
+        $manager = \Doctrine_Manager::getInstance();
 
         $this->_doctrineConnection = $manager->openConnection($dsn, $name);
 
@@ -84,24 +84,24 @@ class sfDoctrineDatabase extends sfDatabase
         }
 
         $encoding = $this->getParameter('encoding', 'UTF8');
-        $eventListener = new sfDoctrineConnectionListener($this->_doctrineConnection, $encoding);
+        $eventListener = new \sfDoctrineConnectionListener($this->_doctrineConnection, $encoding);
         $this->_doctrineConnection->addListener($eventListener);
 
         // Load Query Profiler
-        if ($this->getParameter('profiler', sfConfig::get('sf_debug'))) {
-            $this->profiler = new sfDoctrineConnectionProfiler($dispatcher, [
-                'logging' => $this->getParameter('logging', sfConfig::get('sf_logging_enabled')),
+        if ($this->getParameter('profiler', \sfConfig::get('sf_debug'))) {
+            $this->profiler = new \sfDoctrineConnectionProfiler($dispatcher, [
+                'logging' => $this->getParameter('logging', \sfConfig::get('sf_logging_enabled')),
             ]);
             $this->_doctrineConnection->addListener($this->profiler, 'symfony_profiler');
         }
 
-        $dispatcher->notify(new sfEvent($manager, 'doctrine.configure_connection', ['connection' => $this->_doctrineConnection, 'database' => $this]));
+        $dispatcher->notify(new \sfEvent($manager, 'doctrine.configure_connection', ['connection' => $this->_doctrineConnection, 'database' => $this]));
     }
 
     /**
      * Get the Doctrine_Connection instance.
      *
-     * @return Doctrine_Connection $conn
+     * @return \Doctrine_Connection $conn
      */
     public function getDoctrineConnection()
     {
@@ -111,7 +111,7 @@ class sfDoctrineDatabase extends sfDatabase
     /**
      * Returns the connection profiler.
      *
-     * @return sfDoctrineConnectionProfiler|null
+     * @return \sfDoctrineConnectionProfiler|null
      */
     public function getProfiler()
     {

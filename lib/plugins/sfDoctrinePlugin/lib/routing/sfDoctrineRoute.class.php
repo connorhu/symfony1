@@ -19,14 +19,14 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineRoute extends sfObjectRoute
+class sfDoctrineRoute extends \sfObjectRoute
 {
     protected $query;
 
-    public function setListQuery(Doctrine_Query $query)
+    public function setListQuery(\Doctrine_Query $query)
     {
         if (!$this->isBound()) {
-            throw new LogicException('The route is not bound.');
+            throw new \LogicException('The route is not bound.');
         }
 
         $this->query = $query;
@@ -38,7 +38,7 @@ class sfDoctrineRoute extends sfObjectRoute
 
         // If query returned Doctrine_Collection with results inside then we
         // need to return the first Doctrine_Record
-        if ($results instanceof Doctrine_Collection) {
+        if ($results instanceof \Doctrine_Collection) {
             if (count($results)) {
                 $results = $results->getFirst();
             } else {
@@ -55,7 +55,7 @@ class sfDoctrineRoute extends sfObjectRoute
 
     protected function getObjectsForParameters($parameters)
     {
-        $tableModel = Doctrine_Core::getTable($this->options['model']);
+        $tableModel = \Doctrine_Core::getTable($this->options['model']);
 
         $variables = [];
         $values = [];
@@ -90,9 +90,9 @@ class sfDoctrineRoute extends sfObjectRoute
         // If query returned a Doctrine_Record instance instead of a
         // Doctrine_Collection then we need to create a new Doctrine_Collection with
         // one element inside and return that
-        if ($results instanceof Doctrine_Record) {
+        if ($results instanceof \Doctrine_Record) {
             $obj = $results;
-            $results = new Doctrine_Collection($obj->getTable());
+            $results = new \Doctrine_Collection($obj->getTable());
             $results[] = $obj;
         }
 
@@ -109,11 +109,11 @@ class sfDoctrineRoute extends sfObjectRoute
         foreach ($this->getRealVariables() as $variable) {
             try {
                 $parameters[$variable] = $object->{$variable};
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 try {
-                    $method = 'get'.sfInflector::camelize($variable);
+                    $method = 'get'.\sfInflector::camelize($variable);
                     $parameters[$variable] = $object->{$method}();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 }
             }
         }

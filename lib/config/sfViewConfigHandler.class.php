@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfViewConfigHandler extends sfYamlConfigHandler
+class sfViewConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -104,7 +104,7 @@ class sfViewConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -222,7 +222,7 @@ EOF;
         }
 
         foreach ($this->mergeConfigValue('metas', $viewName) as $name => $content) {
-            $data[] = sprintf("  \$response->addMeta('%s', '%s', false, false);", $name, str_replace('\'', '\\\'', preg_replace('/&amp;(?=\w+;)/', '&', htmlspecialchars((string) $content, ENT_QUOTES, sfConfig::get('sf_charset')))));
+            $data[] = sprintf("  \$response->addMeta('%s', '%s', false, false);", $name, str_replace('\'', '\\\'', preg_replace('/&amp;(?=\w+;)/', '&', htmlspecialchars((string) $content, ENT_QUOTES, \sfConfig::get('sf_charset')))));
         }
 
         return implode("\n", $data)."\n";
@@ -278,7 +278,7 @@ EOF;
         unset($config['default']['javascripts']);
 
         // merge default and all
-        $config['all'] = sfToolkit::arrayDeepMerge(
+        $config['all'] = \sfToolkit::arrayDeepMerge(
             isset($config['default']) && is_array($config['default']) ? $config['default'] : [],
             isset($config['all']) && is_array($config['all']) ? $config['all'] : []
         );

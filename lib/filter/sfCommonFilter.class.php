@@ -15,12 +15,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfCommonFilter extends sfFilter
+class sfCommonFilter extends \sfFilter
 {
     /**
      * Executes this filter.
      *
-     * @param sfFilterChain $filterChain A sfFilterChain instance
+     * @param \sfFilterChain $filterChain A sfFilterChain instance
      */
     public function execute($filterChain)
     {
@@ -35,10 +35,10 @@ class sfCommonFilter extends sfFilter
         if (false !== ($pos = strpos($content, '</head>'))) {
             $this->context->getConfiguration()->loadHelpers(['Tag', 'Asset']);
             $html = '';
-            if (!sfConfig::get('symfony.asset.javascripts_included', false)) {
+            if (!\sfConfig::get('symfony.asset.javascripts_included', false)) {
                 $html .= get_javascripts($response);
             }
-            if (!sfConfig::get('symfony.asset.stylesheets_included', false)) {
+            if (!\sfConfig::get('symfony.asset.stylesheets_included', false)) {
                 $html .= get_stylesheets($response);
             }
 
@@ -47,7 +47,7 @@ class sfCommonFilter extends sfFilter
             }
         }
 
-        sfConfig::set('symfony.asset.javascripts_included', false);
-        sfConfig::set('symfony.asset.stylesheets_included', false);
+        \sfConfig::set('symfony.asset.javascripts_included', false);
+        \sfConfig::set('symfony.asset.stylesheets_included', false);
     }
 }

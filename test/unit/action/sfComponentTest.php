@@ -14,23 +14,23 @@ require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 require_once $_test_dir.'/unit/sfNoRouting.class.php';
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
-class myComponent extends sfComponent
+class myComponent extends \sfComponent
 {
     public function execute($request)
     {
     }
 }
 
-$context = sfContext::getInstance([
+$context = \sfContext::getInstance([
     'routing' => 'sfNoRouting',
     'request' => 'sfWebRequest',
 ]);
 
 // ->initialize()
 $t->diag('->initialize()');
-$component = new myComponent($context, 'module', 'action');
+$component = new \myComponent($context, 'module', 'action');
 $t->is($component->getContext(), $context, '->initialize() takes a sfContext object as its first argument');
 $component->initialize($context, 'module', 'action');
 $t->is($component->getContext(), $context, '->initialize() takes a sfContext object as its first argument');
@@ -58,5 +58,5 @@ $t->is($component->foo, ['bar'], '__set() populates component variables');
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
-$dispatcherTest = new sfEventDispatcherTest($t);
+$dispatcherTest = new \sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($context->getEventDispatcher(), $component, 'component');

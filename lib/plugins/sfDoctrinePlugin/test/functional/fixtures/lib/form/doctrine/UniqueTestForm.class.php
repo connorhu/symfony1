@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class UniqueTestForm extends BaseUniqueTestForm
+class UniqueTestForm extends \BaseUniqueTestForm
 {
     public function configure()
     {

@@ -21,7 +21,7 @@
  */
 abstract class sfConfigHandler
 {
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $parameterHolder;
 
     /**
@@ -29,7 +29,7 @@ abstract class sfConfigHandler
      *
      * @see initialize()
      *
-     * @param array|null $parameters
+     * @param \array|null $parameters
      */
     public function __construct($parameters = null)
     {
@@ -45,7 +45,7 @@ abstract class sfConfigHandler
      */
     public function initialize($parameters = null)
     {
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
         $this->parameterHolder->add($parameters);
     }
 
@@ -73,9 +73,9 @@ abstract class sfConfigHandler
     public static function replaceConstants($value)
     {
         if (is_array($value)) {
-            array_walk_recursive($value, function (&$value) { $value = sfToolkit::replaceConstants($value); });
+            array_walk_recursive($value, function (&$value) { $value = \sfToolkit::replaceConstants($value); });
         } else {
-            $value = sfToolkit::replaceConstants($value);
+            $value = \sfToolkit::replaceConstants($value);
         }
 
         return $value;
@@ -91,11 +91,11 @@ abstract class sfConfigHandler
     public static function replacePath($path)
     {
         if (is_array($path)) {
-            array_walk_recursive($path, function (&$path) { $path = sfConfigHandler::replacePath($path); });
+            array_walk_recursive($path, function (&$path) { $path = \sfConfigHandler::replacePath($path); });
         } else {
-            if (!sfToolkit::isPathAbsolute($path)) {
+            if (!\sfToolkit::isPathAbsolute($path)) {
                 // not an absolute path so we'll prepend to it
-                $path = sfConfig::get('sf_app_dir').'/'.$path;
+                $path = \sfConfig::get('sf_app_dir').'/'.$path;
             }
         }
 
@@ -105,7 +105,7 @@ abstract class sfConfigHandler
     /**
      * Gets the parameter holder for this configuration handler.
      *
-     * @return sfParameterHolder A sfParameterHolder instance
+     * @return \sfParameterHolder A sfParameterHolder instance
      */
     public function getParameterHolder()
     {
@@ -117,10 +117,10 @@ abstract class sfConfigHandler
      *
      * @param array $configFiles An array of ordered configuration files
      *
-     * @throws LogicException no matter what
+     * @throws \LogicException no matter what
      */
     public static function getConfiguration(array $configFiles)
     {
-        throw new LogicException('You must call the ::getConfiguration() method on a concrete config handler class');
+        throw new \LogicException('You must call the ::getConfiguration() method on a concrete config handler class');
     }
 }

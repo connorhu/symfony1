@@ -42,7 +42,7 @@ class sfServiceDefinition
      *
      * @param string $method The method name
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setConstructor($method)
     {
@@ -54,7 +54,7 @@ class sfServiceDefinition
     /**
      * Gets the constructor method.
      *
-     * @return sfServiceDefinition The constructor method name
+     * @return \sfServiceDefinition The constructor method name
      */
     public function getConstructor()
     {
@@ -66,7 +66,7 @@ class sfServiceDefinition
      *
      * @param string $class The service class
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setClass($class)
     {
@@ -90,7 +90,7 @@ class sfServiceDefinition
      *
      * @param array $arguments An array of arguments
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setArguments(array $arguments)
     {
@@ -104,7 +104,7 @@ class sfServiceDefinition
      *
      * @param mixed $argument An argument
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function addArgument($argument)
     {
@@ -128,7 +128,7 @@ class sfServiceDefinition
      *
      * @param array $calls An array of method calls
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setMethodCalls(array $calls = [])
     {
@@ -146,7 +146,7 @@ class sfServiceDefinition
      * @param string $method    The method name to call
      * @param array  $arguments An array of arguments to pass to the method call
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function addMethodCall($method, array $arguments = [])
     {
@@ -170,7 +170,7 @@ class sfServiceDefinition
      *
      * @param string $file A full pathname to include
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setFile($file)
     {
@@ -194,7 +194,7 @@ class sfServiceDefinition
      *
      * @param bool $shared Whether the service must be shared or not
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setShared($shared)
     {
@@ -218,7 +218,7 @@ class sfServiceDefinition
      *
      * @param mixed $callable A PHP callable
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setConfigurator($callable)
     {

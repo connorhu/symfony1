@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelSymfonyVersion extends sfWebDebugPanel
+class sfWebDebugPanelSymfonyVersion extends \sfWebDebugPanel
 {
     public function getTitle()
     {

@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(4);
+$t = new \lime_test(4);
 
-$w = new sfWidgetFormTextarea();
+$w = new \sfWidgetFormTextarea();
 
 // ->render()
 $t->diag('->render()');

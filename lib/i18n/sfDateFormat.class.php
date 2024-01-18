@@ -72,7 +72,7 @@ class sfDateFormat
     /**
      * The sfDateTimeFormatInfo, containing culture specific patterns and names.
      *
-     * @var sfDateTimeFormatInfo
+     * @var \sfDateTimeFormatInfo
      */
     protected $formatInfo;
 
@@ -81,18 +81,18 @@ class sfDateFormat
      *
      * @param mixed $formatInfo either, null, a sfCultureInfo instance, a DateTimeFormatInfo instance, or a locale
      *
-     * @return sfDateFormat instance
+     * @return \sfDateFormat instance
      */
     public function __construct($formatInfo = null)
     {
         if (null === $formatInfo) {
-            $this->formatInfo = sfDateTimeFormatInfo::getInvariantInfo();
-        } elseif ($formatInfo instanceof sfCultureInfo) {
+            $this->formatInfo = \sfDateTimeFormatInfo::getInvariantInfo();
+        } elseif ($formatInfo instanceof \sfCultureInfo) {
             $this->formatInfo = $formatInfo->DateTimeFormat;
-        } elseif ($formatInfo instanceof sfDateTimeFormatInfo) {
+        } elseif ($formatInfo instanceof \sfDateTimeFormatInfo) {
             $this->formatInfo = $formatInfo;
         } else {
-            $this->formatInfo = sfDateTimeFormatInfo::getInstance($formatInfo);
+            $this->formatInfo = \sfDateTimeFormatInfo::getInstance($formatInfo);
         }
 
         $this->methods = get_class_methods($this);
@@ -164,7 +164,7 @@ class sfDateFormat
             if ($isString) {
                 $numericalTime = @strtotime($time);
                 if (false === $numericalTime) {
-                    throw new sfException(sprintf('Impossible to parse date "%s" with format "%s".', $time, $pattern));
+                    throw new \sfException(sprintf('Impossible to parse date "%s" with format "%s".', $time, $pattern));
                 }
             } else {
                 $numericalTime = $time;
@@ -216,13 +216,13 @@ class sfDateFormat
                     if (in_array($fName, $this->methods)) {
                         $tokens[$i] = $this->{$fName}($date, $pattern);
                     } else {
-                        throw new sfException(sprintf('Function %s not found.', $function));
+                        throw new \sfException(sprintf('Function %s not found.', $function));
                     }
                 }
             }
         }
 
-        return sfToolkit::I18N_toEncoding(implode('', $tokens), $charset);
+        return \sfToolkit::I18N_toEncoding(implode('', $tokens), $charset);
     }
 
     /**
@@ -457,7 +457,7 @@ class sfDateFormat
                 return $year;
 
             default:
-                throw new sfException('The pattern for year is either "y", "yy", "yyy" or "yyyy".');
+                throw new \sfException('The pattern for year is either "y", "yy", "yyy" or "yyyy".');
         }
     }
 
@@ -495,7 +495,7 @@ class sfDateFormat
                 return $this->formatInfo->NarrowMonthNames[$month - 1];
 
             default:
-                throw new sfException('The pattern for month is "M", "MM", "MMM", "MMMM", "MMMMM".');
+                throw new \sfException('The pattern for month is "M", "MM", "MMM", "MMMM", "MMMMM".');
         }
     }
 
@@ -539,7 +539,7 @@ class sfDateFormat
                 break;
 
             default:
-                throw new sfException('The pattern for day of the week is "E", "EE", "EEE", or "EEEE".');
+                throw new \sfException('The pattern for day of the week is "E", "EE", "EEE", or "EEEE".');
         }
     }
 
@@ -567,7 +567,7 @@ class sfDateFormat
                 return $this->getWday($date);
 
             default:
-                throw new sfException('The pattern for day of the month is "d", "dd" or "dddd".');
+                throw new \sfException('The pattern for day of the month is "d", "dd" or "dddd".');
         }
     }
 
@@ -584,7 +584,7 @@ class sfDateFormat
     protected function getEra($date, $pattern = 'G')
     {
         if ('G' != $pattern) {
-            throw new sfException('The pattern for era is "G".');
+            throw new \sfException('The pattern for era is "G".');
         }
 
         return $this->formatInfo->getEra($date['year'] > 0 ? 1 : 0);
@@ -611,7 +611,7 @@ class sfDateFormat
                 return str_pad($hour, 2, '0', STR_PAD_LEFT);
 
             default:
-                throw new sfException('The pattern for 24 hour format is "H" or "HH".');
+                throw new \sfException('The pattern for 24 hour format is "H" or "HH".');
         }
     }
 
@@ -626,7 +626,7 @@ class sfDateFormat
     protected function getAMPM($date, $pattern = 'a')
     {
         if ('a' != $pattern) {
-            throw new sfException('The pattern for AM/PM marker is "a".');
+            throw new \sfException('The pattern for AM/PM marker is "a".');
         }
 
         return $this->formatInfo->AMPMMarkers[(int) ($date['hours'] / 12)];
@@ -654,7 +654,7 @@ class sfDateFormat
                 return str_pad($hour, 2, '0', STR_PAD_LEFT);
 
             default:
-                throw new sfException('The pattern for 24 hour format is "H" or "HH".');
+                throw new \sfException('The pattern for 24 hour format is "H" or "HH".');
         }
     }
 
@@ -679,7 +679,7 @@ class sfDateFormat
                 return str_pad($minutes, 2, '0', STR_PAD_LEFT);
 
             default:
-                throw new sfException('The pattern for minutes is "m" or "mm".');
+                throw new \sfException('The pattern for minutes is "m" or "mm".');
         }
     }
 
@@ -704,7 +704,7 @@ class sfDateFormat
                 return str_pad($seconds, 2, '0', STR_PAD_LEFT);
 
             default:
-                throw new sfException('The pattern for seconds is "s" or "ss".');
+                throw new \sfException('The pattern for seconds is "s" or "ss".');
         }
     }
 
@@ -731,7 +731,7 @@ class sfDateFormat
                 $pattern = 'O';
                 // no break
             default:
-                throw new sfException('The pattern for time zone is "z" or "Z".');
+                throw new \sfException('The pattern for time zone is "z" or "Z".');
         }
 
         return @date($pattern, @mktime($date['hours'], $date['minutes'], $date['seconds'], $date['mon'], $date['mday'], $date['year']));
@@ -748,7 +748,7 @@ class sfDateFormat
     protected function getYday($date, $pattern = 'D')
     {
         if ('D' != $pattern) {
-            throw new sfException('The pattern for day in year is "D".');
+            throw new \sfException('The pattern for day in year is "D".');
         }
 
         return $date['yday'];
@@ -776,7 +776,7 @@ class sfDateFormat
                 break;
 
             default:
-                throw new sfException('The pattern for day in month is "F" or "FF".');
+                throw new \sfException('The pattern for day in month is "F" or "FF".');
         }
     }
 
@@ -791,7 +791,7 @@ class sfDateFormat
     protected function getWeekInYear($date, $pattern = 'w')
     {
         if ('w' != $pattern) {
-            throw new sfException('The pattern for week in year is "w".');
+            throw new \sfException('The pattern for week in year is "w".');
         }
 
         return @date('W', @mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year']));
@@ -808,7 +808,7 @@ class sfDateFormat
     protected function getWeekInMonth($date, $pattern = 'W')
     {
         if ('W' != $pattern) {
-            throw new sfException('The pattern for week in month is "W".');
+            throw new \sfException('The pattern for week in month is "W".');
         }
 
         return @date('W', @mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year'])) - date('W', mktime(0, 0, 0, $date['mon'], 1, $date['year']));
@@ -825,7 +825,7 @@ class sfDateFormat
     protected function getHourInDay($date, $pattern = 'k')
     {
         if ('k' != $pattern) {
-            throw new sfException('The pattern for hour in day is "k".');
+            throw new \sfException('The pattern for hour in day is "k".');
         }
 
         return $date['hours'] + 1;
@@ -842,7 +842,7 @@ class sfDateFormat
     protected function getHourInAMPM($date, $pattern = 'K')
     {
         if ('K' != $pattern) {
-            throw new sfException('The pattern for hour in AM/PM is "K".');
+            throw new \sfException('The pattern for hour in AM/PM is "K".');
         }
 
         return ($date['hours'] + 1) % 12;

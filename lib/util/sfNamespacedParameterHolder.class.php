@@ -21,7 +21,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfNamespacedParameterHolder extends sfParameterHolder
+class sfNamespacedParameterHolder extends \sfParameterHolder
 {
     protected $default_namespace;
     protected $parameters = [];
@@ -246,7 +246,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
      *
      * @param string $ns a parameter namespace
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function &removeNamespace($ns = null)
     {

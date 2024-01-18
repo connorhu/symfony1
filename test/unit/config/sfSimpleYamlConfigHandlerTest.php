@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(2);
+$t = new \lime_test(2);
 
-$config = new sfSimpleYamlConfigHandler();
+$config = new \sfSimpleYamlConfigHandler();
 $config->initialize();
 
 $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfSimpleYamlConfigHandler'.DIRECTORY_SEPARATOR;

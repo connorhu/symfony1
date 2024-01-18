@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelect extends sfWidgetFormChoiceBase
+class sfWidgetFormSelect extends \sfWidgetFormChoiceBase
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormSelect extends sfWidgetFormChoiceBase
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -55,7 +55,7 @@ class sfWidgetFormSelect extends sfWidgetFormChoiceBase
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoiceBase
+     * @see \sfWidgetFormChoiceBase
      */
     protected function configure($options = [], $attributes = [])
     {

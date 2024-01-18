@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
-$logger = new sfConsoleLogger(new sfEventDispatcher());
+$logger = new \sfConsoleLogger(new \sfEventDispatcher());
 $logger->setStream($buffer = fopen('php://memory', 'rw'));
 
 $logger->log('foo');

@@ -31,7 +31,7 @@ require_once __DIR__.'/TGettext.class.php';
  *
  * @version     $Revision: 9856 $
  */
-class TGettext_MO extends TGettext
+class TGettext_MO extends \TGettext
 {
     /**
      * file handle.

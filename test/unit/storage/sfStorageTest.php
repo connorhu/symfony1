@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(0);
+$t = new \lime_test(0);
 
-class myStorage extends sfStorage
+class myStorage extends \sfStorage
 {
     public function read($key)
     {

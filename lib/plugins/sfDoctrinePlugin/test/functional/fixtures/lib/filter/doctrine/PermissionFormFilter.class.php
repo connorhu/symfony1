@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class PermissionFormFilter extends BasePermissionFormFilter
+class PermissionFormFilter extends \BasePermissionFormFilter
 {
     public function configure()
     {

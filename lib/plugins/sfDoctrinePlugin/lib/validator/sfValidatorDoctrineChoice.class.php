@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorDoctrineChoice extends sfValidatorBase
+class sfValidatorDoctrineChoice extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -32,10 +32,7 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
      *  * min:        The minimum number of values that need to be selected (this option is only active if multiple is true)
      *  * max:        The maximum number of values that need to be selected (this option is only active if multiple is true)
      *
-     * @see sfValidatorBase
-     *
-     * @param mixed $options
-     * @param mixed $messages
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -51,16 +48,14 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         if ($query = $this->getOption('query')) {
             $query = clone $query;
         } else {
-            $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
+            $query = \Doctrine_Core::getTable($this->getOption('model'))->createQuery();
         }
 
         if ($this->getOption('multiple')) {
@@ -75,23 +70,23 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
             $count = count($value);
 
             if ($this->hasOption('min') && $count < $this->getOption('min')) {
-                throw new sfValidatorError($this, 'min', ['count' => $count, 'min' => $this->getOption('min')]);
+                throw new \sfValidatorError($this, 'min', ['count' => $count, 'min' => $this->getOption('min')]);
             }
 
             if ($this->hasOption('max') && $count > $this->getOption('max')) {
-                throw new sfValidatorError($this, 'max', ['count' => $count, 'max' => $this->getOption('max')]);
+                throw new \sfValidatorError($this, 'max', ['count' => $count, 'max' => $this->getOption('max')]);
             }
 
             $query->andWhereIn(sprintf('%s.%s', $query->getRootAlias(), $this->getColumn()), $value);
 
             if ($query->count() != count($value)) {
-                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         } else {
             $query->andWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $this->getColumn()), $value);
 
             if (!$query->count()) {
-                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 
@@ -107,7 +102,7 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
      */
     protected function getColumn()
     {
-        $table = Doctrine_Core::getTable($this->getOption('model'));
+        $table = \Doctrine_Core::getTable($this->getOption('model'));
         if ($this->getOption('column')) {
             $columnName = $this->getOption('column');
         } else {

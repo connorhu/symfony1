@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorRegex extends sfValidatorString
+class sfValidatorRegex extends \sfValidatorString
 {
     /**
      * Returns the current validator's regular expression.
@@ -26,7 +26,7 @@ class sfValidatorRegex extends sfValidatorString
     {
         $pattern = $this->getOption('pattern');
 
-        return $pattern instanceof sfCallable ? $pattern->call() : $pattern;
+        return $pattern instanceof \sfCallable ? $pattern->call() : $pattern;
     }
 
     /**
@@ -40,7 +40,7 @@ class sfValidatorRegex extends sfValidatorString
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorString
+     * @see \sfValidatorString
      */
     protected function configure($options = [], $messages = [])
     {
@@ -51,9 +51,7 @@ class sfValidatorRegex extends sfValidatorString
     }
 
     /**
-     * @see sfValidatorString
-     *
-     * @param mixed $value
+     * @see \sfValidatorString
      */
     protected function doClean($value)
     {
@@ -65,7 +63,7 @@ class sfValidatorRegex extends sfValidatorString
             ($this->getOption('must_match') && !preg_match($pattern, $clean))
             || (!$this->getOption('must_match') && preg_match($pattern, $clean))
         ) {
-            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         return $clean;

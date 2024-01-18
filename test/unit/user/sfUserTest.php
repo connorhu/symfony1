@@ -10,15 +10,15 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(32);
+$t = new \lime_test(32);
 
 $_SERVER['session_id'] = 'test';
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 $sessionPath = sys_get_temp_dir().'/sessions_'.rand(11111, 99999);
-$storage = new sfSessionTestStorage(['session_path' => $sessionPath]);
+$storage = new \sfSessionTestStorage(['session_path' => $sessionPath]);
 
-$user = new sfUser($dispatcher, $storage);
+$user = new \sfUser($dispatcher, $storage);
 
 // ->initialize()
 $t->diag('->initialize()');
@@ -34,7 +34,7 @@ $t->is($user->getCulture(), 'de', '->initialize() sets the culture to the value 
 user_flush($dispatcher, $user, $storage);
 $t->is($user->getCulture(), 'de', '->initialize() reads the culture from the session data if available');
 
-$userBis = new sfUser($dispatcher, $storage);
+$userBis = new \sfUser($dispatcher, $storage);
 $t->is($userBis->getCulture(), 'de', '->initialize() serializes the culture to the session data');
 
 // ->setCulture() ->getCulture()
@@ -50,12 +50,12 @@ $t->is($user->getFlash('foo'), 'bar', '->setFlash() sets a flash variable');
 $t->is($user->hasFlash('foo'), true, '->hasFlash() returns true if the flash variable exists');
 user_flush($dispatcher, $user, $storage, ['use_flash' => true]);
 
-$userBis = new sfUser($dispatcher, $storage, ['use_flash' => true]);
+$userBis = new \sfUser($dispatcher, $storage, ['use_flash' => true]);
 $t->is($userBis->getFlash('foo'), 'bar', '->getFlash() returns a flash previously set');
 $t->is($userBis->hasFlash('foo'), true, '->hasFlash() returns true if the flash variable exists');
 user_flush($dispatcher, $user, $storage, ['use_flash' => true]);
 
-$userBis = new sfUser($dispatcher, $storage, ['use_flash' => true]);
+$userBis = new \sfUser($dispatcher, $storage, ['use_flash' => true]);
 $t->is($userBis->getFlash('foo'), null, 'Flashes are automatically removed after the next request');
 $t->is($userBis->hasFlash('foo'), false, '->hasFlash() returns true if the flash variable exists');
 
@@ -74,16 +74,16 @@ $t->is($user['foo2'], 'foo2', '->offsetSet() sets attribute by name');
 unset($user['foo2']);
 $t->is(isset($user['foo2']), false, '->offsetUnset() unsets attribute by name');
 
-$user = new sfUser($dispatcher, $storage);
+$user = new \sfUser($dispatcher, $storage);
 
 // attribute holder proxy
 require_once $_test_dir.'/unit/sfParameterHolderTest.class.php';
-$pht = new sfParameterHolderProxyTest($t);
+$pht = new \sfParameterHolderProxyTest($t);
 $pht->launchTests($user, 'attribute');
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
-$dispatcherTest = new sfEventDispatcherTest($t);
+$dispatcherTest = new \sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($dispatcher, $user, 'user');
 
 $storage->clear();
@@ -97,4 +97,4 @@ function user_flush($dispatcher, $user, $storage, $options = [])
     $storage->initialize($parameters);
 }
 
-sfToolkit::clearDirectory($sessionPath);
+\sfToolkit::clearDirectory($sessionPath);

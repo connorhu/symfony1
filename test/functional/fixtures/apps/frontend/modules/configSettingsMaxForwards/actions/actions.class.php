@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class configSettingsMaxForwardsActions extends sfActions
+class configSettingsMaxForwardsActions extends \sfActions
 {
     public function executeSelfForward()
     {

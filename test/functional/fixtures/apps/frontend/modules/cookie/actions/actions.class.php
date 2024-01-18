@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class cookieActions extends sfActions
+class cookieActions extends \sfActions
 {
     public function executeIndex($request)
     {
@@ -18,13 +18,13 @@ class cookieActions extends sfActions
     {
         $this->getResponse()->setCookie('foobar', 'barfoo');
 
-        return sfView::NONE;
+        return \sfView::NONE;
     }
 
     public function executeRemoveCookie($request)
     {
         $this->getResponse()->setCookie('foobar', 'foofoobar', time() - 10);
 
-        return sfView::NONE;
+        return \sfView::NONE;
     }
 }

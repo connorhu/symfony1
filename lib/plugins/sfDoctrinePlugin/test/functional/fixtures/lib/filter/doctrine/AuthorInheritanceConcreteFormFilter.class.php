@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class AuthorInheritanceConcreteFormFilter extends BaseAuthorInheritanceConcreteFormFilter
+class AuthorInheritanceConcreteFormFilter extends \BaseAuthorInheritanceConcreteFormFilter
 {
     public function configure()
     {

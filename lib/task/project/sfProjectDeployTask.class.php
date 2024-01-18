@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectDeployTask extends sfBaseTask
+class sfProjectDeployTask extends \sfBaseTask
 {
     protected $outputBuffer = '';
     protected $errorBuffer = '';
@@ -43,18 +43,18 @@ class sfProjectDeployTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('server', sfCommandArgument::REQUIRED, 'The server name'),
+            new \sfCommandArgument('server', \sfCommandArgument::REQUIRED, 'The server name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('go', null, sfCommandOption::PARAMETER_NONE, 'Do the deployment'),
-            new sfCommandOption('rsync-dir', null, sfCommandOption::PARAMETER_REQUIRED, 'The directory where to look for rsync*.txt files', 'config'),
-            new sfCommandOption('rsync-options', null, sfCommandOption::PARAMETER_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress'),
+            new \sfCommandOption('go', null, \sfCommandOption::PARAMETER_NONE, 'Do the deployment'),
+            new \sfCommandOption('rsync-dir', null, \sfCommandOption::PARAMETER_REQUIRED, 'The directory where to look for rsync*.txt files', 'config'),
+            new \sfCommandOption('rsync-options', null, \sfCommandOption::PARAMETER_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress'),
         ]);
 
         $this->namespace = 'project';
@@ -107,34 +107,31 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         $env = $arguments['server'];
 
-        $ini = sfConfig::get('sf_config_dir').'/properties.ini';
+        $ini = \sfConfig::get('sf_config_dir').'/properties.ini';
         if (!file_exists($ini)) {
-            throw new sfCommandException('You must create a config/properties.ini file');
+            throw new \sfCommandException('You must create a config/properties.ini file');
         }
 
         $properties = parse_ini_file($ini, true);
 
         if (!isset($properties[$env])) {
-            throw new sfCommandException(sprintf('You must define the configuration for server "%s" in config/properties.ini', $env));
+            throw new \sfCommandException(sprintf('You must define the configuration for server "%s" in config/properties.ini', $env));
         }
 
         $properties = $properties[$env];
 
         if (!isset($properties['host'])) {
-            throw new sfCommandException('You must define a "host" entry.');
+            throw new \sfCommandException('You must define a "host" entry.');
         }
 
         if (!isset($properties['dir'])) {
-            throw new sfCommandException('You must define a "dir" entry.');
+            throw new \sfCommandException('You must define a "dir" entry.');
         }
 
         $host = $properties['host'];

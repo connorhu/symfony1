@@ -17,15 +17,15 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginAddChannelTask extends sfPluginBaseTask
+class sfPluginAddChannelTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The channel name'),
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The channel name'),
         ]);
 
         $this->namespace = 'plugin';
@@ -41,10 +41,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {

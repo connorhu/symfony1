@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class AuthorInheritanceFormFilter extends BaseAuthorInheritanceFormFilter
+class AuthorInheritanceFormFilter extends \BaseAuthorInheritanceFormFilter
 {
     public function configure()
     {

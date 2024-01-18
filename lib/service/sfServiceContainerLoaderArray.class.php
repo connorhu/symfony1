@@ -15,7 +15,7 @@
  *
  * @author     Jerome Macias <jmacias@groupe-exp.com>
  */
-class sfServiceContainerLoaderArray extends sfServiceContainerLoader
+class sfServiceContainerLoaderArray extends \sfServiceContainerLoader
 {
     public function doLoad($content)
     {
@@ -44,12 +44,12 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
     protected function validate($content)
     {
         if (!is_array($content)) {
-            throw new InvalidArgumentException('The service definition is not valid.');
+            throw new \InvalidArgumentException('The service definition is not valid.');
         }
 
         foreach (array_keys($content) as $key) {
             if (!in_array($key, ['parameters', 'services'])) {
-                throw new InvalidArgumentException(sprintf('The service defintion is not valid ("%s" is not recognized).', $key));
+                throw new \InvalidArgumentException(sprintf('The service defintion is not valid ("%s" is not recognized).', $key));
             }
         }
 
@@ -62,7 +62,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
             return substr($service, 1);
         }
 
-        $definition = new sfServiceDefinition($service['class']);
+        $definition = new \sfServiceDefinition($service['class']);
 
         if (isset($service['shared'])) {
             $definition->setShared($service['shared']);
@@ -102,7 +102,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
         if (is_array($value)) {
             $value = array_map([$this, 'resolveServices'], $value);
         } elseif (is_string($value) && 0 === strpos($value, '@')) {
-            $value = new sfServiceReference(substr($value, 1));
+            $value = new \sfServiceReference(substr($value, 1));
         }
 
         return $value;

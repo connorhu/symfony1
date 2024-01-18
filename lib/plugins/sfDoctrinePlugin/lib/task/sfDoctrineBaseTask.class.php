@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfDoctrineBaseTask extends sfBaseTask
+abstract class sfDoctrineBaseTask extends \sfBaseTask
 {
     /**
      * Returns an array of configuration variables for the Doctrine CLI.
@@ -37,7 +37,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
      * @param string $task Name of the Doctrine task to call
      * @param array  $args Arguments for the task
      *
-     * @see sfDoctrineCli
+     * @see \sfDoctrineCli
      */
     public function callDoctrineCli($task, $args = [])
     {
@@ -53,7 +53,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
             }
         }
 
-        $cli = new sfDoctrineCli($config);
+        $cli = new \sfDoctrineCli($config);
         $cli->setSymfonyDispatcher($this->dispatcher);
         $cli->setSymfonyFormatter($this->formatter);
         $cli->run($arguments);
@@ -62,13 +62,13 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
     /**
      * Returns Doctrine databases from the supplied database manager.
      *
-     * @param array|null $names An array of names or NULL for all databases
+     * @param \array|null $names An array of names or NULL for all databases
      *
      * @return array An associative array of {@link sfDoctrineDatabase} objects and their names
      *
-     * @throws InvalidArgumentException If a requested database is not a Doctrine database
+     * @throws \InvalidArgumentException If a requested database is not a Doctrine database
      */
-    protected function getDoctrineDatabases(sfDatabaseManager $databaseManager, array $names = null)
+    protected function getDoctrineDatabases(\sfDatabaseManager $databaseManager, array $names = null)
     {
         $databases = [];
 
@@ -76,7 +76,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
             foreach ($databaseManager->getNames() as $name) {
                 $database = $databaseManager->getDatabase($name);
 
-                if ($database instanceof sfDoctrineDatabase) {
+                if ($database instanceof \sfDoctrineDatabase) {
                     $databases[$name] = $database;
                 }
             }
@@ -84,8 +84,8 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
             foreach ($names as $name) {
                 $database = $databaseManager->getDatabase($name);
 
-                if (!$database instanceof sfDoctrineDatabase) {
-                    throw new InvalidArgumentException(sprintf('The database "%s" is not a Doctrine database.', $name));
+                if (!$database instanceof \sfDoctrineDatabase) {
+                    throw new \InvalidArgumentException(sprintf('The database "%s" is not a Doctrine database.', $name));
                 }
 
                 $databases[$name] = $database;
@@ -113,20 +113,18 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
      * A schema file is any file saved in a plugin or project's config/doctrine/
      * directory that matches the "*.yml" glob.
      *
-     * @param mixed $yamlSchemaPath
-     *
      * @return string Absolute path to the consolidated schema file
      */
     protected function prepareSchemaFile($yamlSchemaPath)
     {
         $models = [];
-        $finder = sfFinder::type('file')->name('*.yml')->sort_by_name()->follow_link();
+        $finder = \sfFinder::type('file')->name('*.yml')->sort_by_name()->follow_link();
 
         // plugin models
         foreach ($this->configuration->getPlugins() as $name) {
             $plugin = $this->configuration->getPluginConfiguration($name);
             foreach ($finder->in($plugin->getRootDir().'/config/doctrine') as $schema) {
-                $pluginModels = (array) sfYaml::load($schema);
+                $pluginModels = (array) \sfYaml::load($schema);
                 $globals = $this->filterSchemaGlobals($pluginModels);
 
                 foreach ($pluginModels as $model => $definition) {
@@ -137,7 +135,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
                     $definition = array_merge($globals, $definition);
 
                     // merge this model into the schema
-                    $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
+                    $models[$model] = isset($models[$model]) ? \sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
 
                     // the first plugin to define this model gets the package
                     if (!isset($models[$model]['package'])) {
@@ -153,7 +151,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
 
         // project models
         foreach ($finder->in($yamlSchemaPath) as $schema) {
-            $projectModels = (array) sfYaml::load($schema);
+            $projectModels = (array) \sfYaml::load($schema);
             $globals = $this->filterSchemaGlobals($projectModels);
 
             foreach ($projectModels as $model => $definition) {
@@ -164,14 +162,14 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
                 $definition = array_merge($globals, $definition);
 
                 // merge this model into the schema
-                $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
+                $models[$model] = isset($models[$model]) ? \sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
             }
         }
 
         // create one consolidated schema file
         $file = realpath(sys_get_temp_dir()).'/doctrine_schema_'.rand(11111, 99999).'.yml';
         $this->logSection('file+', $file);
-        file_put_contents($file, sfYaml::dump($models, 4));
+        file_put_contents($file, \sfYaml::dump($models, 4));
 
         return $file;
     }
@@ -188,7 +186,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
     protected function filterSchemaGlobals(&$models)
     {
         $globals = [];
-        $globalKeys = Doctrine_Import_Schema::getGlobalDefinitionKeys();
+        $globalKeys = \Doctrine_Import_Schema::getGlobalDefinitionKeys();
 
         foreach ($models as $key => $value) {
             if (in_array($key, $globalKeys)) {

@@ -15,10 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfLogClearTask extends sfBaseTask
+class sfLogClearTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
@@ -34,14 +34,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $logs = sfFinder::type('file')->in(sfConfig::get('sf_log_dir'));
+        $logs = \sfFinder::type('file')->in(\sfConfig::get('sf_log_dir'));
         $this->getFilesystem()->remove($logs);
     }
 }

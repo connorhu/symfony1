@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class UserFormFilter extends BaseUserFormFilter
+class UserFormFilter extends \BaseUserFormFilter
 {
     public function configure()
     {

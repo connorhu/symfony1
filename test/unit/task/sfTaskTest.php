@@ -9,9 +9,9 @@
  */
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(16);
+$t = new \lime_test(16);
 
-abstract class BaseTestTask extends sfTask
+abstract class BaseTestTask extends \sfTask
 {
     public $lastArguments = [];
     public $lastOptions = [];
@@ -19,7 +19,7 @@ abstract class BaseTestTask extends sfTask
     public function __construct()
     {
         // lazy constructor
-        parent::__construct(new sfEventDispatcher(), new sfFormatter());
+        parent::__construct(new \sfEventDispatcher(), new \sfFormatter());
     }
 
     protected function execute($arguments = [], $options = [])
@@ -32,18 +32,18 @@ abstract class BaseTestTask extends sfTask
 // ->run()
 $t->diag('->run()');
 
-class ArgumentsTest1Task extends BaseTestTask
+class ArgumentsTest1Task extends \BaseTestTask
 {
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('foo', sfCommandArgument::REQUIRED),
-            new sfCommandArgument('bar', sfCommandArgument::OPTIONAL),
+            new \sfCommandArgument('foo', \sfCommandArgument::REQUIRED),
+            new \sfCommandArgument('bar', \sfCommandArgument::OPTIONAL),
         ]);
     }
 }
 
-$task = new ArgumentsTest1Task();
+$task = new \ArgumentsTest1Task();
 $task->run(['FOO']);
 $t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() accepts an indexed array of arguments');
 
@@ -62,37 +62,37 @@ $t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() ac
 $task->run(['bar' => null, 'foo' => 'FOO']);
 $t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() accepts an unordered associative array of arguments when optional arguments are passed as null');
 
-class ArgumentsTest2Task extends BaseTestTask
+class ArgumentsTest2Task extends \BaseTestTask
 {
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('foo', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
+            new \sfCommandArgument('foo', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY),
         ]);
     }
 }
 
-$task = new ArgumentsTest2Task();
+$task = new \ArgumentsTest2Task();
 $task->run(['arg1', 'arg2', 'arg3']);
 $t->is_deeply($task->lastArguments, ['foo' => ['arg1', 'arg2', 'arg3']], '->run() accepts an indexed array of an IS_ARRAY argument');
 
 $task->run(['foo' => ['arg1', 'arg2', 'arg3']]);
 $t->is_deeply($task->lastArguments, ['foo' => ['arg1', 'arg2', 'arg3']], '->run() accepts an associative array of an IS_ARRAY argument');
 
-class OptionsTest1Task extends BaseTestTask
+class OptionsTest1Task extends \BaseTestTask
 {
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('none', null, sfCommandOption::PARAMETER_NONE),
-            new sfCommandOption('required', null, sfCommandOption::PARAMETER_REQUIRED),
-            new sfCommandOption('optional', null, sfCommandOption::PARAMETER_OPTIONAL),
-            new sfCommandOption('array', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY),
+            new \sfCommandOption('none', null, \sfCommandOption::PARAMETER_NONE),
+            new \sfCommandOption('required', null, \sfCommandOption::PARAMETER_REQUIRED),
+            new \sfCommandOption('optional', null, \sfCommandOption::PARAMETER_OPTIONAL),
+            new \sfCommandOption('array', null, \sfCommandOption::PARAMETER_REQUIRED | \sfCommandOption::IS_ARRAY),
         ]);
     }
 }
 
-$task = new OptionsTest1Task();
+$task = new \OptionsTest1Task();
 $task->run();
 $t->is_deeply($task->lastOptions, ['none' => false, 'required' => null, 'optional' => null, 'array' => []], '->run() sets empty option values');
 
@@ -117,7 +117,7 @@ $t->is_deeply($task->lastOptions, ['none' => false, 'required' => null, 'optiona
 // ->getDetailedDescription()
 $t->diag('->getDetailedDescription()');
 
-class DetailedDescriptionTestTask extends BaseTestTask
+class DetailedDescriptionTestTask extends \BaseTestTask
 {
     protected function configure()
     {
@@ -127,5 +127,5 @@ EOF;
     }
 }
 
-$task = new DetailedDescriptionTestTask();
+$task = new \DetailedDescriptionTestTask();
 $t->is($task->getDetailedDescription(), 'The detailedDescription formats special string like ... or --xml', '->getDetailedDescription() formats special string');

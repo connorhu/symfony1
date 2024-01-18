@@ -227,7 +227,7 @@ class sfToolkit
 
             default:
                 $args = func_get_args();
-                $args[1] = sfToolkit::arrayDeepMerge($args[0], $args[1]);
+                $args[1] = \sfToolkit::arrayDeepMerge($args[0], $args[1]);
                 array_shift($args);
 
                 return call_user_func_array(['sfToolkit', 'arrayDeepMerge'], $args);
@@ -310,7 +310,7 @@ class sfToolkit
         }
 
         return preg_replace_callback('/%(.+?)%/', function ($v) {
-            return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : '%'.$v[1].'%';
+            return \sfConfig::has(strtolower($v[1])) ? \sfConfig::get(strtolower($v[1])) : '%'.$v[1].'%';
         }, $value);
     }
 
@@ -353,7 +353,6 @@ class sfToolkit
      * Licensed under the BSD open source license
      *
      * @param string
-     * @param mixed $string
      *
      * @return bool true if $string is valid UTF-8 and false otherwise
      */
@@ -441,7 +440,7 @@ class sfToolkit
      *
      * @return string
      *
-     * @throws sfException If no php cli found
+     * @throws \sfException If no php cli found
      */
     public static function getPhpCli()
     {
@@ -457,7 +456,7 @@ class sfToolkit
             }
         }
 
-        throw new sfException('Unable to find PHP executable.');
+        throw new \sfException('Unable to find PHP executable.');
     }
 
     /**
@@ -541,7 +540,7 @@ class sfToolkit
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('Unrecognized position: "%s"', $position));
+                throw new \InvalidArgumentException(sprintf('Unrecognized position: "%s"', $position));
         }
 
         return set_include_path(implode(PATH_SEPARATOR, $paths));

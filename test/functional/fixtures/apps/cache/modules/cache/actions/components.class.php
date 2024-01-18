@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class cacheComponents extends sfComponents
+class cacheComponents extends \sfComponents
 {
     public function executeComponent()
     {

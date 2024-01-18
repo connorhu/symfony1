@@ -60,12 +60,12 @@ abstract class sfData
      *
      * @return array A list of *.yml files
      *
-     * @throws sfInitializationException if the directory or file does not exist
+     * @throws \sfInitializationException if the directory or file does not exist
      */
     public function getFiles($element = null)
     {
         if (null === $element) {
-            $element = sfConfig::get('sf_data_dir').'/fixtures';
+            $element = \sfConfig::get('sf_data_dir').'/fixtures';
         }
 
         $files = [];
@@ -76,9 +76,9 @@ abstract class sfData
         } elseif (is_file($element)) {
             $files[] = $element;
         } elseif (is_dir($element)) {
-            $files = sfFinder::type('file')->name('*.yml')->sort_by_name()->in($element);
+            $files = \sfFinder::type('file')->name('*.yml')->sort_by_name()->in($element);
         } else {
-            throw new sfInitializationException(sprintf('You must give an array, a directory or a file to sfData::getFiles() (%s given).', $element));
+            throw new \sfInitializationException(sprintf('You must give an array, a directory or a file to sfData::getFiles() (%s given).', $element));
         }
 
         $files = array_unique($files);
@@ -95,7 +95,7 @@ abstract class sfData
     protected function doLoadDataFromFile($file)
     {
         // import new datas
-        $data = sfYaml::load($file, sfConfig::get('sf_charset', 'UTF-8'));
+        $data = \sfYaml::load($file, \sfConfig::get('sf_charset', 'UTF-8'));
 
         $this->loadDataFromArray($data);
     }

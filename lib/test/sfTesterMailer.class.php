@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterMailer extends sfTester
+class sfTesterMailer extends \sfTester
 {
     protected $logger;
     protected $message;

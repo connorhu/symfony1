@@ -16,9 +16,9 @@ require_once __DIR__.'/../../../lib/helper/PartialHelper.php';
 
 // Fixme: make this test more beautiful and extend it
 
-$t = new lime_test(9);
+$t = new \lime_test(9);
 
-class MyTestPartialView extends sfPartialView
+class MyTestPartialView extends \sfPartialView
 {
     public function render()
     {
@@ -35,13 +35,13 @@ class MyTestPartialView extends sfPartialView
 }
 
 $t->diag('get_partial()');
-sfConfig::set('mod_module_partial_view_class', 'MyTest');
+\sfConfig::set('mod_module_partial_view_class', 'MyTest');
 
 $t->is(get_partial('module/dummy'), '==RENDERED==', 'get_partial() uses the class specified in partial_view_class for the given module');
 $t->is(get_partial('MODULE/dummy'), '==RENDERED==', 'get_partial() accepts a case-insensitive module name');
 
 // slots tests
-sfContext::getInstance()->inject('response', 'sfWebResponse');
+\sfContext::getInstance()->inject('response', 'sfWebResponse');
 
 $t->diag('get_slot()');
 $t->is(get_slot('foo', 'baz'), 'baz', 'get_slot() retrieves default slot content');

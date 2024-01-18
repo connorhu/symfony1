@@ -19,21 +19,21 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineGenerateMigrationTask extends sfDoctrineBaseTask
+class sfDoctrineGenerateMigrationTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The name of the migration'),
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The name of the migration'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('editor-cmd', null, sfCommandOption::PARAMETER_REQUIRED, 'Open script with this command upon creation'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('editor-cmd', null, \sfCommandOption::PARAMETER_REQUIRED, 'Open script with this command upon creation'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -53,14 +53,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
 
         $this->logSection('doctrine', sprintf('generating migration class named "%s"', $arguments['name']));
@@ -71,12 +68,12 @@ EOF;
 
         $this->callDoctrineCli('generate-migration', ['name' => $arguments['name']]);
 
-        $finder = sfFinder::type('file')->sort_by_name()->name('*.php');
+        $finder = \sfFinder::type('file')->sort_by_name()->name('*.php');
         if ($files = $finder->in($config['migrations_path'])) {
             $file = array_pop($files);
 
             $contents = file_get_contents($file);
-            $contents = strtr(sfToolkit::stripComments($contents), [
+            $contents = strtr(\sfToolkit::stripComments($contents), [
                 "{\n\n" => "{\n",
                 "\n}" => "\n}\n",
                 '    ' => '  ',

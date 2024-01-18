@@ -109,7 +109,7 @@ abstract class sfCache
      *
      * @return bool true if no problem
      *
-     * @see patternToRegexp
+     * @see \patternToRegexp
      */
     abstract public function removePattern($pattern);
 
@@ -176,11 +176,11 @@ abstract class sfCache
      *
      * @return mixed The backend object
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function getBackend()
     {
-        throw new sfException('This cache class does not have a backend object.');
+        throw new \sfException('This cache class does not have a backend object.');
     }
 
     /**
@@ -223,7 +223,7 @@ abstract class sfCache
     {
         $regexp = str_replace(
             ['\\*\\*', '\\*'],
-            ['.+?', '[^'.preg_quote(sfCache::SEPARATOR, '#').']+'],
+            ['.+?', '[^'.preg_quote(\sfCache::SEPARATOR, '#').']+'],
             preg_quote($pattern, '#')
         );
 

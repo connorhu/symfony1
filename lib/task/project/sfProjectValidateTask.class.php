@@ -15,10 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidateTask extends sfBaseTask
+class sfValidateTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
@@ -37,10 +37,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -75,7 +72,7 @@ EOF;
 
     protected function formatFile($file)
     {
-        return str_replace(realpath(sfConfig::get('sf_root_dir')), 'ROOT', realpath($file));
+        return str_replace(realpath(\sfConfig::get('sf_root_dir')), 'ROOT', realpath($file));
     }
 
     protected function getUpgradeClasses()

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorDate extends sfValidatorBase
+class sfValidatorDate extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -42,7 +42,7 @@ class sfValidatorDate extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -61,16 +61,14 @@ class sfValidatorDate extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         // check date format
         if (is_string($value) && $regex = $this->getOption('date_format')) {
             if (!preg_match($regex, $value, $match)) {
-                throw new sfValidatorError($this, 'bad_format', ['value' => $value, 'date_format' => $this->getOption('date_format_error') ?: $this->getOption('date_format')]);
+                throw new \sfValidatorError($this, 'bad_format', ['value' => $value, 'date_format' => $this->getOption('date_format_error') ?: $this->getOption('date_format')]);
             }
 
             $value = $match;
@@ -89,11 +87,11 @@ class sfValidatorDate extends sfValidatorBase
         // convert string to date number format
         else {
             try {
-                $date = new DateTime($value);
-                $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+                $date = new \DateTime($value);
+                $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
                 $clean = $date->format('YmdHis');
-            } catch (Exception $e) {
-                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            } catch (\Exception $e) {
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 
@@ -106,13 +104,13 @@ class sfValidatorDate extends sfValidatorBase
             }
             // convert string to date number
             else {
-                $dateMax = new DateTime($max);
+                $dateMax = new \DateTime($max);
                 $max = $dateMax->format('YmdHis');
                 $maxError = $dateMax->format($this->getOption('date_format_range_error'));
             }
 
             if ($clean > $max) {
-                throw new sfValidatorError($this, 'max', ['value' => $value, 'max' => $maxError]);
+                throw new \sfValidatorError($this, 'max', ['value' => $value, 'max' => $maxError]);
             }
         }
 
@@ -125,13 +123,13 @@ class sfValidatorDate extends sfValidatorBase
             }
             // convert string to date number
             else {
-                $dateMin = new DateTime($min);
+                $dateMin = new \DateTime($min);
                 $min = $dateMin->format('YmdHis');
                 $minError = $dateMin->format($this->getOption('date_format_range_error'));
             }
 
             if ($clean < $min) {
-                throw new sfValidatorError($this, 'min', ['value' => $value, 'min' => $minError]);
+                throw new \sfValidatorError($this, 'min', ['value' => $value, 'min' => $minError]);
             }
         }
 
@@ -158,7 +156,7 @@ class sfValidatorDate extends sfValidatorBase
         // all elements must be empty or a number
         foreach (['year', 'month', 'day', 'hour', 'minute', 'second'] as $key) {
             if (isset($value[$key]) && !ctype_digit((string) $value[$key]) && !empty($value[$key])) {
-                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 
@@ -168,14 +166,14 @@ class sfValidatorDate extends sfValidatorBase
           (!isset($value['month']) || !$value['month'] ? 1 : 0) +
           (!isset($value['day']) || !$value['day'] ? 1 : 0);
         if ($empties > 0 && $empties < 3) {
-            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
         if (3 == $empties) {
             return $this->getEmptyValue();
         }
 
         if (!checkdate((int) $value['month'], (int) $value['day'], (int) $value['year'])) {
-            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         if ($this->getOption('with_time')) {
@@ -185,7 +183,7 @@ class sfValidatorDate extends sfValidatorBase
                 $this->isValueSet($value, 'second') && (!$this->isValueSet($value, 'minute') || !$this->isValueSet($value, 'hour'))
                 || $this->isValueSet($value, 'minute') && !$this->isValueSet($value, 'hour')
             ) {
-                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
 
             $clean = sprintf(
@@ -218,9 +216,7 @@ class sfValidatorDate extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function isEmpty($value)
     {

@@ -10,24 +10,24 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(25);
+$t = new \lime_test(25);
 
 // ->__construct()
 $t->diag('->__construct()');
 
 try {
-    $collection = new sfObjectRouteCollection(['name' => 'test']);
+    $collection = new \sfObjectRouteCollection(['name' => 'test']);
     $t->fail('->__construct() throws an exception if no "model" option is provided');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->__construct() throws an exception if no "model" option is provided');
 }
 
-$collection = new sfObjectRouteCollection(['name' => 'test', 'model' => 'TestModel']);
+$collection = new \sfObjectRouteCollection(['name' => 'test', 'model' => 'TestModel']);
 $options = $collection->getOptions();
 $t->is($options['column'], 'id', '->__construct() defaults "column" option to "id"');
 $t->is_deeply($options['requirements'], ['id' => '\d+'], '->__construct() defaults "requirements" for column to "\d+"');
 
-$collection = new sfObjectRouteCollection(['name' => 'test', 'model' => 'TestModel', 'column' => 'slug', 'default_params' => ['foo' => 'bar']]);
+$collection = new \sfObjectRouteCollection(['name' => 'test', 'model' => 'TestModel', 'column' => 'slug', 'default_params' => ['foo' => 'bar']]);
 $options = $collection->getOptions();
 $t->is_deeply($options['requirements'], ['slug' => null], '->__construct() does not set a default requirement for custom columns');
 $t->is_deeply($options['default_params'], ['foo' => 'bar'], '->__construct() adds passed request parameters to the related option');
@@ -35,7 +35,7 @@ $t->is_deeply($options['default_params'], ['foo' => 'bar'], '->__construct() add
 // with_wildcard_routes
 $t->diag('with_wildcard_routes');
 
-$collection = new sfObjectRouteCollection([
+$collection = new \sfObjectRouteCollection([
     'name' => 'test',
     'model' => 'TestModel',
     'with_wildcard_routes' => true,
@@ -74,7 +74,7 @@ $t->is($match, 'test_collection', '->generateRoutes() orders routes so URLs gene
 // collection_actions
 $t->diag('collection_actions');
 
-$collection = new sfObjectRouteCollection([
+$collection = new \sfObjectRouteCollection([
     'name' => 'test',
     'model' => 'TestModel',
     'with_wildcard_routes' => true,

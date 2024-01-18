@@ -31,16 +31,16 @@ if (!isset($argv[2])) {
     exit(1);
 }
 
-$filesystem = new sfFilesystem();
+$filesystem = new \sfFilesystem();
 
 list($out, $err) = $filesystem->execute('svn info --xml');
-$info = new SimpleXMLElement($out);
+$info = new \SimpleXMLElement($out);
 
 list($out, $err) = $filesystem->execute(vsprintf('svn log %s --xml %s', array_map('escapeshellarg', [
     $argv[1],
     (string) $info->entry->repository->root.$argv[2],
 ])));
-$log = new SimpleXMLElement($out);
+$log = new \SimpleXMLElement($out);
 
 foreach ($log->logentry as $logentry) {
     echo sprintf(' * [%d] %s', $logentry['revision'], trim(preg_replace('/\s*\[[\d\., ]+\]\s*/', '', (string) $logentry->msg)));

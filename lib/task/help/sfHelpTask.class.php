@@ -15,19 +15,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfHelpTask extends sfCommandApplicationTask
+class sfHelpTask extends \sfCommandApplicationTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('task_name', sfCommandArgument::OPTIONAL, 'The task name', 'help'),
+            new \sfCommandArgument('task_name', \sfCommandArgument::OPTIONAL, 'The task name', 'help'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
         ]);
 
         $this->briefDescription = 'Displays help for a task';
@@ -44,15 +44,12 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         if (!isset($this->commandApplication)) {
-            throw new sfCommandException('You can only launch this task from the command line.');
+            throw new \sfCommandException('You can only launch this task from the command line.');
         }
 
         $task = $this->commandApplication->getTask($arguments['task_name']);
@@ -64,7 +61,7 @@ EOF;
         }
     }
 
-    protected function outputAsText(sfTask $task)
+    protected function outputAsText(\sfTask $task)
     {
         $messages = [];
 
@@ -116,7 +113,7 @@ EOF;
         $this->log($messages);
     }
 
-    protected function outputAsXml(sfTask $task)
+    protected function outputAsXml(\sfTask $task)
     {
         echo $task->asXml();
     }

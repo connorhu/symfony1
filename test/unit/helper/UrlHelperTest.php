@@ -40,7 +40,7 @@ class myRequest
     }
 }
 
-class BaseForm extends sfForm
+class BaseForm extends \sfForm
 {
     public function getCSRFToken($secret = null)
     {
@@ -48,11 +48,11 @@ class BaseForm extends sfForm
     }
 }
 
-sfForm::enableCSRFProtection();
+\sfForm::enableCSRFProtection();
 
-$t = new lime_test(44);
+$t = new \lime_test(44);
 
-$context = sfContext::getInstance(['controller' => 'myController', 'request' => 'myRequest']);
+$context = \sfContext::getInstance(['controller' => 'myController', 'request' => 'myRequest']);
 
 require_once __DIR__.'/../../../lib/helper/AssetHelper.php';
 
@@ -92,10 +92,10 @@ class testObject
 }
 
 try {
-    $o1 = new testObject();
+    $o1 = new \testObject();
     link_to($o1, '@homepage');
     $t->fail('link_to() can take an object as its first argument if __toString() method is defined');
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass('link_to() can take an object as its first argument if __toString() method is defined');
 }
 
@@ -106,7 +106,7 @@ class testObjectWithToString
         return 'test';
     }
 }
-$o2 = new testObjectWithToString();
+$o2 = new \testObjectWithToString();
 $t->is(link_to($o2, '@homepage'), '<a href="module/action">test</a>', 'link_to() can take an object as its first argument');
 
 // link_to_if()

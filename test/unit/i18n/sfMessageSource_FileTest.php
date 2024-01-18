@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new \lime_test(7);
 
-class sfMessageSource_Simple extends sfMessageSource_File
+class sfMessageSource_Simple extends \sfMessageSource_File
 {
     protected $dataExt = '.xml';
 
@@ -34,7 +34,7 @@ class sfMessageSource_Simple extends sfMessageSource_File
     }
 }
 
-$source = sfMessageSource::factory('Simple', __DIR__.'/fixtures');
+$source = \sfMessageSource::factory('Simple', __DIR__.'/fixtures');
 $source->setCulture('fr_FR');
 
 // ->getCatalogueByDir()

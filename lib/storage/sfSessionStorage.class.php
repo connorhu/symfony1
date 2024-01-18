@@ -22,7 +22,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSessionStorage extends sfStorage
+class sfSessionStorage extends \sfStorage
 {
     protected static $sessionIdRegenerated = false;
     protected static $sessionStarted = false;
@@ -43,7 +43,7 @@ class sfSessionStorage extends sfStorage
      *
      * @param array $options An associative array of options
      *
-     * @see sfStorage
+     * @see \sfStorage
      */
     public function initialize($options = null)
     {

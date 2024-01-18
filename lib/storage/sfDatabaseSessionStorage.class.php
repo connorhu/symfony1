@@ -17,12 +17,12 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfDatabaseSessionStorage extends sfSessionStorage
+abstract class sfDatabaseSessionStorage extends \sfSessionStorage
 {
-    /** @var sfDatabase */
+    /** @var \sfDatabase */
     protected $db;
 
-    /** @var PDO */
+    /** @var \PDO */
     protected $con;
 
     /**
@@ -38,9 +38,9 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool|void
      *
-     * @throws sfInitializationException
+     * @throws \sfInitializationException
      *
-     * @see sfSessionStorage
+     * @see \sfSessionStorage
      */
     public function initialize($options = [])
     {
@@ -57,11 +57,11 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
         parent::initialize($options);
 
         if (!isset($this->options['db_table'])) {
-            throw new sfInitializationException('You must provide a "db_table" option to sfDatabaseSessionStorage.');
+            throw new \sfInitializationException('You must provide a "db_table" option to sfDatabaseSessionStorage.');
         }
 
         if (!isset($this->options['database'])) {
-            throw new sfInitializationException('You must provide a "database" option to sfDatabaseSessionStorage.');
+            throw new \sfInitializationException('You must provide a "database" option to sfDatabaseSessionStorage.');
         }
 
         // use this object as the session handler
@@ -102,13 +102,13 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
     public function sessionOpen($path = null, $name = null)
     {
         // what database are we using?
-        /** @var sfDatabase $database */
+        /** @var \sfDatabase $database */
         $database = $this->options['database'];
 
         // get the database and connection
         $databaseClass = get_class($database);
         if ('sfPropelDatabase' == $databaseClass) {
-            $this->db = Propel::getConnection($database->getParameter('name'));
+            $this->db = \Propel::getConnection($database->getParameter('name'));
         } elseif ('sfDoctrineDatabase' == $databaseClass) {
             $this->db = $database->getConnection();
         } else {
@@ -118,7 +118,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
         $this->con = $database->getConnection();
 
         if (null === $this->db && null === $this->con) {
-            throw new sfDatabaseException('Database connection does not exist. Unable to open session.');
+            throw new \sfDatabaseException('Database connection does not exist. Unable to open session.');
         }
 
         return true;

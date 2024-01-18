@@ -12,9 +12,9 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
 
-$t = new lime_test(11);
+$t = new \lime_test(11);
 
-sfConfig::set('sf_charset', 'UTF-8');
+\sfConfig::set('sf_charset', 'UTF-8');
 
 // esc_entities()
 $t->diag('esc_entities()');

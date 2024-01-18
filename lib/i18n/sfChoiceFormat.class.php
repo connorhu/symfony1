@@ -85,14 +85,14 @@ class sfChoiceFormat
      *
      * @return bool true if number is in the set, false otherwise
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function isValid($number, $set)
     {
         $n = preg_match_all($this->validate, $set, $matches, PREG_SET_ORDER);
 
         if ($n < 3) {
-            throw new sfException(sprintf('Invalid set "%s".', $set));
+            throw new \sfException(sprintf('Invalid set "%s".', $set));
         }
 
         if (preg_match('/\{\s*n:([^\}]+)\}/', $set, $def)) {
@@ -198,7 +198,7 @@ class sfChoiceFormat
             eval($str);
 
             return $result;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

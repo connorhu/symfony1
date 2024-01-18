@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(27);
+$t = new \lime_test(27);
 
-$v = new sfValidatorTime();
+$v = new \sfValidatorTime();
 
 // ->clean()
 $t->diag('->clean()');
@@ -29,7 +29,7 @@ try {
     $v->clean('This is not a time');
     $t->fail('->clean() throws a sfValidatorError if the time is a string and is not parsable by strtotime');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the time is a string and is not parsable by strtotime');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -50,7 +50,7 @@ try {
     $v->clean(['hour' => '', 'minute' => 0, 'second' => 0]);
     $t->fail('->clean() throws a sfValidatorError if time date is not valid');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the time is not valid');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -59,7 +59,7 @@ try {
     $v->clean(['hour' => '', 'minute' => 1, 'second' => 15]);
     $t->fail('->clean() throws a sfValidatorError if time date is not valid');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the time is not valid');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -68,7 +68,7 @@ try {
     $v->clean(['hour' => -2, 'minute' => 1, 'second' => 15]);
     $t->fail('->clean() throws a sfValidatorError if the time is not valid');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the time is not valid');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -82,7 +82,7 @@ try {
     $v->clean('20.10-18');
     $t->fail('->clean() throws a sfValidatorError if the time does not match the regex');
     $t->skip('', 2);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the time does not match the regex');
     $t->like($e->getMessage(), '/'.preg_quote(htmlspecialchars($v->getOption('time_format'), ENT_QUOTES, 'UTF-8'), '/').'/', '->clean() returns the expected time format in the error message');
     $t->is($e->getCode(), 'bad_format', '->clean() throws a sfValidatorError');
@@ -93,7 +93,7 @@ $v->setOption('time_format_error', 'hh/mm/ss');
 try {
     $v->clean('20.10-18');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->like($e->getMessage(), '/'.preg_quote('hh/mm/ss', '/').'/', '->clean() returns the expected time format error if provided');
 }
 
@@ -105,7 +105,7 @@ $v->setOption('time_output', 'U');
 $t->is($v->clean(time()), time(), '->clean() output format can be change with the time_output option');
 
 // required
-$v = new sfValidatorTime();
+$v = new \sfValidatorTime();
 foreach ([
     ['hour' => '', 'minute' => '', 'second' => ''],
     ['hour' => null, 'minute' => null, 'second' => null],
@@ -115,7 +115,7 @@ foreach ([
     try {
         $v->clean($input);
         $t->fail('->clean() throws an exception if the time is empty and required is true');
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass('->clean() throws an exception if the time is empty and required is true');
     }
 }

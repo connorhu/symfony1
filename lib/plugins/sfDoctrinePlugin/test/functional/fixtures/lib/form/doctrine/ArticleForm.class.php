@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class ArticleForm extends BaseArticleForm
+class ArticleForm extends \BaseArticleForm
 {
     public function configure()
     {

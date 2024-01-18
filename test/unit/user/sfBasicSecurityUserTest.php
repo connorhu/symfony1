@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(47);
+$t = new \lime_test(47);
 
-class MySessionStorage extends sfSessionTestStorage
+class MySessionStorage extends \sfSessionTestStorage
 {
     public function regenerate($destroy = false)
     {
@@ -22,11 +22,11 @@ class MySessionStorage extends sfSessionTestStorage
     }
 }
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 $sessionPath = sys_get_temp_dir().'/sessions_'.rand(11111, 99999);
-$storage = new MySessionStorage(['session_path' => $sessionPath]);
+$storage = new \MySessionStorage(['session_path' => $sessionPath]);
 
-$user = new sfBasicSecurityUser($dispatcher, $storage);
+$user = new \sfBasicSecurityUser($dispatcher, $storage);
 
 // ->initialize()
 $t->diag('->initialize()');
@@ -61,7 +61,7 @@ $t->isnt($id, $id = $storage->getSessionId(), '->removeCredential() regenerates 
 $t->is($id, $storage->getSessionId(), '->removeCredential() does not regenerate the session id if the credential does not exist');
 
 // ->setTimedOut() ->getTimedOut()
-$user = new sfBasicSecurityUser($dispatcher, $storage);
+$user = new \sfBasicSecurityUser($dispatcher, $storage);
 $t->diag('->setTimedOut() ->isTimedOut()');
 $t->is($user->isTimedOut(), false, '->isTimedOut() returns false if the session is not timed out');
 $user->setTimedOut();
@@ -160,10 +160,10 @@ $t->is($user->hasCredential('superadmin'), false);
 // timeout
 $user->setAuthenticated(true);
 $user->shutdown();
-$user = new sfBasicSecurityUser($dispatcher, $storage, ['timeout' => 0]);
+$user = new \sfBasicSecurityUser($dispatcher, $storage, ['timeout' => 0]);
 $t->is($user->isTimedOut(), true, '->initialize() times out the user if no request made for a long time');
 
-$user = new sfBasicSecurityUser($dispatcher, $storage, ['timeout' => false]);
+$user = new \sfBasicSecurityUser($dispatcher, $storage, ['timeout' => false]);
 $t->is($user->isTimedOut(), false, '->initialize() takes a timeout parameter which can be false to disable session timeout');
 
-sfToolkit::clearDirectory($sessionPath);
+\sfToolkit::clearDirectory($sessionPath);

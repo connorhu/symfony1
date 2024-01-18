@@ -10,11 +10,11 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-sfYaml::setSpecVersion('1.1');
+\sfYaml::setSpecVersion('1.1');
 
-$t = new lime_test(150);
+$t = new \lime_test(150);
 
-$parser = new sfYamlParser();
+$parser = new \sfYamlParser();
 
 $path = __DIR__.'/fixtures';
 $files = $parser->parse(file_get_contents($path.'/index.yml'));
@@ -52,7 +52,7 @@ foreach ($yamls as $yaml) {
     try {
         $content = $parser->parse($yaml);
         $t->fail('YAML files must not contain tabs');
-    } catch (InvalidArgumentException $e) {
+    } catch (\InvalidArgumentException $e) {
         $t->pass('YAML files must not contain tabs');
     }
 }
@@ -71,7 +71,7 @@ class A
 {
     public $a = 'foo';
 }
-$a = ['foo' => new A(), 'bar' => 1];
+$a = ['foo' => new \A(), 'bar' => 1];
 $t->is($parser->parse(
     <<<'EOF'
 foo: !!php/object:O:1:"A":1:{s:1:"a";s:3:"foo";}

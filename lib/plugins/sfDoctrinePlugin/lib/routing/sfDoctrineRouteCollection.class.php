@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineRouteCollection extends sfObjectRouteCollection
+class sfDoctrineRouteCollection extends \sfObjectRouteCollection
 {
     protected $routeClass = 'sfDoctrineRoute';
 }

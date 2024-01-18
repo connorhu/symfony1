@@ -12,7 +12,7 @@ error_reporting(error_reporting() & ~E_STRICT);
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(40);
+$t = new \lime_test(40);
 
 @include_once 'PEAR.php';
 if (!class_exists('PEAR')) {
@@ -42,9 +42,9 @@ $options = [
     'downloader_base_class' => 'sfPearDownloaderTest',
 ];
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 
-class myPluginManager extends sfPluginManager
+class myPluginManager extends \sfPluginManager
 {
     protected $mainPackageVersion = '1.0.0';
 
@@ -58,7 +58,7 @@ class myPluginManager extends sfPluginManager
     {
         $this->environment->registerChannel('pear.example.com', true);
 
-        $mainPackage = new PEAR_PackageFile_v2_rw();
+        $mainPackage = new \PEAR_PackageFile_v2_rw();
         $mainPackage->setPackage('sfMainPackage');
         $mainPackage->setChannel('pear.example.com');
         $mainPackage->setConfig($this->environment->getConfig());
@@ -80,7 +80,7 @@ class myPluginManager extends sfPluginManager
 
         $this->environment->getRegistry()->deletePackage('sfMainPackage', 'pear.example.com');
         if (!$this->environment->getRegistry()->addPackage2($mainPackage)) {
-            throw new sfException('Unable to register our sfMainPackage');
+            throw new \sfException('Unable to register our sfMainPackage');
         }
     }
 
@@ -96,8 +96,8 @@ class myPluginManager extends sfPluginManager
 
 // ->initialize()
 $t->diag('->initialize()');
-$environment = new sfPearEnvironment($dispatcher, $options);
-$pluginManager = new myPluginManager($dispatcher, $environment);
+$environment = new \sfPearEnvironment($dispatcher, $options);
+$pluginManager = new \myPluginManager($dispatcher, $environment);
 $t->is($pluginManager->getEnvironment(), $environment, '->initialize() takes a sfPearEnvironment as its second argument');
 
 // ->installPlugin() ->uninstallPlugin()
@@ -126,7 +126,7 @@ try {
     $pluginManager->installPlugin('sfTestPlugin', ['version' => '1.1.3']);
 
     $t->fail('->installPlugin() throws an exception if you try to install a version that is not compatible with our main package');
-} catch (sfPluginDependencyException $e) {
+} catch (\sfPluginDependencyException $e) {
     $t->pass('->installPlugin() throws an exception if you try to install a version that is not compatible with our main package');
 }
 
@@ -154,7 +154,7 @@ try {
     $pluginManager->installPlugin('sfBarPlugin');
 
     $t->fail('->installPlugin() throws an exception if the plugin does not exist');
-} catch (sfPluginException $e) {
+} catch (\sfPluginException $e) {
     $t->pass('->installPlugin() throws an exception if the plugin does not exist');
 }
 
@@ -197,7 +197,7 @@ $t->diag('install a plugin with a dependency must fail');
 try {
     $pluginManager->installPlugin('sfFooPlugin');
     $t->fail('->installPlugin() throws an exception if the plugin needs a dependency to be installed');
-} catch (sfPluginDependencyException $e) {
+} catch (\sfPluginDependencyException $e) {
     $t->pass('->installPlugin() throws an exception if the plugin needs a dependency to be installed');
 }
 
@@ -222,7 +222,7 @@ $pluginManager->installPlugin('sfFooPlugin');
 try {
     $pluginManager->uninstallPlugin('sfTestPlugin');
     $t->fail('->uninstallPlugin() throws an exception if you try to uninstall a plugin that is needed for another one');
-} catch (sfPluginException $e) {
+} catch (\sfPluginException $e) {
     $t->pass('->uninstallPlugin() throws an exception if you try to uninstall a plugin that is needed for another one');
 }
 $pluginManager->uninstallPlugin('sfFooPlugin');
@@ -236,7 +236,7 @@ $pluginManager->setMainPackageVersion('1.1.0');
 try {
     $pluginManager->installPlugin('sfFooPlugin');
     $t->fail('->installPlugin() throws an exception if you try to install a plugin with a dependency that is installed but not in the right version');
-} catch (sfPluginDependencyException $e) {
+} catch (\sfPluginDependencyException $e) {
     $t->pass('->installPlugin() throws an exception if you try to install a plugin with a dependency that is installed but not in the right version');
 }
 $pluginManager->uninstallPlugin('sfTestPlugin');
@@ -251,5 +251,5 @@ $pluginManager->uninstallPlugin('sfFooPlugin');
 $pluginManager->uninstallPlugin('sfTestPlugin');
 
 // teardown
-sfToolkit::clearDirectory($temp);
+\sfToolkit::clearDirectory($temp);
 rmdir($temp);

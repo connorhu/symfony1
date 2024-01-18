@@ -56,7 +56,7 @@ class sfModelGeneratorConfigurationField
             return $this->config;
         }
 
-        $value = sfModelGeneratorConfiguration::getFieldConfigValue($this->config, $key, $default);
+        $value = \sfModelGeneratorConfiguration::getFieldConfigValue($this->config, $key, $default);
 
         return $escaped ? str_replace("'", "\\'", $value) : $value;
     }
@@ -222,7 +222,7 @@ class sfModelGeneratorConfigurationField
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('Flag "%s" does not exist.', $flag));
+                throw new \InvalidArgumentException(sprintf('Flag "%s" does not exist.', $flag));
         }
     }
 

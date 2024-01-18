@@ -1,6 +1,6 @@
 <?php
 
-class cacheConfiguration extends sfApplicationConfiguration
+class cacheConfiguration extends \sfApplicationConfiguration
 {
     public function configure()
     {

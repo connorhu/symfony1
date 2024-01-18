@@ -17,13 +17,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
+class sfWidgetFormDoctrineArrayChoice extends \sfWidgetFormChoice
 {
     /**
-     * @see sfWidget
-     *
-     * @param mixed $options
-     * @param mixed $attributes
+     * @see \sfWidget
      */
     public function __construct($options = [], $attributes = [])
     {
@@ -45,7 +42,7 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
         }
 
         $tableMethod = $this->getOption('table_method');
-        $table = Doctrine_Core::getTable($this->getOption('model'));
+        $table = \Doctrine_Core::getTable($this->getOption('model'));
 
         if (null !== $params = $this->getOption('table_method_params')) {
             $choices += call_user_func_array([$table, $tableMethod], (array) $params);
@@ -68,10 +65,7 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
      *                          If the option is not a Boolean, the value will be used as the text value
      *  * multiple:             true if the select tag must allow multiple selections (false by default)
      *
-     * @see sfWidgetFormChoice
-     *
-     * @param mixed $options
-     * @param mixed $attributes
+     * @see \sfWidgetFormChoice
      */
     protected function configure($options = [], $attributes = [])
     {

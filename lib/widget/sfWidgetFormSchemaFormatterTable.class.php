@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSchemaFormatterTable extends sfWidgetFormSchemaFormatter
+class sfWidgetFormSchemaFormatterTable extends \sfWidgetFormSchemaFormatter
 {
     protected $rowFormat = "<tr>\n  <th>%label%</th>\n  <td>%error%%field%%help%%hidden_fields%</td>\n</tr>\n";
     protected $errorRowFormat = "<tr><td colspan=\"2\">\n%errors%</td></tr>\n";

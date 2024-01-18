@@ -19,20 +19,20 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineDataDumpTask extends sfDoctrineBaseTask
+class sfDoctrineDataDumpTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('target', sfCommandArgument::OPTIONAL, 'The target filename'),
+            new \sfCommandArgument('target', \sfCommandArgument::OPTIONAL, 'The target filename'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -54,14 +54,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
 
         $args = [
@@ -75,7 +72,7 @@ EOF;
         if ($arguments['target']) {
             $filename = $arguments['target'];
 
-            if (!sfToolkit::isPathAbsolute($filename)) {
+            if (!\sfToolkit::isPathAbsolute($filename)) {
                 $filename = $args['data_fixtures_path'].'/'.$filename;
             }
 

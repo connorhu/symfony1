@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfVarLogger extends sfLogger
+class sfVarLogger extends \sfLogger
 {
     protected $logs = [];
     protected $xdebugLogging = false;
@@ -27,10 +27,10 @@ class sfVarLogger extends sfLogger
      *
      * - xdebug_logging: Whether to add xdebug trace to the logs (false by default).
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->xdebugLogging = isset($options['xdebug_logging']) ? $options['xdebug_logging'] : false;
 

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-class lime_symfony extends lime_harness
+class lime_symfony extends \lime_harness
 {
     protected function get_relative_file($file)
     {

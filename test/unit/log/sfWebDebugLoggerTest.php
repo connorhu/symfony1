@@ -12,11 +12,11 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once __DIR__.'/../sfContextMock.class.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
-$context = sfContext::getInstance([]);
-$dispatcher = new sfEventDispatcher();
-$logger = new sfWebDebugLogger($dispatcher);
+$context = \sfContext::getInstance([]);
+$dispatcher = new \sfEventDispatcher();
+$logger = new \sfWebDebugLogger($dispatcher);
 
 // ->handlePhpError()
 $t->diag('->handlePhpError()');

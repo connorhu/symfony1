@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceTimezone extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -29,7 +29,7 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -39,7 +39,7 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
         $this->addOption('add_empty', false);
 
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
-        $timezones = array_keys(sfCultureInfo::getInstance($culture)->getTimeZones());
+        $timezones = array_keys(\sfCultureInfo::getInstance($culture)->getTimeZones());
         $timezones = array_combine($timezones, $timezones);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;

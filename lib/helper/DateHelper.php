@@ -15,14 +15,8 @@
  *
  * @version    SVN: $Id$
  *
- * @param mixed|null $culture
- * @param mixed|null $charset
- * @param mixed      $start_date
- * @param mixed      $end_date
- * @param mixed      $format
- * @param mixed      $full_text
- * @param mixed      $start_text
- * @param mixed      $end_text
+ * @param \mixed|null $culture
+ * @param \mixed|null $charset
  */
 function format_daterange($start_date, $end_date, $format = 'd', $full_text = '', $start_text = '', $end_text = '', $culture = null, $charset = null)
 {
@@ -46,15 +40,15 @@ function format_date($date, $format = 'd', $culture = null, $charset = null)
     }
 
     if (!$culture) {
-        $culture = sfContext::getInstance()->getUser()->getCulture();
+        $culture = \sfContext::getInstance()->getUser()->getCulture();
     }
 
     if (!$charset) {
-        $charset = sfConfig::get('sf_charset');
+        $charset = \sfConfig::get('sf_charset');
     }
 
     if (!isset($dateFormats[$culture])) {
-        $dateFormats[$culture] = new sfDateFormat($culture);
+        $dateFormats[$culture] = new \sfDateFormat($culture);
     }
 
     return $dateFormats[$culture]->format($date, $format, null, $charset);
@@ -118,7 +112,7 @@ function distance_of_time_in_words($from_time, $to_time = null, $include_seconds
         $parameters['%years%'] = floor($distance_in_minutes / 525960);
     }
 
-    if (sfConfig::get('sf_i18n')) {
+    if (\sfConfig::get('sf_i18n')) {
         require_once __DIR__.'/I18NHelper.php';
 
         return __($string, $parameters);

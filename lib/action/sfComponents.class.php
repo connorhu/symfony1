@@ -15,17 +15,17 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfComponents extends sfComponent
+abstract class sfComponents extends \sfComponent
 {
     /**
-     * @param sfRequest $request
+     * @param \sfRequest $request
      *
-     * @throws sfInitializationException
+     * @throws \sfInitializationException
      *
-     * @see sfComponent
+     * @see \sfComponent
      */
     public function execute($request)
     {
-        throw new sfInitializationException('sfComponents initialization failed.');
+        throw new \sfInitializationException('sfComponents initialization failed.');
     }
 }

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorDateRange extends sfValidatorBase
+class sfValidatorDateRange extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -30,7 +30,7 @@ class sfValidatorDateRange extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -43,9 +43,7 @@ class sfValidatorDateRange extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
@@ -56,7 +54,7 @@ class sfValidatorDateRange extends sfValidatorBase
         $value[$toField] = $this->getOption('to_date')->clean(isset($value[$toField]) ? $value[$toField] : null);
 
         if ($value[$fromField] && $value[$toField]) {
-            $v = new sfValidatorSchemaCompare($fromField, sfValidatorSchemaCompare::LESS_THAN_EQUAL, $toField, ['throw_global_error' => true], ['invalid' => $this->getMessage('invalid')]);
+            $v = new \sfValidatorSchemaCompare($fromField, \sfValidatorSchemaCompare::LESS_THAN_EQUAL, $toField, ['throw_global_error' => true], ['invalid' => $this->getMessage('invalid')]);
             $v->clean($value);
         }
 

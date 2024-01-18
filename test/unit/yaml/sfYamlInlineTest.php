@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-sfYaml::setSpecVersion('1.1');
+\sfYaml::setSpecVersion('1.1');
 
-$t = new lime_test(124);
+$t = new \lime_test(124);
 
 // ::load()
 $t->diag('::load()');
@@ -75,7 +75,7 @@ $testsForLoad = [
 ];
 
 foreach ($testsForLoad as $yaml => $value) {
-    $t->is_deeply(sfYamlInline::load($yaml), $value, sprintf('::load() converts an inline YAML to a PHP structure (%s)', $yaml));
+    $t->is_deeply(\sfYamlInline::load($yaml), $value, sprintf('::load() converts an inline YAML to a PHP structure (%s)', $yaml));
 }
 
 $testsForDump = [
@@ -119,7 +119,7 @@ $testsForDump = [
 // ::dump()
 $t->diag('::dump()');
 foreach ($testsForDump as $yaml => $value) {
-    $t->is(sfYamlInline::dump($value), $yaml, sprintf('::dump() converts a PHP structure to an inline YAML (%s)', $yaml));
+    $t->is(\sfYamlInline::dump($value), $yaml, sprintf('::dump() converts a PHP structure to an inline YAML (%s)', $yaml));
 }
 
 foreach ($testsForLoad as $yaml => $value) {
@@ -127,7 +127,7 @@ foreach ($testsForLoad as $yaml => $value) {
         continue;
     }
 
-    $t->is_deeply(sfYamlInline::load(sfYamlInline::dump($value)), $value, 'check consistency');
+    $t->is_deeply(\sfYamlInline::load(\sfYamlInline::dump($value)), $value, 'check consistency');
 }
 
 foreach ($testsForDump as $yaml => $value) {
@@ -135,5 +135,5 @@ foreach ($testsForDump as $yaml => $value) {
         continue;
     }
 
-    $t->is_deeply(sfYamlInline::load(sfYamlInline::dump($value)), $value, 'check consistency');
+    $t->is_deeply(\sfYamlInline::load(\sfYamlInline::dump($value)), $value, 'check consistency');
 }

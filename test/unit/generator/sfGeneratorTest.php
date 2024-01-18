@@ -10,18 +10,18 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(0);
+$t = new \lime_test(0);
 
-class myGenerator extends sfGenerator
+class myGenerator extends \sfGenerator
 {
     public function generate($params = [])
     {
     }
 }
 
-class ProjectConfiguration extends sfProjectConfiguration
+class ProjectConfiguration extends \sfProjectConfiguration
 {
 }
 
-$manager = new sfGeneratorManager(new ProjectConfiguration());
-$generator = new myGenerator($manager);
+$manager = new \sfGeneratorManager(new \ProjectConfiguration());
+$generator = new \myGenerator($manager);

@@ -7,11 +7,6 @@ function is_cli()
 
 /**
  * Checks a configuration.
- *
- * @param mixed $boolean
- * @param mixed $message
- * @param mixed $help
- * @param mixed $fatal
  */
 function check($boolean, $message, $help = '', $fatal = false)
 {
@@ -72,7 +67,7 @@ check(version_compare(phpversion(), '5.3.1', '>='), sprintf('PHP version is at l
 echo "\n** Optional checks **\n\n";
 check(class_exists('PDO'), 'PDO is installed', 'Install PDO (mandatory for Doctrine)', false);
 if (class_exists('PDO')) {
-    $drivers = PDO::getAvailableDrivers();
+    $drivers = \PDO::getAvailableDrivers();
     check(count($drivers), 'PDO has some drivers installed: '.implode(', ', $drivers), 'Install PDO drivers (mandatory for Doctrine)');
 }
 check(function_exists('token_get_all'), 'The token_get_all() function is available', 'Install and enable the Tokenizer extension (highly recommended)', false);

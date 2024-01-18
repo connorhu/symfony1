@@ -16,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelCache extends sfWebDebugPanel
+class sfWebDebugPanelCache extends \sfWebDebugPanel
 {
     public function getTitle()
     {

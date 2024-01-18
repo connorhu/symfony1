@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(6);
+$t = new \lime_test(6);
 
-class ProjectConfiguration extends sfProjectConfiguration
+class ProjectConfiguration extends \sfProjectConfiguration
 {
     public function setup()
     {
@@ -21,7 +21,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     }
 }
 
-$configuration = new ProjectConfiguration(__DIR__.'/../../functional/fixtures');
+$configuration = new \ProjectConfiguration(__DIR__.'/../../functional/fixtures');
 
 // ->setPlugins() ->disablePlugins() ->enablePlugins() ->enableAllPluginsExcept()
 $t->diag('->setPlugins() ->disablePlugins() ->enablePlugins() ->enableAllPluginsExcept()');
@@ -30,12 +30,12 @@ foreach (['setPlugins', 'disablePlugins', 'enablePlugins', 'enableAllPluginsExce
     try {
         $configuration->{$method}([]);
         $t->fail('->'.$method.'() throws an exception if called too late');
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         $t->pass('->'.$method.'() throws an exception if called too late');
     }
 }
 
-class ProjectConfiguration2 extends sfProjectConfiguration
+class ProjectConfiguration2 extends \sfProjectConfiguration
 {
     public function setup()
     {
@@ -43,13 +43,13 @@ class ProjectConfiguration2 extends sfProjectConfiguration
     }
 }
 
-$configuration = new ProjectConfiguration2(__DIR__.'/../../functional/fixtures');
+$configuration = new \ProjectConfiguration2(__DIR__.'/../../functional/fixtures');
 $t->is_deeply($configuration->getPlugins(), ['sfAutoloadPlugin', 'sfConfigPlugin'], '->enablePlugins() can enable plugins passed as arguments instead of array');
 
 // ->__construct()
 $t->diag('->__construct()');
 
-class ProjectConfiguration3 extends sfProjectConfiguration
+class ProjectConfiguration3 extends \sfProjectConfiguration
 {
     public function setup()
     {
@@ -58,8 +58,8 @@ class ProjectConfiguration3 extends sfProjectConfiguration
 }
 
 try {
-    $configuration = new ProjectConfiguration3(__DIR__.'/../../functional/fixtures');
+    $configuration = new \ProjectConfiguration3(__DIR__.'/../../functional/fixtures');
     $t->fail('->__construct() throws an exception if a non-existant plugin is enabled');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->__construct() throws an exception if a non-existant plugin is enabled');
 }

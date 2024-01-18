@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfEAcceleratorCache extends sfCache
+class sfEAcceleratorCache extends \sfCache
 {
     /**
      * Initializes this sfCache instance.
@@ -24,28 +24,28 @@ class sfEAcceleratorCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
+     * @see \sfCache
      *
      * @param array $options
      *
-     * @throws sfInitializationException
+     * @throws \sfInitializationException
      */
     public function initialize($options = [])
     {
         parent::initialize($options);
 
         if (!function_exists('eaccelerator_put') || !ini_get('eaccelerator.enable')) {
-            throw new sfInitializationException('You must have EAccelerator installed and enabled to use sfEAcceleratorCache class (or perhaps you forgot to add --with-eaccelerator-shared-memory when installing).');
+            throw new \sfInitializationException('You must have EAccelerator installed and enabled to use sfEAcceleratorCache class (or perhaps you forgot to add --with-eaccelerator-shared-memory when installing).');
         }
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param string     $key
-     * @param mixed|null $default
+     * @param string      $key
+     * @param \mixed|null $default
      *
-     * @return string|null
+     * @return \string|null
      */
     public function get($key, $default = null)
     {
@@ -55,7 +55,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
      * @param string $key
      *
@@ -67,11 +67,11 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param string   $key
-     * @param string   $data
-     * @param int|null $lifetime
+     * @param string    $key
+     * @param string    $data
+     * @param \int|null $lifetime
      *
      * @return bool
      */
@@ -81,9 +81,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -91,9 +89,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $pattern
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {
@@ -111,13 +107,11 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $mode
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
-        if (sfCache::OLD === $mode) {
+        if (\sfCache::OLD === $mode) {
             return eaccelerator_gc();
         }
 
@@ -138,9 +132,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -152,9 +144,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getTimeout($key)
     {

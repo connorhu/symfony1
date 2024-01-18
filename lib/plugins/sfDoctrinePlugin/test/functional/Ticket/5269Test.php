@@ -12,9 +12,9 @@ $app = 'frontend';
 
 require_once dirname(__FILE__).'/../../bootstrap/functional.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
-class TestUserForm extends UserForm
+class TestUserForm extends \UserForm
 {
     public function configure()
     {
@@ -23,7 +23,7 @@ class TestUserForm extends UserForm
     }
 }
 
-$user = new User();
+$user = new \User();
 $user->username = 'nullvaluetest';
 $user->password = 'changeme';
 $user->test = 'test';
@@ -31,8 +31,8 @@ $user->save();
 $user->free();
 unset($user);
 
-$user = Doctrine_Core::getTable('User')->findOneByUsername('nullvaluetest');
-$userForm = new TestUserForm($user);
+$user = \Doctrine_Core::getTable('User')->findOneByUsername('nullvaluetest');
+$userForm = new \TestUserForm($user);
 $userForm->bind(['id' => $user->id, 'username' => 'nullvaluetest', 'password' => 'changeme2']);
 if ($userForm->isValid()) {
     $userForm->save();
@@ -41,5 +41,5 @@ if ($userForm->isValid()) {
 $user->free();
 unset($user);
 
-$user = Doctrine_Core::getTable('User')->findOneByUsername('nullvaluetest');
+$user = \Doctrine_Core::getTable('User')->findOneByUsername('nullvaluetest');
 $t->is($user->toArray(), ['id' => 1, 'username' => 'nullvaluetest', 'password' => 'b0660f0b8b989971524762330aea5449', 'test' => 'test']);

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormFilterInput extends sfWidgetForm
+class sfWidgetFormFilterInput extends \sfWidgetForm
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormFilterInput extends sfWidgetForm
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -53,7 +53,7 @@ class sfWidgetFormFilterInput extends sfWidgetForm
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {

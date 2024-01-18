@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSessionTestStorage extends sfStorage
+class sfSessionTestStorage extends \sfStorage
 {
     protected $sessionId;
     protected $sessionData = [];
@@ -28,12 +28,12 @@ class sfSessionTestStorage extends sfStorage
      *
      * @param array $options An associative array of options
      *
-     * @see sfStorage
+     * @see \sfStorage
      */
     public function initialize($options = null)
     {
         if (!isset($options['session_path'])) {
-            throw new InvalidArgumentException('The "session_path" option is mandatory for the sfSessionTestStorage class.');
+            throw new \InvalidArgumentException('The "session_path" option is mandatory for the sfSessionTestStorage class.');
         }
 
         $options = array_merge([
@@ -124,7 +124,7 @@ class sfSessionTestStorage extends sfStorage
      */
     public function clear()
     {
-        sfToolkit::clearDirectory($this->options['session_path']);
+        \sfToolkit::clearDirectory($this->options['session_path']);
     }
 
     /**

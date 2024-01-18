@@ -20,7 +20,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDomCssSelector implements Countable, Iterator
+class sfDomCssSelector implements \Countable, \Iterator
 {
     public $nodes = [];
 
@@ -64,14 +64,14 @@ class sfDomCssSelector implements Countable, Iterator
     {
         $nodes = $this->getElements($selector);
 
-        return $nodes ? new sfDomCssSelector($nodes[0]) : new sfDomCssSelector([]);
+        return $nodes ? new \sfDomCssSelector($nodes[0]) : new \sfDomCssSelector([]);
     }
 
     public function matchAll($selector)
     {
         $nodes = $this->getElements($selector);
 
-        return $nodes ? new sfDomCssSelector($nodes) : new sfDomCssSelector([]);
+        return $nodes ? new \sfDomCssSelector($nodes) : new \sfDomCssSelector([]);
     }
 
     /**
@@ -176,7 +176,7 @@ class sfDomCssSelector implements Countable, Iterator
                     // Token is an ID selector
                     $tagName = substr($token, 0, $pos);
                     $id = substr($token, $pos + 1);
-                    $xpath = new DOMXPath($root_node);
+                    $xpath = new \DOMXPath($root_node);
                     $element = $xpath->query(sprintf("//*[@id = '%s']", $id))->item(0);
                     if (!$element || ($tagName && strtolower($element->nodeName) != $tagName)) {
                         // tag with that ID not found
@@ -342,7 +342,7 @@ class sfDomCssSelector implements Countable, Iterator
                     break;
 
                 default:
-                    throw new Exception(sprintf('Unrecognized combinator "%s".', $combinator));
+                    throw new \Exception(sprintf('Unrecognized combinator "%s".', $combinator));
             }
         }
 
@@ -538,7 +538,7 @@ class sfDomCssSelector implements Countable, Iterator
                     break;
 
                 default:
-                    throw new Exception(sprintf('Unrecognized selector "%s".', $selector['selector']));
+                    throw new \Exception(sprintf('Unrecognized selector "%s".', $selector['selector']));
             }
         }
 
@@ -560,7 +560,7 @@ class sfDomCssSelector implements Countable, Iterator
         \)
       )?
     /x', $selectors, $matches, PREG_PATTERN_ORDER)) {
-            throw new Exception(sprintf('Unable to split custom selector "%s".', $selectors));
+            throw new \Exception(sprintf('Unable to split custom selector "%s".', $selectors));
         }
 
         return $matches[0];
@@ -580,7 +580,7 @@ class sfDomCssSelector implements Countable, Iterator
         \)
       )?
     /x', substr($selector, 1), $matches)) {
-            throw new Exception(sprintf('Unable to parse custom selector "%s".', $selector));
+            throw new \Exception(sprintf('Unable to parse custom selector "%s".', $selector));
         }
 
         return ['selector' => $matches[1], 'parameter' => isset($matches[3]) ? ($matches[3] ?: $matches[4]) : ''];

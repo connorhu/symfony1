@@ -5,7 +5,7 @@
  */
 class sfNoMailer
 {
-    public function __construct(sfEventDispatcher $dispatcher, $options)
+    public function __construct(\sfEventDispatcher $dispatcher, $options)
     {
     }
 
@@ -14,7 +14,7 @@ class sfNoMailer
         return null;
     }
 
-    public function setRealtimeTransport(Swift_Transport $transport)
+    public function setRealtimeTransport(\Swift_Transport $transport)
     {
     }
 

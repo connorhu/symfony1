@@ -15,16 +15,16 @@
  *
  * @version    SVN: $Id: sfServiceContainerLoader.php 267 2009-03-26 19:56:18Z fabien $
  */
-abstract class sfServiceContainerLoader implements sfServiceContainerLoaderInterface
+abstract class sfServiceContainerLoader implements \sfServiceContainerLoaderInterface
 {
     protected $container;
 
     /**
      * Constructor.
      *
-     * @param sfServiceContainerBuilder $container A sfServiceContainerBuilder instance
+     * @param \sfServiceContainerBuilder $container A sfServiceContainerBuilder instance
      */
-    public function __construct(sfServiceContainerBuilder $container = null)
+    public function __construct(\sfServiceContainerBuilder $container = null)
     {
         $this->container = $container;
     }
@@ -32,9 +32,9 @@ abstract class sfServiceContainerLoader implements sfServiceContainerLoaderInter
     /**
      * Sets the service container attached to this loader.
      *
-     * @param sfServiceContainerBuilder $container A sfServiceContainerBuilder instance
+     * @param \sfServiceContainerBuilder $container A sfServiceContainerBuilder instance
      */
-    public function setServiceContainer(sfServiceContainerBuilder $container)
+    public function setServiceContainer(\sfServiceContainerBuilder $container)
     {
         $this->container = $container;
     }
@@ -67,7 +67,7 @@ abstract class sfServiceContainerLoader implements sfServiceContainerLoaderInter
     public function load($resource)
     {
         if (!$this->container) {
-            throw new LogicException('You must attach the loader to a service container.');
+            throw new \LogicException('You must attach the loader to a service container.');
         }
 
         $resources = func_get_args();

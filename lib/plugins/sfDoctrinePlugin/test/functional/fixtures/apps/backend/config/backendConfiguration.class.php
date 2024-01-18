@@ -1,6 +1,6 @@
 <?php
 
-class backendConfiguration extends sfApplicationConfiguration
+class backendConfiguration extends \sfApplicationConfiguration
 {
     public function configure()
     {

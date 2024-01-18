@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nApplicationExtract extends sfI18nExtract
+class sfI18nApplicationExtract extends \sfI18nExtract
 {
     protected $extractObjects = [];
 
@@ -25,9 +25,9 @@ class sfI18nApplicationExtract extends sfI18nExtract
         $this->extractObjects = [];
 
         // Modules
-        $moduleNames = sfFinder::type('dir')->maxdepth(0)->relative()->in(sfConfig::get('sf_app_module_dir'));
+        $moduleNames = \sfFinder::type('dir')->maxdepth(0)->relative()->in(\sfConfig::get('sf_app_module_dir'));
         foreach ($moduleNames as $moduleName) {
-            $this->extractObjects[] = new sfI18nModuleExtract($this->i18n, $this->culture, ['module' => $moduleName]);
+            $this->extractObjects[] = new \sfI18nModuleExtract($this->i18n, $this->culture, ['module' => $moduleName]);
         }
     }
 
@@ -43,10 +43,10 @@ class sfI18nApplicationExtract extends sfI18nExtract
         }
 
         // Add global templates
-        $this->extractFromPhpFiles(sfConfig::get('sf_app_template_dir'));
+        $this->extractFromPhpFiles(\sfConfig::get('sf_app_template_dir'));
 
         // Add global librairies
-        $this->extractFromPhpFiles(sfConfig::get('sf_app_lib_dir'));
+        $this->extractFromPhpFiles(\sfConfig::get('sf_app_lib_dir'));
     }
 
     /**

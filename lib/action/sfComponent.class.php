@@ -23,22 +23,22 @@ abstract class sfComponent
     /** @var string */
     protected $actionName = '';
 
-    /** @var sfContext */
+    /** @var \sfContext */
     protected $context;
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
-    /** @var sfRequest */
+    /** @var \sfRequest */
     protected $request;
 
-    /** @var sfResponse */
+    /** @var \sfResponse */
     protected $response;
 
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $varHolder;
 
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $requestParameterHolder;
 
     /**
@@ -46,9 +46,9 @@ abstract class sfComponent
      *
      * @see initialize()
      *
-     * @param sfContext $context
-     * @param string    $moduleName
-     * @param string    $actionName
+     * @param \sfContext $context
+     * @param string     $moduleName
+     * @param string     $actionName
      */
     public function __construct($context, $moduleName, $actionName)
     {
@@ -126,13 +126,13 @@ abstract class sfComponent
      *
      * @return mixed The returned value of the called method
      *
-     * @throws sfException If called method is undefined
+     * @throws \sfException If called method is undefined
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'component.method_not_found', ['method' => $method, 'arguments' => $arguments]));
+        $event = $this->dispatcher->notifyUntil(new \sfEvent($this, 'component.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
-            throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+            throw new \sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
 
         return $event->getReturnValue();
@@ -141,9 +141,9 @@ abstract class sfComponent
     /**
      * Initializes this component.
      *
-     * @param sfContext $context    the current application context
-     * @param string    $moduleName the module name
-     * @param string    $actionName the action name
+     * @param \sfContext $context    the current application context
+     * @param string     $moduleName the module name
+     * @param string     $actionName the action name
      */
     public function initialize($context, $moduleName, $actionName)
     {
@@ -151,7 +151,7 @@ abstract class sfComponent
         $this->actionName = $actionName;
         $this->context = $context;
         $this->dispatcher = $context->getEventDispatcher();
-        $this->varHolder = new sfParameterHolder();
+        $this->varHolder = new \sfParameterHolder();
         $this->request = $context->getRequest();
         $this->response = $context->getResponse();
         $this->requestParameterHolder = $this->request->getParameterHolder();
@@ -168,7 +168,7 @@ abstract class sfComponent
      * user account, a shopping cart, or even a something as simple as a
      * single product.
      *
-     * @param sfRequest $request The current sfRequest object
+     * @param \sfRequest $request The current sfRequest object
      *
      * @return mixed A string containing the view name associated with this action
      */
@@ -197,7 +197,7 @@ abstract class sfComponent
     /**
      * Retrieves the current application context.
      *
-     * @return sfContext The current sfContext instance
+     * @return \sfContext The current sfContext instance
      */
     final public function getContext()
     {
@@ -207,7 +207,7 @@ abstract class sfComponent
     /**
      * Retrieves the current service container instance.
      *
-     * @return sfServiceContainer The current sfServiceContainer instance
+     * @return \sfServiceContainer The current sfServiceContainer instance
      */
     final public function getServiceContainer()
     {
@@ -229,7 +229,7 @@ abstract class sfComponent
     /**
      * Retrieves the current logger instance.
      *
-     * @return sfLogger The current sfLogger instance
+     * @return \sfLogger The current sfLogger instance
      */
     final public function getLogger()
     {
@@ -244,12 +244,12 @@ abstract class sfComponent
      *                         (available priorities: emerg, alert, crit, err,
      *                         warning, notice, info, debug)
      *
-     * @see sfLogger
+     * @see \sfLogger
      */
     public function logMessage($message, $priority = 'info')
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [$message, 'priority' => constant('sfLogger::'.strtoupper($priority))]));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [$message, 'priority' => constant('sfLogger::'.strtoupper($priority))]));
         }
     }
 
@@ -293,7 +293,7 @@ abstract class sfComponent
      *
      * <code>$this->getContext()->getRequest()</code>
      *
-     * @return sfRequest The current sfRequest implementation instance
+     * @return \sfRequest The current sfRequest implementation instance
      */
     public function getRequest()
     {
@@ -307,7 +307,7 @@ abstract class sfComponent
      *
      * <code>$this->getContext()->getResponse()</code>
      *
-     * @return sfResponse The current sfResponse implementation instance
+     * @return \sfResponse The current sfResponse implementation instance
      */
     public function getResponse()
     {
@@ -321,7 +321,7 @@ abstract class sfComponent
      *
      * <code>$this->getContext()->getController()</code>
      *
-     * @return sfController The current sfController implementation instance
+     * @return \sfController The current sfController implementation instance
      */
     public function getController()
     {
@@ -353,7 +353,7 @@ abstract class sfComponent
      *
      * <code>$this->getContext()->getUser()</code>
      *
-     * @return sfUser The current sfUser implementation instance
+     * @return \sfUser The current sfUser implementation instance
      */
     public function getUser()
     {
@@ -363,7 +363,7 @@ abstract class sfComponent
     /**
      * Gets the current mailer instance.
      *
-     * @return sfMailer A sfMailer instance
+     * @return \sfMailer A sfMailer instance
      */
     public function getMailer()
     {
@@ -383,7 +383,7 @@ abstract class sfComponent
      */
     public function setVar($name, $value, $safe = false)
     {
-        $this->varHolder->set($name, $safe ? new sfOutputEscaperSafe($value) : $value);
+        $this->varHolder->set($name, $safe ? new \sfOutputEscaperSafe($value) : $value);
     }
 
     /**
@@ -401,7 +401,7 @@ abstract class sfComponent
     /**
      * Gets the sfParameterHolder object that stores the template variables.
      *
-     * @return sfParameterHolder the variable holder
+     * @return \sfParameterHolder the variable holder
      */
     public function getVarHolder()
     {

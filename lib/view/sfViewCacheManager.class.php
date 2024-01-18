@@ -36,11 +36,8 @@ class sfViewCacheManager
      * Class constructor.
      *
      * @see initialize()
-     *
-     * @param mixed $context
-     * @param mixed $options
      */
-    public function __construct($context, sfCache $cache, $options = [])
+    public function __construct($context, \sfCache $cache, $options = [])
     {
         $this->initialize($context, $cache, $options);
     }
@@ -48,11 +45,10 @@ class sfViewCacheManager
     /**
      * Initializes the cache manager.
      *
-     * @param sfContext $context Current application context
-     * @param sfCache   $cache   An sfCache instance
-     * @param mixed     $options
+     * @param \sfContext $context Current application context
+     * @param \sfCache   $cache   An sfCache instance
      */
-    public function initialize($context, sfCache $cache, $options = [])
+    public function initialize($context, \sfCache $cache, $options = [])
     {
         $this->context = $context;
         $this->dispatcher = $context->getEventDispatcher();
@@ -63,7 +59,7 @@ class sfViewCacheManager
             'cache_key_use_host_name' => true,
         ], $options);
 
-        if (sfConfig::get('sf_web_debug')) {
+        if (\sfConfig::get('sf_web_debug')) {
             $this->dispatcher->connect('view.cache.filter_content', [$this, 'decorateContentWithDebug']);
         }
 
@@ -80,7 +76,7 @@ class sfViewCacheManager
     /**
      * Retrieves the current cache context.
      *
-     * @return sfContext The sfContext instance
+     * @return \sfContext The sfContext instance
      */
     public function getContext()
     {
@@ -90,7 +86,7 @@ class sfViewCacheManager
     /**
      * Retrieves the current cache object.
      *
-     * @return sfCache The current cache object
+     * @return \sfCache The current cache object
      */
     public function getCache()
     {
@@ -122,16 +118,16 @@ class sfViewCacheManager
      */
     public function generateCacheKey($internalUri, $hostName = '', $vary = '', $contextualPrefix = '')
     {
-        if ($callable = sfConfig::get('sf_cache_namespace_callable')) {
+        if ($callable = \sfConfig::get('sf_cache_namespace_callable')) {
             if (!is_callable($callable)) {
-                throw new sfException(sprintf('"%s" cannot be called as a function.', var_export($callable, true)));
+                throw new \sfException(sprintf('"%s" cannot be called as a function.', var_export($callable, true)));
             }
 
             return call_user_func($callable, $internalUri, $hostName, $vary, $contextualPrefix, $this);
         }
 
         if (0 === strpos($internalUri, '@') && false === strpos($internalUri, '@sf_cache_partial')) {
-            throw new sfException('A cache key cannot be generated for an internal URI using the @rule syntax');
+            throw new \sfException('A cache key cannot be generated for an internal URI using the @rule syntax');
         }
 
         $cacheKey = '';
@@ -143,8 +139,8 @@ class sfViewCacheManager
 
                 // if there is no module/action, it means that we have a 404 and the user is trying to cache it
                 if (!isset($params['module']) || !isset($params['action'])) {
-                    $params['module'] = sfConfig::get('sf_error_404_module');
-                    $params['action'] = sfConfig::get('sf_error_404_action');
+                    $params['module'] = \sfConfig::get('sf_error_404_module');
+                    $params['action'] = \sfConfig::get('sf_error_404_action');
                 }
                 $cacheKey = $this->convertParametersToKey($params);
             } else {
@@ -308,7 +304,7 @@ class sfViewCacheManager
      */
     public function isCacheable($internalUri)
     {
-        if ($this->request instanceof sfWebRequest && !$this->request->isMethod(sfRequest::GET)) {
+        if ($this->request instanceof \sfWebRequest && !$this->request->isMethod(\sfRequest::GET)) {
             return false;
         }
 
@@ -342,7 +338,7 @@ class sfViewCacheManager
      */
     public function isActionCacheable($moduleName, $actionName)
     {
-        if ($this->request instanceof sfWebRequest && !$this->request->isMethod(sfRequest::GET)) {
+        if ($this->request instanceof \sfWebRequest && !$this->request->isMethod(\sfRequest::GET)) {
             return false;
         }
 
@@ -374,8 +370,8 @@ class sfViewCacheManager
 
         $retval = $this->cache->get($this->generateCacheKey($internalUri));
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Cache for "%s" %s', $internalUri, null !== $retval ? 'exists' : 'does not exist')]));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Cache for "%s" %s', $internalUri, null !== $retval ? 'exists' : 'does not exist')]));
         }
 
         return $retval;
@@ -413,12 +409,12 @@ class sfViewCacheManager
 
         try {
             $ret = $this->cache->set($this->generateCacheKey($internalUri), $data, $this->getLifeTime($internalUri));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Save cache for "%s"', $internalUri)]));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Save cache for "%s"', $internalUri)]));
         }
 
         return true;
@@ -436,8 +432,8 @@ class sfViewCacheManager
      */
     public function remove($internalUri, $hostName = '', $vary = '', $contextualPrefix = '**')
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Remove cache for "%s"', $internalUri)]));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Remove cache for "%s"', $internalUri)]));
         }
 
         $cacheKey = $this->generateCacheKey($internalUri, $hostName, $vary, $contextualPrefix);
@@ -532,7 +528,7 @@ class sfViewCacheManager
 
         try {
             $this->set($data, $internalUri.(strpos($internalUri, '?') ? '&' : '?').'_sf_cache_key='.$name);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
 
         return $data;
@@ -549,8 +545,8 @@ class sfViewCacheManager
             return $parameters['sf_cache_key'];
         }
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Generate cache key']));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Generate cache key']));
         }
         ksort($parameters);
 
@@ -630,8 +626,8 @@ class sfViewCacheManager
         $content = $cache['content'];
         $this->context->getResponse()->merge($cache['response']);
 
-        if (sfConfig::get('sf_web_debug')) {
-            $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false]), $content)->getReturnValue();
+        if (\sfConfig::get('sf_web_debug')) {
+            $content = $this->dispatcher->filter(new \sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false]), $content)->getReturnValue();
         }
 
         return $content;
@@ -656,8 +652,8 @@ class sfViewCacheManager
 
         $saved = $this->set(serialize(['content' => $content, 'response' => $this->context->getResponse()]), $uri);
 
-        if ($saved && sfConfig::get('sf_web_debug')) {
-            $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => true]), $content)->getReturnValue();
+        if ($saved && \sfConfig::get('sf_web_debug')) {
+            $content = $this->dispatcher->filter(new \sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => true]), $content)->getReturnValue();
         }
 
         return $content;
@@ -700,8 +696,8 @@ class sfViewCacheManager
         $cache['response']->setEventDispatcher($this->dispatcher);
         $this->context->getResponse()->copyProperties($cache['response']);
 
-        if (sfConfig::get('sf_web_debug')) {
-            $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false]), $content)->getReturnValue();
+        if (\sfConfig::get('sf_web_debug')) {
+            $content = $this->dispatcher->filter(new \sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false]), $content)->getReturnValue();
         }
 
         return [$content, $cache['decoratorTemplate']];
@@ -724,8 +720,8 @@ class sfViewCacheManager
 
         $saved = $this->set(serialize(['content' => $content, 'decoratorTemplate' => $decoratorTemplate, 'response' => $this->context->getResponse()]), $uri);
 
-        if ($saved && sfConfig::get('sf_web_debug')) {
-            $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => true]), $content)->getReturnValue();
+        if ($saved && \sfConfig::get('sf_web_debug')) {
+            $content = $this->dispatcher->filter(new \sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => true]), $content)->getReturnValue();
         }
 
         return $content;
@@ -738,15 +734,15 @@ class sfViewCacheManager
      */
     public function setPageCache($uri)
     {
-        if (sfView::RENDER_CLIENT != $this->controller->getRenderMode()) {
+        if (\sfView::RENDER_CLIENT != $this->controller->getRenderMode()) {
             return;
         }
 
         // save content in cache
         $saved = $this->set(serialize($this->context->getResponse()), $uri);
 
-        if ($saved && sfConfig::get('sf_web_debug')) {
-            $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => true]), $this->context->getResponse()->getContent())->getReturnValue();
+        if ($saved && \sfConfig::get('sf_web_debug')) {
+            $content = $this->dispatcher->filter(new \sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => true]), $this->context->getResponse()->getContent())->getReturnValue();
 
             $this->context->getResponse()->setContent($content);
         }
@@ -770,14 +766,14 @@ class sfViewCacheManager
         $cachedResponse = unserialize($retval);
         $cachedResponse->setEventDispatcher($this->dispatcher);
 
-        if (sfView::RENDER_VAR == $this->controller->getRenderMode()) {
+        if (\sfView::RENDER_VAR == $this->controller->getRenderMode()) {
             $this->controller->getActionStack()->getLastEntry()->setPresentation($cachedResponse->getContent());
             $this->context->getResponse()->setContent('');
         } else {
             $this->context->setResponse($cachedResponse);
 
-            if (sfConfig::get('sf_web_debug')) {
-                $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false]), $this->context->getResponse()->getContent())->getReturnValue();
+            if (\sfConfig::get('sf_web_debug')) {
+                $content = $this->dispatcher->filter(new \sfEvent($this, 'view.cache.filter_content', ['response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false]), $this->context->getResponse()->getContent())->getReturnValue();
 
                 $this->context->getResponse()->setContent($content);
             }
@@ -809,12 +805,12 @@ class sfViewCacheManager
     /**
      * Listens to the 'view.cache.filter_content' event to decorate a chunk of HTML with cache information.
      *
-     * @param sfEvent $event   A sfEvent instance
-     * @param string  $content The HTML content
+     * @param \sfEvent $event   A sfEvent instance
+     * @param string   $content The HTML content
      *
      * @return string The decorated HTML string
      */
-    public function decorateContentWithDebug(sfEvent $event, $content)
+    public function decorateContentWithDebug(\sfEvent $event, $content)
     {
         // don't decorate if not html or if content is null
         if (!$content || false === strpos($event['response']->getContentType(), 'html')) {
@@ -832,10 +828,10 @@ class sfViewCacheManager
         return '
       <div id="main_'.$id.'" class="sfWebDebugActionCache" style="border: 1px solid #f00">
       <div id="sub_main_'.$id.'" class="sfWebDebugCache" style="background-color: '.$bgColor.'; border-right: 1px solid #f00; border-bottom: 1px solid #f00;">
-      <div style="height: 16px; padding: 2px"><a href="#" onclick="sfWebDebugToggle(\'sub_main_info_'.$id.'\'); return false;"><strong>cache information</strong></a>&nbsp;<a href="#" onclick="sfWebDebugToggle(\'sub_main_'.$id.'\'); document.getElementById(\'main_'.$id.'\').style.border = \'none\'; return false;">'.image_tag(sfConfig::get('sf_web_debug_web_dir').'/images/close.png', ['alt' => 'close']).'</a>&nbsp;</div>
+      <div style="height: 16px; padding: 2px"><a href="#" onclick="sfWebDebugToggle(\'sub_main_info_'.$id.'\'); return false;"><strong>cache information</strong></a>&nbsp;<a href="#" onclick="sfWebDebugToggle(\'sub_main_'.$id.'\'); document.getElementById(\'main_'.$id.'\').style.border = \'none\'; return false;">'.image_tag(\sfConfig::get('sf_web_debug_web_dir').'/images/close.png', ['alt' => 'close']).'</a>&nbsp;</div>
         <div style="padding: 2px; display: none" id="sub_main_info_'.$id.'">
-        [uri]&nbsp;'.htmlspecialchars($event['uri'], ENT_QUOTES, sfConfig::get('sf_charset')).'<br />
-        [key&nbsp;for&nbsp;cache]&nbsp;'.htmlspecialchars($cacheKey, ENT_QUOTES, sfConfig::get('sf_charset')).'<br />
+        [uri]&nbsp;'.htmlspecialchars($event['uri'], ENT_QUOTES, \sfConfig::get('sf_charset')).'<br />
+        [key&nbsp;for&nbsp;cache]&nbsp;'.htmlspecialchars($cacheKey, ENT_QUOTES, \sfConfig::get('sf_charset')).'<br />
         [life&nbsp;time]&nbsp;'.$this->getLifeTime($event['uri']).'&nbsp;seconds<br />
         [last&nbsp;modified]&nbsp;'.(time() - $lastModified).'&nbsp;seconds<br />
         &nbsp;<br />&nbsp;
@@ -850,7 +846,6 @@ class sfViewCacheManager
      * Gets the vary header part of view cache key.
      *
      * @param string $vary
-     * @param mixed  $internalUri
      *
      * @return string
      */
@@ -912,7 +907,7 @@ class sfViewCacheManager
     protected function convertParametersToKey($params)
     {
         if (!isset($params['module']) || !isset($params['action'])) {
-            throw new sfException('A cache key must contain both a module and an action parameter');
+            throw new \sfException('A cache key must contain both a module and an action parameter');
         }
         $module = $params['module'];
         unset($params['module']);
@@ -964,9 +959,9 @@ class sfViewCacheManager
     protected function ignore()
     {
         // ignore cache parameter? (only available in debug mode)
-        if (sfConfig::get('sf_debug') && $this->context->getRequest()->getAttribute('sf_ignore_cache')) {
-            if (sfConfig::get('sf_logging_enabled')) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Discard cache']));
+        if (\sfConfig::get('sf_debug') && $this->context->getRequest()->getAttribute('sf_ignore_cache')) {
+            if (\sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Discard cache']));
             }
 
             return true;

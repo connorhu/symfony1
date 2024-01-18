@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfWidgetForm extends sfWidget
+abstract class sfWidgetForm extends \sfWidget
 {
     protected $parent;
 
@@ -33,7 +33,7 @@ abstract class sfWidgetForm extends sfWidget
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidget
+     * @see \sfWidget
      */
     public function __construct($options = [], $attributes = [])
     {
@@ -51,7 +51,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @param string $value The default value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setDefault($value)
     {
@@ -75,7 +75,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @param string $value The label
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setLabel($value)
     {
@@ -99,7 +99,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @param string $format The format string (must contain a %s for the id placeholder)
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setIdFormat($format)
     {
@@ -133,7 +133,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @param bool $boolean true if the widget must be hidden, false otherwise
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setHidden($boolean)
     {
@@ -236,9 +236,9 @@ abstract class sfWidgetForm extends sfWidget
     /**
      * Sets the parent widget schema.
      *
-     * @return sfWidgetForm The current widget instance
+     * @return \sfWidgetForm The current widget instance
      */
-    public function setParent(sfWidgetFormSchema $widgetSchema = null)
+    public function setParent(\sfWidgetFormSchema $widgetSchema = null)
     {
         $this->parent = $widgetSchema;
 
@@ -250,7 +250,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * If no schema has been set with setWidgetSchema(), NULL is returned.
      *
-     * @return sfWidgetFormSchema|null
+     * @return \sfWidgetFormSchema|null
      */
     public function getParent()
     {

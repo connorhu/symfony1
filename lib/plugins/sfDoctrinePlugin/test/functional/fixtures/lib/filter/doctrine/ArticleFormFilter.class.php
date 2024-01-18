@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class ArticleFormFilter extends BaseArticleFormFilter
+class ArticleFormFilter extends \BaseArticleFormFilter
 {
     public function configure()
     {

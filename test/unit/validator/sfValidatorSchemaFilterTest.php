@@ -10,11 +10,11 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(6);
+$t = new \lime_test(6);
 
-$v1 = new sfValidatorString(['min_length' => 2, 'trim' => true]);
+$v1 = new \sfValidatorString(['min_length' => 2, 'trim' => true]);
 
-$v = new sfValidatorSchemaFilter('first_name', $v1);
+$v = new \sfValidatorSchemaFilter('first_name', $v1);
 
 // ->clean()
 $t->diag('->clean()');
@@ -23,7 +23,7 @@ $t->is($v->clean(['first_name' => '  foo  ']), ['first_name' => 'foo'], '->clean
 try {
     $v->clean('string');
     $t->fail('->clean() throws a InvalidArgumentException if the input value is not an array');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->clean() throws a InvalidArgumentException if the input value is not an array');
 }
 
@@ -31,7 +31,7 @@ try {
     $v->clean(null);
     $t->fail('->clean() throws a sfValidatorError if the embedded validator failed');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the embedded validator failed');
     $t->is($e->getCode(), 'first_name [required]', '->clean() throws a sfValidatorError');
 }
@@ -40,7 +40,7 @@ try {
     $v->clean(['first_name' => 'f']);
     $t->fail('->clean() throws a sfValidatorError if the embedded validator failed');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the embedded validator failed');
     $t->is($e->getCode(), 'first_name [min_length]', '->clean() throws a sfValidatorError');
 }

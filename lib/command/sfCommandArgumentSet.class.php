@@ -62,22 +62,22 @@ class sfCommandArgumentSet
     /**
      * Add a sfCommandArgument objects.
      *
-     * @param sfCommandArgument $argument A sfCommandArgument object
+     * @param \sfCommandArgument $argument A sfCommandArgument object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
-    public function addArgument(sfCommandArgument $argument)
+    public function addArgument(\sfCommandArgument $argument)
     {
         if (isset($this->arguments[$argument->getName()])) {
-            throw new sfCommandException(sprintf('An argument with name "%s" already exist.', $argument->getName()));
+            throw new \sfCommandException(sprintf('An argument with name "%s" already exist.', $argument->getName()));
         }
 
         if ($this->hasAnArrayArgument) {
-            throw new sfCommandException('Cannot add an argument after an array argument.');
+            throw new \sfCommandException('Cannot add an argument after an array argument.');
         }
 
         if ($argument->isRequired() && $this->hasOptional) {
-            throw new sfCommandException('Cannot add a required argument after an optional one.');
+            throw new \sfCommandException('Cannot add a required argument after an optional one.');
         }
 
         if ($argument->isArray()) {
@@ -98,14 +98,14 @@ class sfCommandArgumentSet
      *
      * @param string $name The argument name
      *
-     * @return sfCommandArgument A sfCommandArgument object
+     * @return \sfCommandArgument A sfCommandArgument object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getArgument($name)
     {
         if (!$this->hasArgument($name)) {
-            throw new sfCommandException(sprintf('The "%s" argument does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "%s" argument does not exist.', $name));
         }
 
         return $this->arguments[$name];

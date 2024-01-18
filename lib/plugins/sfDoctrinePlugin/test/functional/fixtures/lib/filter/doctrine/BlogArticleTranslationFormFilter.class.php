@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class BlogArticleTranslationFormFilter extends BaseBlogArticleTranslationFormFilter
+class BlogArticleTranslationFormFilter extends \BaseBlogArticleTranslationFormFilter
 {
     public function configure()
     {

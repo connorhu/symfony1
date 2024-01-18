@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebRequest extends sfRequest
+class sfWebRequest extends \sfRequest
 {
     public const PORT_HTTP = 80;
     public const PORT_HTTPS = 443;
@@ -48,16 +48,16 @@ class sfWebRequest extends sfRequest
      *  * http_port:         The port to use for HTTP requests
      *  * https_port:        The port to use for HTTPS requests
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param array             $parameters An associative array of initialization parameters
-     * @param array             $attributes An associative array of initialization attributes
-     * @param array             $options    An associative array of options
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param array              $parameters An associative array of initialization parameters
+     * @param array              $attributes An associative array of initialization attributes
+     * @param array              $options    An associative array of options
      *
      * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfRequest
      *
-     * @see sfRequest
+     * @see \sfRequest
      */
-    public function initialize(sfEventDispatcher $dispatcher, $parameters = [], $attributes = [], $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $parameters = [], $attributes = [], $options = [])
     {
         $options = array_merge([
             'path_info_key' => 'PATH_INFO',
@@ -71,7 +71,7 @@ class sfWebRequest extends sfRequest
 
         // GET parameters
         if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc()) {
-            $this->getParameters = sfToolkit::stripslashesDeep($_GET);
+            $this->getParameters = \sfToolkit::stripslashesDeep($_GET);
         } else {
             $this->getParameters = $_GET;
         }
@@ -143,7 +143,7 @@ class sfWebRequest extends sfRequest
         }
 
         if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc()) {
-            $this->postParameters = sfToolkit::stripslashesDeep($postParameters);
+            $this->postParameters = \sfToolkit::stripslashesDeep($postParameters);
         } else {
             $this->postParameters = $postParameters;
         }
@@ -539,7 +539,7 @@ class sfWebRequest extends sfRequest
 
         $pathArray = $this->getPathInfoArray();
 
-        return isset($pathArray[$name]) ? sfToolkit::stripslashesDeep($pathArray[$name]) : null;
+        return isset($pathArray[$name]) ? \sfToolkit::stripslashesDeep($pathArray[$name]) : null;
     }
 
     /**
@@ -556,7 +556,7 @@ class sfWebRequest extends sfRequest
 
         if (isset($_COOKIE[$name])) {
             if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc()) {
-                $retval = sfToolkit::stripslashesDeep($_COOKIE[$name]);
+                $retval = \sfToolkit::stripslashesDeep($_COOKIE[$name]);
             } else {
                 $retval = $_COOKIE[$name];
             }
@@ -788,7 +788,7 @@ class sfWebRequest extends sfRequest
             return $this->getParameters[$name];
         }
 
-        return sfToolkit::getArrayValueForPath($this->getParameters, $name, $default);
+        return \sfToolkit::getArrayValueForPath($this->getParameters, $name, $default);
     }
 
     /**
@@ -805,7 +805,7 @@ class sfWebRequest extends sfRequest
             return $this->postParameters[$name];
         }
 
-        return sfToolkit::getArrayValueForPath($this->postParameters, $name, $default);
+        return \sfToolkit::getArrayValueForPath($this->postParameters, $name, $default);
     }
 
     /**
@@ -822,7 +822,7 @@ class sfWebRequest extends sfRequest
             return $this->requestParameters[$name];
         }
 
-        return sfToolkit::getArrayValueForPath($this->requestParameters, $name, $default);
+        return \sfToolkit::getArrayValueForPath($this->requestParameters, $name, $default);
     }
 
     /**
@@ -845,8 +845,8 @@ class sfWebRequest extends sfRequest
      * This method returns null if no proxy passed this request. Note that some proxies
      * do not use this header, and act as if they were the client.
      *
-     * @return string|null an array of IP from the client and the proxies that passed
-     *                     the request, or null if no proxy was used
+     * @return \string|null an array of IP from the client and the proxies that passed
+     *                      the request, or null if no proxy was used
      */
     public function getForwardedFor()
     {
@@ -890,7 +890,7 @@ class sfWebRequest extends sfRequest
      */
     public function checkCSRFProtection()
     {
-        $form = new BaseForm();
+        $form = new \BaseForm();
         $form->bind($form->isCSRFProtected() ? [$form->getCSRFFieldName() => $this->getParameter($form->getCSRFFieldName())] : []);
 
         if (!$form->isValid()) {
@@ -974,7 +974,7 @@ class sfWebRequest extends sfRequest
      */
     protected function parseRequestParameters()
     {
-        return $this->dispatcher->filter(new sfEvent($this, 'request.filter_parameters', $this->getRequestContext()), [])->getReturnValue();
+        return $this->dispatcher->filter(new \sfEvent($this, 'request.filter_parameters', $this->getRequestContext()), [])->getReturnValue();
     }
 
     /**

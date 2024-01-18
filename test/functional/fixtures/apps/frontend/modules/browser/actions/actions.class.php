@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class browserActions extends sfActions
+class browserActions extends \sfActions
 {
     public function executeIndex()
     {

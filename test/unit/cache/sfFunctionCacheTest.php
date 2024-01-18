@@ -12,9 +12,9 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once __DIR__.'/sfCacheDriverTests.class.php';
 
-$t = new lime_test(15);
+$t = new \lime_test(15);
 
-class sfSimpleCache extends sfCache
+class sfSimpleCache extends \sfCache
 {
     public $data = [];
 
@@ -43,7 +43,7 @@ class sfSimpleCache extends sfCache
         return isset($this->data[$key]);
     }
 
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
         $this->data = [];
     }
@@ -84,8 +84,8 @@ function testFunctionCache($arg1, $arg2)
 // ->call()
 $t->diag('->call()');
 
-$cache = new sfSimpleCache();
-$functionCache = new sfFunctionCache($cache);
+$cache = new \sfSimpleCache();
+$functionCache = new \sfFunctionCache($cache);
 $result = testFunctionCache(1, 2);
 $t->is($count, 1);
 $t->is($functionCache->call('testFunctionCache', [1, 2]), $result, '->call() works with functions');
@@ -93,18 +93,18 @@ $t->is($count, 2);
 $t->is($functionCache->call('testFunctionCache', [1, 2]), $result, '->call() stores the function call in cache');
 $t->is($count, 2);
 
-$result = testFunctionCache::test(1, 2);
-$t->is(testFunctionCache::$count, 1);
+$result = \testFunctionCache::test(1, 2);
+$t->is(\testFunctionCache::$count, 1);
 $t->is($functionCache->call(['testFunctionCache', 'test'], [1, 2]), $result, '->call() works with static method calls');
-$t->is(testFunctionCache::$count, 2);
+$t->is(\testFunctionCache::$count, 2);
 $t->is($functionCache->call(['testFunctionCache', 'test'], [1, 2]), $result, '->call() stores the function call in cache');
-$t->is(testFunctionCache::$count, 2);
+$t->is(\testFunctionCache::$count, 2);
 
-testFunctionCache::$count = 0;
-$object = new testFunctionCache();
+\testFunctionCache::$count = 0;
+$object = new \testFunctionCache();
 $result = $object->test(1, 2);
-$t->is(testFunctionCache::$count, 1);
+$t->is(\testFunctionCache::$count, 1);
 $t->is($functionCache->call([$object, 'test'], [1, 2]), $result, '->call() works with object methods');
-$t->is(testFunctionCache::$count, 2);
+$t->is(\testFunctionCache::$count, 2);
 $t->is($functionCache->call([$object, 'test'], [1, 2]), $result, '->call() stores the function call in cache');
-$t->is(testFunctionCache::$count, 2);
+$t->is(\testFunctionCache::$count, 2);

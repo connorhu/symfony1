@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new \lime_test(7);
 
-$w = new sfWidgetFormInputCheckbox();
+$w = new \sfWidgetFormInputCheckbox();
 
 // ->render()
 $t->diag('->render()');
@@ -21,7 +21,7 @@ $t->is($w->render('foo', null), '<input type="checkbox" name="foo" id="foo" />',
 $t->is($w->render('foo', false), '<input type="checkbox" name="foo" id="foo" />', '->render() renders the widget as HTML');
 $t->is($w->render('foo', 0, ['value' => '0']), '<input type="checkbox" name="foo" value="0" checked="checked" id="foo" />', '->render() renders the widget as HTML');
 
-$w = new sfWidgetFormInputCheckbox([], ['value' => 'bar']);
+$w = new \sfWidgetFormInputCheckbox([], ['value' => 'bar']);
 $t->is($w->render('foo', null), '<input value="bar" type="checkbox" name="foo" id="foo" />', '->render() renders the widget as HTML');
 $t->is($w->render('foo', null, ['value' => 'baz']), '<input value="baz" type="checkbox" name="foo" id="foo" />', '->render() renders the widget as HTML');
 $t->is($w->render('foo', 'bar'), '<input value="bar" type="checkbox" name="foo" checked="checked" id="foo" />', '->render() renders the widget as HTML');

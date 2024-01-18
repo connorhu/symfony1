@@ -14,9 +14,9 @@ require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 require_once $_test_dir.'/unit/sfNoRouting.class.php';
 
-$t = new lime_test(21);
+$t = new \lime_test(21);
 
-class myWebResponse extends sfWebResponse
+class myWebResponse extends \sfWebResponse
 {
     public function sendHttpHeaders()
     {
@@ -29,14 +29,14 @@ class myWebResponse extends sfWebResponse
 
 $_SERVER['HTTP_HOST'] = 'localhost';
 $_SERVER['SCRIPT_NAME'] = '/index.php';
-sfConfig::set('sf_max_forwards', 10);
-$context = sfContext::getInstance([
+\sfConfig::set('sf_max_forwards', 10);
+$context = \sfContext::getInstance([
     'routing' => 'sfNoRouting',
     'request' => 'sfWebRequest',
     'response' => 'myWebResponse',
 ]);
 
-$controller = new sfFrontWebController($context, null);
+$controller = new \sfFrontWebController($context, null);
 
 $tests = [
     'module/action' => [
@@ -162,7 +162,7 @@ foreach ($tests as $url => $result) {
 try {
     $controller->convertUrlStringToParameters('@test?foobar');
     $t->fail('->convertUrlStringToParameters() throw a sfParseException if it cannot parse the query string');
-} catch (sfParseException $e) {
+} catch (\sfParseException $e) {
     $t->pass('->convertUrlStringToParameters() throw a sfParseException if it cannot parse the query string');
 }
 
@@ -177,9 +177,9 @@ $t->like($response->getHttpHeader('Location'), '~http\://localhost/index.php/\?m
 try {
     $controller->redirect(null);
     $t->fail('->redirect() throw an InvalidArgumentException when the url argument is null');
-} catch (InvalidArgumentException $iae) {
+} catch (\InvalidArgumentException $iae) {
     $t->pass('->redirect() throw an InvalidArgumentException when the url argument is null');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('->redirect() throw an InvalidArgumentException when the url argument is null. '.get_class($e).' was received');
 }
 
@@ -187,9 +187,9 @@ try {
 try {
     $controller->redirect('');
     $t->fail('->redirect() throw an InvalidArgumentException when the url argument is an empty string');
-} catch (InvalidArgumentException $iae) {
+} catch (\InvalidArgumentException $iae) {
     $t->pass('->redirect() throw an InvalidArgumentException when the url argument is an empty string');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('->redirect() throw an InvalidArgumentException when the url argument is an empty string. '.get_class($e).' was received');
 }
 

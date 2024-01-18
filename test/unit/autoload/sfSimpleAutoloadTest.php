@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
-$autoload = sfSimpleAutoload::getInstance();
+$autoload = \sfSimpleAutoload::getInstance();
 $autoload->addFile(__DIR__.'/../sfEventDispatcherTest.class.php');
 $autoload->register();
 

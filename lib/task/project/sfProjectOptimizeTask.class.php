@@ -15,16 +15,16 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectOptimizeTask extends sfBaseTask
+class sfProjectOptimizeTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('env', sfCommandArgument::OPTIONAL, 'The environment name', 'prod'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('env', \sfCommandArgument::OPTIONAL, 'The environment name', 'prod'),
         ]);
 
         $this->namespace = 'project';
@@ -42,16 +42,13 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         $data = [];
         $modules = $this->findModules();
-        $target = sfConfig::get('sf_cache_dir').'/'.$arguments['application'].'/'.$arguments['env'].'/config/configuration.php';
+        $target = \sfConfig::get('sf_cache_dir').'/'.$arguments['application'].'/'.$arguments['env'].'/config/configuration.php';
 
         $current_umask = umask();
         umask(0000);
@@ -65,7 +62,7 @@ EOF;
         $this->setConfiguration($this->createConfiguration($arguments['application'], $arguments['env']));
 
         // initialize the context
-        sfContext::createInstance($this->configuration);
+        \sfContext::createInstance($this->configuration);
 
         // force cache generation for generated modules
         foreach ($modules as $module) {
@@ -73,8 +70,8 @@ EOF;
 
             try {
                 $this->configuration->getConfigCache()->checkConfig('modules/'.$module.'/config/generator.yml', true);
-            } catch (Exception $e) {
-                $this->dispatcher->notifyUntil(new sfEvent($e, 'application.throw_exception'));
+            } catch (\Exception $e) {
+                $this->dispatcher->notifyUntil(new \sfEvent($e, 'application.throw_exception'));
 
                 $this->logSection($module, $e->getMessage(), null, 'ERROR');
             }
@@ -126,7 +123,7 @@ EOF;
     {
         $data = [];
 
-        $finder = sfFinder::type('file')->name('*Helper.php');
+        $finder = \sfFinder::type('file')->name('*Helper.php');
 
         // module helpers
         foreach ($modules as $module) {
@@ -160,7 +157,7 @@ EOF;
         $files = [];
 
         foreach ($modules as $module) {
-            $files[$module] = sfFinder::type('file')->follow_link()->relative()->in($this->configuration->getTemplateDirs($module));
+            $files[$module] = \sfFinder::type('file')->follow_link()->relative()->in($this->configuration->getTemplateDirs($module));
         }
 
         return $files;
@@ -169,20 +166,20 @@ EOF;
     protected function findModules()
     {
         // application
-        $dirs = [sfConfig::get('sf_app_module_dir')];
+        $dirs = [\sfConfig::get('sf_app_module_dir')];
 
         // plugins
         $pluginSubPaths = $this->configuration->getPluginSubPaths(DIRECTORY_SEPARATOR.'modules');
         $modules = [];
-        foreach (sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($pluginSubPaths) as $module) {
-            if (in_array($module, sfConfig::get('sf_enabled_modules'))) {
+        foreach (\sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($pluginSubPaths) as $module) {
+            if (in_array($module, \sfConfig::get('sf_enabled_modules'))) {
                 $modules[] = $module;
             }
         }
 
         // core modules
-        $dirs[] = sfConfig::get('sf_symfony_lib_dir').'/controller';
+        $dirs[] = \sfConfig::get('sf_symfony_lib_dir').'/controller';
 
-        return array_unique(array_merge(sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($dirs), $modules));
+        return array_unique(array_merge(\sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($dirs), $modules));
     }
 }

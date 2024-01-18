@@ -20,7 +20,7 @@
  */
 abstract class sfDatabase
 {
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $parameterHolder;
 
     /** @var PDO|resource */
@@ -50,7 +50,7 @@ abstract class sfDatabase
      */
     public function initialize($parameters = [])
     {
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
         $this->parameterHolder->add($parameters);
     }
 
@@ -99,7 +99,7 @@ abstract class sfDatabase
     /**
      * Gets the parameter holder for this object.
      *
-     * @return sfParameterHolder A sfParameterHolder instance
+     * @return \sfParameterHolder A sfParameterHolder instance
      */
     public function getParameterHolder()
     {
@@ -118,7 +118,7 @@ abstract class sfDatabase
      *
      * @return string The value associated with the key
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function getParameter($name, $default = null)
     {
@@ -136,7 +136,7 @@ abstract class sfDatabase
      *
      * @return bool true if the given key exists, false otherwise
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function hasParameter($name)
     {
@@ -153,7 +153,7 @@ abstract class sfDatabase
      * @param string $name  The key name
      * @param string $value The value
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function setParameter($name, $value)
     {

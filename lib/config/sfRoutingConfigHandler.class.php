@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfRoutingConfigHandler extends sfYamlConfigHandler
+class sfRoutingConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -22,8 +22,8 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -32,13 +32,13 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
 
         $data = [];
         foreach ($this->parse($configFiles) as $name => $routeConfig) {
-            $r = new ReflectionClass($routeConfig[0]);
+            $r = new \ReflectionClass($routeConfig[0]);
 
-            /** @var sfRoute $route */
+            /** @var \sfRoute $route */
             $route = $r->newInstanceArgs($routeConfig[1]);
 
-            $routes = $route instanceof sfRouteCollection ? $route : [$name => $route];
-            foreach (sfPatternRouting::flattenRoutes($routes) as $name => $route) {
+            $routes = $route instanceof \sfRouteCollection ? $route : [$name => $route];
+            foreach (\sfPatternRouting::flattenRoutes($routes) as $name => $route) {
                 $route->setDefaultOptions($options);
                 $data[] = sprintf('$this->routes[\'%s\'] = %s;', $name, var_export(serialize($route), true));
             }
@@ -59,7 +59,7 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
 
         $routes = [];
         foreach ($routeDefinitions as $name => $route) {
-            $r = new ReflectionClass($route[0]);
+            $r = new \ReflectionClass($route[0]);
             $routes[$name] = $r->newInstanceArgs($route[1]);
         }
 
@@ -67,7 +67,7 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -76,7 +76,7 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
 
     protected function getOptions()
     {
-        $config = sfFactoryConfigHandler::getConfiguration(sfContext::getInstance()->getConfiguration()->getConfigPaths('config/factories.yml'));
+        $config = \sfFactoryConfigHandler::getConfiguration(\sfContext::getInstance()->getConfiguration()->getConfigPaths('config/factories.yml'));
 
         return $config['routing']['param'];
     }

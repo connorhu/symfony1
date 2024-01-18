@@ -13,7 +13,7 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-$b = new sfTestBrowser();
+$b = new \sfTestBrowser();
 
 // default main page
 $b->
@@ -37,8 +37,8 @@ $b->
 ;
 */
 // 404 with ETag enabled must returns 404, not 304
-sfConfig::set('sf_cache', true);
-sfConfig::set('sf_etag', true);
+\sfConfig::set('sf_cache', true);
+\sfConfig::set('sf_etag', true);
 $b->
   get('/notfound')->
   with('request')->begin()->
@@ -59,8 +59,8 @@ $b->
     isStatusCode(404)->
     checkElement('body', '/404/')->
   end();
-sfConfig::set('sf_cache', false);
-sfConfig::set('sf_etag', false);
+\sfConfig::set('sf_cache', false);
+\sfConfig::set('sf_etag', false);
 
 // unexistant action
 $b->

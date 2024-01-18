@@ -15,16 +15,16 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfServiceContainerDumper implements sfServiceContainerDumperInterface
+abstract class sfServiceContainerDumper implements \sfServiceContainerDumperInterface
 {
     protected $container;
 
     /**
      * Constructor.
      *
-     * @param sfServiceContainerBuilder $container The service container to dump
+     * @param \sfServiceContainerBuilder $container The service container to dump
      */
-    public function __construct(sfServiceContainerBuilder $container)
+    public function __construct(\sfServiceContainerBuilder $container)
     {
         $this->container = $container;
     }
@@ -38,6 +38,6 @@ abstract class sfServiceContainerDumper implements sfServiceContainerDumperInter
      */
     public function dump(array $options = [])
     {
-        throw new LogicException('You must extend this abstract class and implement the dump() method.');
+        throw new \LogicException('You must extend this abstract class and implement the dump() method.');
     }
 }

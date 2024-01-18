@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfCacheConfigHandler extends sfYamlConfigHandler
+class sfCacheConfigHandler extends \sfYamlConfigHandler
 {
     protected $cacheConfig = [];
 
@@ -64,7 +64,7 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

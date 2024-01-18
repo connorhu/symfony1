@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfObjectRouteCollection extends sfRouteCollection
+class sfObjectRouteCollection extends \sfRouteCollection
 {
     protected $routeClass = 'sfObjectRoute';
 
@@ -29,7 +29,7 @@ class sfObjectRouteCollection extends sfRouteCollection
         parent::__construct($options);
 
         if (!isset($this->options['model'])) {
-            throw new InvalidArgumentException(sprintf('You must pass a "model" option to %s ("%s" route)', get_class($this), $this->options['name']));
+            throw new \InvalidArgumentException(sprintf('You must pass a "model" option to %s ("%s" route)', get_class($this), $this->options['name']));
         }
 
         $this->options = array_merge([
@@ -69,7 +69,7 @@ class sfObjectRouteCollection extends sfRouteCollection
         foreach ($actions as $action) {
             $method = 'getRouteFor'.ucfirst($action);
             if (!method_exists($this, $method)) {
-                throw new InvalidArgumentException(sprintf('Unable to generate a route for the "%s" action.', $action));
+                throw new \InvalidArgumentException(sprintf('Unable to generate a route for the "%s" action.', $action));
             }
 
             $this->routes[$this->getRoute($action)] = $this->{$method}();

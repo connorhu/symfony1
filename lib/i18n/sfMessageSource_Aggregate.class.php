@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfMessageSource_Aggregate extends sfMessageSource
+class sfMessageSource_Aggregate extends \sfMessageSource
 {
     protected $messageSources = [];
 
@@ -45,8 +45,6 @@ class sfMessageSource_Aggregate extends sfMessageSource
 
     /**
      * Determines if the source is valid.
-     *
-     * @param mixed $sources
      *
      * @return bool true if valid, false otherwise
      */
@@ -83,8 +81,6 @@ class sfMessageSource_Aggregate extends sfMessageSource
     /**
      * Loads the message for a particular catalogue+variant.
      * This methods needs to implemented by subclasses.
-     *
-     * @param mixed $sources
      *
      * @return array of translation messages
      */
@@ -219,13 +215,11 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function catalogues()
     {
-        throw new sfException('The "catalogues()" method is not implemented for this message source.');
+        throw new \sfException('The "catalogues()" method is not implemented for this message source.');
     }
 
     /**
      * Gets the last modified unix-time for this particular catalogue+variant.
-     *
-     * @param mixed $sources
      *
      * @return int last modified in unix-time format
      */

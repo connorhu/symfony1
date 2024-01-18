@@ -25,7 +25,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfLogger implements sfLoggerInterface
+abstract class sfLogger implements \sfLoggerInterface
 {
     public const EMERG = 0; // System is unusable
     public const ALERT = 1; // Immediate action required
@@ -36,7 +36,7 @@ abstract class sfLogger implements sfLoggerInterface
     public const INFO = 6; // Informational
     public const DEBUG = 7; // Debug-level messages
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
     /** @var array */
@@ -50,10 +50,10 @@ abstract class sfLogger implements sfLoggerInterface
      *
      * @see initialize()
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->initialize($dispatcher, $options);
 
@@ -69,12 +69,12 @@ abstract class sfLogger implements sfLoggerInterface
      *
      * - level: The log level.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      *
      * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfLogger
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->options = $options;
@@ -100,7 +100,6 @@ abstract class sfLogger implements sfLoggerInterface
      * Returns the options for the logger instance.
      *
      * @param string $name
-     * @param mixed  $value
      */
     public function setOption($name, $value)
     {
@@ -231,9 +230,9 @@ abstract class sfLogger implements sfLoggerInterface
     /**
      * Listens to application.log events.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
-    public function listenToLogEvent(sfEvent $event)
+    public function listenToLogEvent(\sfEvent $event)
     {
         $priority = isset($event['priority']) ? $event['priority'] : self::INFO;
 
@@ -264,7 +263,7 @@ abstract class sfLogger implements sfLoggerInterface
      *
      * @return string The priority name
      *
-     * @throws sfException if the priority level does not exist
+     * @throws \sfException if the priority level does not exist
      */
     public static function getPriorityName($priority)
     {
@@ -280,7 +279,7 @@ abstract class sfLogger implements sfLoggerInterface
         ];
 
         if (!isset($levels[$priority])) {
-            throw new sfException(sprintf('The priority level "%s" does not exist.', $priority));
+            throw new \sfException(sprintf('The priority level "%s" does not exist.', $priority));
         }
 
         return $levels[$priority];

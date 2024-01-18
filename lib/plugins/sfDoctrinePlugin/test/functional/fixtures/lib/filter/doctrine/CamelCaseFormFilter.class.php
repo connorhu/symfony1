@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class CamelCaseFormFilter extends BaseCamelCaseFormFilter
+class CamelCaseFormFilter extends \BaseCamelCaseFormFilter
 {
     public function configure()
     {

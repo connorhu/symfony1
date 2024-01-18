@@ -16,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfAPCuCache extends sfCache
+class sfAPCuCache extends \sfCache
 {
     protected $enabled;
 
@@ -27,9 +27,7 @@ class sfAPCuCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
-     *
-     * @param mixed $options
+     * @see \sfCache
      */
     public function initialize($options = [])
     {
@@ -39,10 +37,9 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
-     * @param mixed      $key
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -56,9 +53,7 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -72,11 +67,9 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
-     * @param mixed      $key
-     * @param mixed      $data
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -88,9 +81,7 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -102,25 +93,21 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $mode
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
         if (!$this->enabled) {
             return true;
         }
 
-        if (sfCache::ALL === $mode) {
+        if (\sfCache::ALL === $mode) {
             return apcu_clear_cache();
         }
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -132,9 +119,7 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getTimeout($key)
     {
@@ -146,9 +131,7 @@ class sfAPCuCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $pattern
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {

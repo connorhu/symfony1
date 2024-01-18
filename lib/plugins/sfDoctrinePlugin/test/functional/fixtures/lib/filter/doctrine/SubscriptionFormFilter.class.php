@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class SubscriptionFormFilter extends BaseSubscriptionFormFilter
+class SubscriptionFormFilter extends \BaseSubscriptionFormFilter
 {
     public function configure()
     {

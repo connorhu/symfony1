@@ -16,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrinePager extends sfPager implements Serializable
+class sfDoctrinePager extends \sfPager implements \Serializable
 {
     protected $query;
     protected $tableMethodName;
@@ -94,7 +94,7 @@ class sfDoctrinePager extends sfPager implements Serializable
     /**
      * Returns a query for counting the total results.
      *
-     * @return Doctrine_Query
+     * @return \Doctrine_Query
      */
     public function getCountQuery()
     {
@@ -108,7 +108,7 @@ class sfDoctrinePager extends sfPager implements Serializable
     }
 
     /**
-     * @see sfPager
+     * @see \sfPager
      */
     public function init()
     {
@@ -142,16 +142,16 @@ class sfDoctrinePager extends sfPager implements Serializable
     /**
      * Get the query for the pager.
      *
-     * @return Doctrine_Query
+     * @return \Doctrine_Query
      */
     public function getQuery()
     {
         if (!$this->tableMethodCalled && $this->tableMethodName) {
             $method = $this->tableMethodName;
-            $this->query = Doctrine_Core::getTable($this->getClass())->{$method}($this->query);
+            $this->query = \Doctrine_Core::getTable($this->getClass())->{$method}($this->query);
             $this->tableMethodCalled = true;
         } elseif (!$this->query) {
-            $this->query = Doctrine_Core::getTable($this->getClass())->createQuery();
+            $this->query = \Doctrine_Core::getTable($this->getClass())->createQuery();
         }
 
         return $this->query;
@@ -160,7 +160,7 @@ class sfDoctrinePager extends sfPager implements Serializable
     /**
      * Set query object for the pager.
      *
-     * @param Doctrine_Query $query
+     * @param \Doctrine_Query $query
      */
     public function setQuery($query)
     {
@@ -184,7 +184,7 @@ class sfDoctrinePager extends sfPager implements Serializable
      *
      * @param int $offset
      *
-     * @return Doctrine_Record
+     * @return \Doctrine_Record
      */
     protected function retrieveObject($offset)
     {
@@ -200,13 +200,13 @@ class sfDoctrinePager extends sfPager implements Serializable
     }
 
     /**
-     * @see sfPager
+     * @see \sfPager
      */
     protected function initializeIterator()
     {
         parent::initializeIterator();
 
-        if ($this->results instanceof Doctrine_Collection) {
+        if ($this->results instanceof \Doctrine_Collection) {
             $this->results = $this->results->getData();
         }
     }

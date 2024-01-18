@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorError extends Exception implements Serializable
+class sfValidatorError extends \Exception implements \Serializable
 {
     protected $validator;
     protected $arguments = [];
@@ -23,11 +23,11 @@ class sfValidatorError extends Exception implements Serializable
     /**
      * Constructor.
      *
-     * @param sfValidatorBase $validator An sfValidatorBase instance
-     * @param string          $code      The error code
-     * @param array           $arguments An array of named arguments needed to render the error message
+     * @param \sfValidatorBase $validator An sfValidatorBase instance
+     * @param string           $code      The error code
+     * @param array            $arguments An array of named arguments needed to render the error message
      */
-    public function __construct(sfValidatorBase $validator, $code, $arguments = [])
+    public function __construct(\sfValidatorBase $validator, $code, $arguments = [])
     {
         $this->validator = $validator;
         $this->arguments = $arguments;
@@ -63,8 +63,6 @@ class sfValidatorError extends Exception implements Serializable
 
     /**
      * Unserializes a sfValidatorError instance for php 7.4+.
-     *
-     * @param mixed $data
      */
     public function __unserialize($data)
     {
@@ -84,7 +82,7 @@ class sfValidatorError extends Exception implements Serializable
     /**
      * Returns the validator that triggered this error.
      *
-     * @return sfValidatorBase A sfValidatorBase instance
+     * @return \sfValidatorBase A sfValidatorBase instance
      */
     public function getValidator()
     {
@@ -110,7 +108,7 @@ class sfValidatorError extends Exception implements Serializable
                 continue;
             }
 
-            $arguments["%{$key}%"] = htmlspecialchars($value, ENT_QUOTES, sfValidatorBase::getCharset());
+            $arguments["%{$key}%"] = htmlspecialchars($value, ENT_QUOTES, \sfValidatorBase::getCharset());
         }
 
         return $arguments;

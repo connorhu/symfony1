@@ -10,16 +10,16 @@
 
 include dirname(__FILE__).'/../bootstrap/unit.php';
 
-$t = new lime_test(23);
+$t = new \lime_test(23);
 
-$conn = Doctrine_Manager::connection(new Doctrine_Adapter_Mock('mysql'));
+$conn = \Doctrine_Manager::connection(new \Doctrine_Adapter_Mock('mysql'));
 
 /**
  * @internal
  *
  * @coversNothing
  */
-class Test extends sfDoctrineRecord
+class Test extends \sfDoctrineRecord
 {
     public function setUp()
     {
@@ -34,7 +34,7 @@ class Test extends sfDoctrineRecord
     }
 }
 
-class TestRelation extends sfDoctrineRecord
+class TestRelation extends \sfDoctrineRecord
 {
     public function setUp()
     {
@@ -48,13 +48,13 @@ class TestRelation extends sfDoctrineRecord
     }
 }
 
-$column = new sfDoctrineColumn('name', Doctrine_Core::getTable('Test'));
+$column = new \sfDoctrineColumn('name', \Doctrine_Core::getTable('Test'));
 $t->is($column->getName(), 'name');
 $t->is($column->getFieldName(), 'name');
 $t->is($column->getPhpName(), 'name');
 $t->is($column->isNotNull(), true);
 
-$column = new sfDoctrineColumn('test', Doctrine_Core::getTable('Test'));
+$column = new \sfDoctrineColumn('test', \Doctrine_Core::getTable('Test'));
 $t->is($column->getName(), 'test');
 $t->is($column->getFieldName(), 'TEST');
 $t->is($column->getPhpName(), 'TEST');
@@ -68,17 +68,17 @@ $t->is($column->getDefinitionKey('type'), 'string');
 $t->is($column->isNotNull(), false);
 
 // Is not null and has definition key
-$column = new sfDoctrineColumn('email', Doctrine_Core::getTable('Test'));
+$column = new \sfDoctrineColumn('email', \Doctrine_Core::getTable('Test'));
 $t->is($column->isNotNull(), true);
 $t->is($column->hasDefinitionKey('email'), true);
 $t->is($column->getDefinitionKey('email'), true);
 
 // Is primary key
-$column = new sfDoctrineColumn('id', Doctrine_Core::getTable('Test'));
+$column = new \sfDoctrineColumn('id', \Doctrine_Core::getTable('Test'));
 $t->is($column->isPrimaryKey(), true);
 
 // Relation/foreign key functions
-$column = new sfDoctrineColumn('test_id', Doctrine_Core::getTable('TestRelation'));
+$column = new \sfDoctrineColumn('test_id', \Doctrine_Core::getTable('TestRelation'));
 $t->is($column->isForeignKey(), true);
 $t->is($column->getForeignClassName(), 'Test');
 $t->is($column->getForeignTable()->getOption('name'), 'Test');

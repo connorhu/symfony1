@@ -10,19 +10,19 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(76);
+$t = new \lime_test(76);
 
 // ->click()
 $t->diag('->click()');
 
-class myClickBrowser extends sfBrowser
+class myClickBrowser extends \sfBrowser
 {
     public function setHtml($html)
     {
-        $this->dom = new DOMDocument('1.0', 'UTF-8');
+        $this->dom = new \DOMDocument('1.0', 'UTF-8');
         $this->dom->validateOnParse = true;
         $this->dom->loadHTML($html);
-        $this->domCssSelector = new sfDomCssSelector($this->dom);
+        $this->domCssSelector = new \sfDomCssSelector($this->dom);
     }
 
     public function getFiles()
@@ -147,20 +147,20 @@ $html = <<<'EOF'
 </html>
 EOF;
 
-$b = new myClickBrowser();
+$b = new \myClickBrowser();
 $b->setHtml($html);
 
 try {
     $b->click('nonexistantname');
     $t->fail('->click() throws an error if the name does not exist');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->click() throws an error if the name does not exist');
 }
 
 try {
     list($method, $uri, $parameters) = $b->click('submit5');
     $t->pass('->click() clicks on button links');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('->click() clicks on button links');
 }
 
@@ -257,7 +257,7 @@ $t->is($uri, '/myform', '->click() accepts a CSS selector for a submit input');
 try {
     $b->click('#orphaned-input-submit');
     $t->fail('->click() throws an error if a submit is clicked outside a form');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->click() throws an error if a submit is clicked outside a form');
 }
 
@@ -301,7 +301,7 @@ $t->is($parameters['radio1'], 'a', '->select() toggles radiobuttons');
 try {
     $b->deselect('b-radio');
     $t->fail('->deselect() cannot deselect radiobuttons');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->deselect() cannot deselect radiobuttons');
 }
 
@@ -319,8 +319,8 @@ $t->is($b->getDefaultServerArray('HTTPS'), null, '->call() preserve non-secure r
 // file uploads
 $t->diag('file uploads');
 
-$unexistentFilename = sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'unexistent-file-'.md5(getmypid().'-'.microtime());
-$existentFilename = sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'existent-file-'.md5(getmypid().'-'.microtime());
+$unexistentFilename = \sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'unexistent-file-'.md5(getmypid().'-'.microtime());
+$existentFilename = \sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'existent-file-'.md5(getmypid().'-'.microtime());
 file_put_contents($existentFilename, 'test');
 
 list($method, $uri, $parameters) = $b->click('submit', ['myfile' => $unexistentFilename]);

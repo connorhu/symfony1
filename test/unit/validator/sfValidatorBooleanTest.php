@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(23);
+$t = new \lime_test(23);
 
-$v = new sfValidatorBoolean();
+$v = new \sfValidatorBoolean();
 
 // ->clean()
 $t->diag('->clean()');
@@ -43,7 +43,7 @@ class MyFalseClass
         return 'false';
     }
 }
-$t->is($v->clean(new MyFalseClass()), false, '->clean() returns false if the value is false');
+$t->is($v->clean(new \MyFalseClass()), false, '->clean() returns false if the value is false');
 
 // required is false by default
 $t->is($v->clean(null), false, '->clean() returns false if the value is null');
@@ -52,7 +52,7 @@ try {
     $v->clean('astring');
     $t->fail('->clean() throws an error if the input value is not a true or a false value');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an error if the input value is not a true or a false value');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }

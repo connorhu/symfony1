@@ -12,14 +12,14 @@
 /**
  * sfMySQLiDatabase provides connectivity for the MySQL brand database.
  *
- * @see sfMySQLDatabase
+ * @see \sfMySQLDatabase
  *
  * @property $connection mysqli
  */
-class sfMySQLiDatabase extends sfMySQLDatabase
+class sfMySQLiDatabase extends \sfMySQLDatabase
 {
     /**
-     * @throws sfDatabaseException
+     * @throws \sfDatabaseException
      */
     public function connect()
     {

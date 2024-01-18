@@ -29,7 +29,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:18:44 EST 2004
  */
-class sfMessageSource_gettext extends sfMessageSource_File
+class sfMessageSource_gettext extends \sfMessageSource_File
 {
     /**
      * Message data filename extension.
@@ -54,7 +54,7 @@ class sfMessageSource_gettext extends sfMessageSource_File
      */
     public function &loadData($filename)
     {
-        $mo = TGettext::factory('MO', $filename);
+        $mo = \TGettext::factory('MO', $filename);
         $mo->load();
         $result = $mo->toArray();
 
@@ -95,10 +95,10 @@ class sfMessageSource_gettext extends sfMessageSource_File
         }
 
         if (false == is_writable($MOFile)) {
-            throw new sfException(sprintf('Unable to save to file %s, file must be writable.', $MOFile));
+            throw new \sfException(sprintf('Unable to save to file %s, file must be writable.', $MOFile));
         }
         if (false == is_writable($POFile)) {
-            throw new sfException(sprintf('Unable to save to file %s, file must be writable.', $POFile));
+            throw new \sfException(sprintf('Unable to save to file %s, file must be writable.', $POFile));
         }
 
         // set the strings as untranslated.
@@ -108,7 +108,7 @@ class sfMessageSource_gettext extends sfMessageSource_File
         }
 
         // load the PO
-        $po = TGettext::factory('PO', $POFile);
+        $po = \TGettext::factory('PO', $POFile);
         $po->load();
         $result = $po->toArray();
 
@@ -157,14 +157,14 @@ class sfMessageSource_gettext extends sfMessageSource_File
         }
 
         if (false == is_writable($MOFile)) {
-            throw new sfException(sprintf('Unable to modify file %s, file must be writable.', $MOFile));
+            throw new \sfException(sprintf('Unable to modify file %s, file must be writable.', $MOFile));
         }
 
         if (false == is_writable($POFile)) {
-            throw new sfException(sprintf('Unable to modify file %s, file must be writable.', $POFile));
+            throw new \sfException(sprintf('Unable to modify file %s, file must be writable.', $POFile));
         }
 
-        $po = TGettext::factory('PO', $POFile);
+        $po = \TGettext::factory('PO', $POFile);
         $po->load();
         $result = $po->toArray();
 
@@ -210,14 +210,14 @@ class sfMessageSource_gettext extends sfMessageSource_File
         }
 
         if (false == is_writable($MOFile)) {
-            throw new sfException(sprintf('Unable to update file %s, file must be writable.', $MOFile));
+            throw new \sfException(sprintf('Unable to update file %s, file must be writable.', $MOFile));
         }
 
         if (false == is_writable($POFile)) {
-            throw new sfException(sprintf('Unable to update file %s, file must be writable.', $POFile));
+            throw new \sfException(sprintf('Unable to update file %s, file must be writable.', $POFile));
         }
 
-        $po = TGettext::factory('PO', $POFile);
+        $po = \TGettext::factory('PO', $POFile);
         $po->load();
         $result = $po->toArray();
 
@@ -295,10 +295,10 @@ class sfMessageSource_gettext extends sfMessageSource_File
         }
 
         if (!is_dir($dir)) {
-            throw new sfException(sprintf('Unable to create directory %s.', $dir));
+            throw new \sfException(sprintf('Unable to create directory %s.', $dir));
         }
 
-        $po = TGettext::factory('PO', $po_file);
+        $po = \TGettext::factory('PO', $po_file);
         $result['meta']['PO-Revision-Date'] = date('Y-m-d H:i:s');
         $result['strings'] = [];
 
@@ -308,6 +308,6 @@ class sfMessageSource_gettext extends sfMessageSource_File
             return [$variant, $mo_file, $po_file];
         }
 
-        throw new sfException(sprintf('Unable to create file %s and %s.', $po_file, $mo_file));
+        throw new \sfException(sprintf('Unable to create file %s and %s.', $po_file, $mo_file));
     }
 }

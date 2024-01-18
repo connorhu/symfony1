@@ -32,7 +32,7 @@ class sfAutoloadAgain
     /**
      * Returns the singleton autoloader.
      *
-     * @return sfAutoloadAgain
+     * @return \sfAutoloadAgain
      */
     public static function getInstance()
     {
@@ -80,7 +80,7 @@ class sfAutoloadAgain
             return class_exists($class, false) || interface_exists($class, false);
         }
 
-        $autoload = sfAutoload::getInstance();
+        $autoload = \sfAutoload::getInstance();
         $autoload->reloadClasses(true);
 
         $this->reloaded = true;

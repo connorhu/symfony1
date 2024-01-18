@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfError404Exception extends sfException
+class sfError404Exception extends \sfException
 {
     /**
      * Forwards to the 404 action.
@@ -24,11 +24,11 @@ class sfError404Exception extends sfException
     {
         $exception = null === $this->wrappedException ? $this : $this->wrappedException;
 
-        if (sfConfig::get('sf_debug')) {
-            $response = sfContext::getInstance()->getResponse();
+        if (\sfConfig::get('sf_debug')) {
+            $response = \sfContext::getInstance()->getResponse();
             if (null === $response) {
-                $response = new sfWebResponse(sfContext::getInstance()->getEventDispatcher());
-                sfContext::getInstance()->setResponse($response);
+                $response = new \sfWebResponse(\sfContext::getInstance()->getEventDispatcher());
+                \sfContext::getInstance()->setResponse($response);
             }
 
             $response->setStatusCode(404);
@@ -37,10 +37,10 @@ class sfError404Exception extends sfException
         }
 
         // log all exceptions in php log
-        if (!sfConfig::get('sf_test')) {
+        if (!\sfConfig::get('sf_test')) {
             error_log($this->getMessage());
         }
 
-        sfContext::getInstance()->getController()->forward(sfConfig::get('sf_error_404_module'), sfConfig::get('sf_error_404_action'));
+        \sfContext::getInstance()->getController()->forward(\sfConfig::get('sf_error_404_module'), \sfConfig::get('sf_error_404_action'));
     }
 }

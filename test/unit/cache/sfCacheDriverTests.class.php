@@ -52,7 +52,7 @@ class sfCacheDriverTests
         $cache->set('bar', $data, 86400);
         sleep(2);
 
-        $cache->clean(sfCache::OLD);
+        $cache->clean(\sfCache::OLD);
         $t->is($cache->has('foo'), false, '->clean() cleans old cache key if given the sfCache::OLD argument');
         $t->is($cache->has('bar'), true, '->clean() cleans old cache key if given the sfCache::OLD argument');
 
@@ -60,7 +60,7 @@ class sfCacheDriverTests
         sleep(2);
         $cache->set('bar', $data, 86400);
 
-        $cache->clean(sfCache::ALL);
+        $cache->clean(\sfCache::ALL);
         $t->is($cache->has('foo'), false, '->clean() cleans all cache key if given the sfCache::ALL argument');
         $t->is($cache->has('bar'), false, '->clean() cleans all cache key if given the sfCache::ALL argument');
 

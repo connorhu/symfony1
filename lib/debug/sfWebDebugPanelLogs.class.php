@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelLogs extends sfWebDebugPanel
+class sfWebDebugPanelLogs extends \sfWebDebugPanel
 {
     public function getTitle()
     {
@@ -29,7 +29,7 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
 
     public function getPanelContent()
     {
-        $event = $this->webDebug->getEventDispatcher()->filter(new sfEvent($this, 'debug.web.filter_logs'), $this->webDebug->getLogger()->getLogs());
+        $event = $this->webDebug->getEventDispatcher()->filter(new \sfEvent($this, 'debug.web.filter_logs'), $this->webDebug->getLogger()->getLogs());
         $logs = $event->getReturnValue();
 
         $html = '<table class="sfWebDebugLogs">
@@ -92,17 +92,17 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
 
         if (!$constants) {
             foreach (['sf_app_dir', 'sf_root_dir', 'sf_symfony_lib_dir'] as $constant) {
-                $constants[realpath(sfConfig::get($constant)).DIRECTORY_SEPARATOR] = $constant.DIRECTORY_SEPARATOR;
+                $constants[realpath(\sfConfig::get($constant)).DIRECTORY_SEPARATOR] = $constant.DIRECTORY_SEPARATOR;
             }
         }
 
         // escape HTML
-        $logLine = htmlspecialchars($logLine, ENT_QUOTES, sfConfig::get('sf_charset'));
+        $logLine = htmlspecialchars($logLine, ENT_QUOTES, \sfConfig::get('sf_charset'));
 
         // replace constants value with constant name
         $logLine = str_replace(array_keys($constants), array_values($constants), $logLine);
 
-        $logLine = sfToolkit::pregtr($logLine, ['/&quot;(.+?)&quot;/s' => '"<span class="sfWebDebugLogInfo">\\1</span>"',
+        $logLine = \sfToolkit::pregtr($logLine, ['/&quot;(.+?)&quot;/s' => '"<span class="sfWebDebugLogInfo">\\1</span>"',
             '/^(.+?)\(\)\:/S' => '<span class="sfWebDebugLogInfo">\\1()</span>:',
             '/line (\d+)$/' => 'line <span class="sfWebDebugLogInfo">\\1</span>']);
 

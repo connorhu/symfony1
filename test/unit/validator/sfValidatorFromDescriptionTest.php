@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(98);
+$t = new \lime_test(98);
 
 $tests = [
     'Integer',
@@ -108,17 +108,17 @@ $tests = [
 ];
 
 foreach ($tests as $test) {
-    $v = new sfValidatorFromDescription($test);
+    $v = new \sfValidatorFromDescription($test);
     $embedValidator = $v->getValidator();
 
     eval('$evaledValidator = '.$v->asPhp().';');
 
     $t->is($evaledValidator->asString(), $v->asString(), sprintf('sfValidatorFromDescription is able to parse "%s"', str_replace("\n", '\n', $test)));
 
-    $v1 = new sfValidatorFromDescription($embedValidator->asString());
+    $v1 = new \sfValidatorFromDescription($embedValidator->asString());
     $embedValidator1 = $v1->getValidator();
 
-    $v2 = new sfValidatorFromDescription($embedValidator1->asString());
+    $v2 = new \sfValidatorFromDescription($embedValidator1->asString());
 
     $t->is($v1->asString(), $v2->asString(), sprintf('sfValidatorFromDescription is able to parse "%s"', str_replace("\n", '\n', $test)));
 }

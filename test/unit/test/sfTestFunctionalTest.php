@@ -10,27 +10,27 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(2);
+$t = new \lime_test(2);
 
-class mockBrowser extends sfBrowser
+class mockBrowser extends \sfBrowser
 {
     public function setResponseContent($content)
     {
-        $this->dom = new DOMDocument('1.0');
+        $this->dom = new \DOMDocument('1.0');
         $this->dom->validateOnParse = true;
         @$this->dom->loadHTML($content);
-        $this->domCssSelector = new sfDomCssSelector($this->dom);
+        $this->domCssSelector = new \sfDomCssSelector($this->dom);
     }
 }
 
-class mockLime extends lime_test
+class mockLime extends \lime_test
 {
     public function __destruct()
     {
     }
 }
 
-class mockTestFunctional extends sfTestFunctional
+class mockTestFunctional extends \sfTestFunctional
 {
     public $called = [];
 
@@ -50,16 +50,16 @@ $html = <<<'HTML'
 </html>
 HTML;
 
-$browser = new mockBrowser();
+$browser = new \mockBrowser();
 $browser->setResponseContent($html);
 
-$lime = new mockLime();
-$tester = new mockTestFunctional($browser, $lime);
+$lime = new \mockLime();
+$tester = new \mockTestFunctional($browser, $lime);
 
 try {
     $tester->click('a.clickme');
     $t->pass('->click() accepts a CSS selector');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->diag($e->getMessage());
     $t->fail('->click() accepts a CSS selector');
 }

@@ -20,7 +20,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfUser implements ArrayAccess
+class sfUser implements \ArrayAccess
 {
     /**
      * The namespace under which attributes will be stored.
@@ -31,14 +31,14 @@ class sfUser implements ArrayAccess
 
     protected $options = [];
 
-    /** @var sfNamespacedParameterHolder */
+    /** @var \sfNamespacedParameterHolder */
     protected $attributeHolder;
     protected $culture;
 
-    /** @var sfStorage */
+    /** @var \sfStorage */
     protected $storage;
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
     /**
@@ -48,7 +48,7 @@ class sfUser implements ArrayAccess
      *
      * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfStorage $storage, $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, \sfStorage $storage, $options = [])
     {
         $this->initialize($dispatcher, $storage, $options);
 
@@ -65,13 +65,13 @@ class sfUser implements ArrayAccess
      *
      * @return mixed The returned value of the called method
      *
-     * @throws sfException If the calls fails
+     * @throws \sfException If the calls fails
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'user.method_not_found', ['method' => $method, 'arguments' => $arguments]));
+        $event = $this->dispatcher->notifyUntil(new \sfEvent($this, 'user.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
-            throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+            throw new \sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
 
         return $event->getReturnValue();
@@ -88,11 +88,11 @@ class sfUser implements ArrayAccess
      *  * use_flash:       Whether to enable flash usage (false by default)
      *  * logging:         Whether to enable logging (false by default)
      *
-     * @param sfEventDispatcher $dispatcher an sfEventDispatcher instance
-     * @param sfStorage         $storage    an sfStorage instance
-     * @param array             $options    an associative array of options
+     * @param \sfEventDispatcher $dispatcher an sfEventDispatcher instance
+     * @param \sfStorage         $storage    an sfStorage instance
+     * @param array              $options    an associative array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, \sfStorage $storage, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->storage = $storage;
@@ -105,7 +105,7 @@ class sfUser implements ArrayAccess
             'logging' => false,
         ], $options);
 
-        $this->attributeHolder = new sfNamespacedParameterHolder(self::ATTRIBUTE_NAMESPACE);
+        $this->attributeHolder = new \sfNamespacedParameterHolder(self::ATTRIBUTE_NAMESPACE);
 
         // read attributes from storage
         $attributes = $storage->read(self::ATTRIBUTE_NAMESPACE);
@@ -125,7 +125,7 @@ class sfUser implements ArrayAccess
         // flag current flash to be removed at shutdown
         if ($this->options['use_flash'] && $names = $this->attributeHolder->getNames('symfony/user/sfUser/flash')) {
             if ($this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Flag old flash messages ("%s")', implode('", "', $names))]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Flag old flash messages ("%s")', implode('", "', $names))]));
             }
 
             foreach ($names as $name) {
@@ -154,7 +154,7 @@ class sfUser implements ArrayAccess
         if ($this->culture != $culture) {
             $this->culture = $culture;
 
-            $this->dispatcher->notify(new sfEvent($this, 'user.change_culture', ['culture' => $culture]));
+            $this->dispatcher->notify(new \sfEvent($this, 'user.change_culture', ['culture' => $culture]));
         }
     }
 
@@ -301,7 +301,7 @@ class sfUser implements ArrayAccess
         // remove flash that are tagged to be removed
         if ($this->options['use_flash'] && $names = $this->attributeHolder->getNames('symfony/user/sfUser/flash/remove')) {
             if ($this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Remove old flash messages ("%s")', implode('", "', $names))]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Remove old flash messages ("%s")', implode('", "', $names))]));
             }
 
             foreach ($names as $name) {

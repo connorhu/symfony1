@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfServiceContainerDumperPhp extends sfServiceContainerDumper
+class sfServiceContainerDumperPhp extends \sfServiceContainerDumper
 {
     /**
      * Dumps the service container as a PHP class.
@@ -50,8 +50,8 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
     }
 
     /**
-     * @param string              $id
-     * @param sfServiceDefinition $definition
+     * @param string               $id
+     * @param \sfServiceDefinition $definition
      *
      * @return string
      */
@@ -63,8 +63,8 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
     }
 
     /**
-     * @param string              $id
-     * @param sfServiceDefinition $definition
+     * @param string               $id
+     * @param \sfServiceDefinition $definition
      *
      * @return string
      */
@@ -80,8 +80,8 @@ EOF;
     }
 
     /**
-     * @param string              $id
-     * @param sfServiceDefinition $definition
+     * @param string               $id
+     * @param \sfServiceDefinition $definition
      *
      * @return string
      */
@@ -105,8 +105,8 @@ EOF;
     }
 
     /**
-     * @param string              $id
-     * @param sfServiceDefinition $definition
+     * @param string               $id
+     * @param \sfServiceDefinition $definition
      *
      * @return string
      */
@@ -131,8 +131,8 @@ EOF;
     }
 
     /**
-     * @param string              $id
-     * @param sfServiceDefinition $definition
+     * @param string               $id
+     * @param \sfServiceDefinition $definition
      *
      * @return string
      */
@@ -152,8 +152,8 @@ EOF;
     }
 
     /**
-     * @param string              $id
-     * @param sfServiceDefinition $definition
+     * @param string               $id
+     * @param \sfServiceDefinition $definition
      *
      * @return string
      */
@@ -164,7 +164,7 @@ EOF;
         }
 
         if (is_array($callable)) {
-            if (is_object($callable[0]) && $callable[0] instanceof sfServiceReference) {
+            if (is_object($callable[0]) && $callable[0] instanceof \sfServiceReference) {
                 return sprintf("    %s->%s(\$instance);\n", $this->getServiceCall((string) $callable[0]), $callable[1]);
             }
 
@@ -176,7 +176,7 @@ EOF;
 
     protected function addService($id, $definition)
     {
-        $name = sfServiceContainer::camelize($id);
+        $name = \sfServiceContainer::camelize($id);
 
         $code = <<<EOF
 
@@ -198,7 +198,7 @@ EOF;
 
     protected function addServiceAlias($alias, $id)
     {
-        $name = sfServiceContainer::camelize($alias);
+        $name = \sfServiceContainer::camelize($alias);
 
         return <<<EOF
 
@@ -274,9 +274,9 @@ EOF;
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $value = $this->exportParameters($value, $indent + 2);
-            } elseif ($value instanceof sfServiceReference) {
+            } elseif ($value instanceof \sfServiceReference) {
                 $value = sprintf("new sfServiceReference('%s')", $value);
-            } elseif ($value instanceof sfServiceParameter) {
+            } elseif ($value instanceof \sfServiceParameter) {
                 $value = sprintf("\$this->getParameter('%s')", $value);
             } else {
                 $value = var_export($value, true);
@@ -306,10 +306,10 @@ EOF;
 
             return sprintf('array(%s)', implode(', ', $code));
         }
-        if (is_object($value) && $value instanceof sfServiceReference) {
+        if (is_object($value) && $value instanceof \sfServiceReference) {
             return $this->getServiceCall((string) $value);
         }
-        if (is_object($value) && $value instanceof sfServiceParameter) {
+        if (is_object($value) && $value instanceof \sfServiceParameter) {
             return sprintf("\$this->getParameter('%s')", strtolower($value));
         }
         if (is_string($value)) {
@@ -325,7 +325,7 @@ EOF;
             return preg_replace(["/^''\\./", "/\\.''$/", "/\\.''\\./"], ['', '', '.'], $code);
         }
         if (is_object($value) || is_resource($value)) {
-            throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
+            throw new \RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
         }
 
         return var_export($value, true);

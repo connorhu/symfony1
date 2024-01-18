@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceCurrency extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -30,7 +30,7 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -43,7 +43,7 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
         // populate choices with all currencies
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
 
-        $currencies = sfCultureInfo::getInstance($culture)->getCurrencies(isset($options['currencies']) ? $options['currencies'] : null);
+        $currencies = \sfCultureInfo::getInstance($culture)->getCurrencies(isset($options['currencies']) ? $options['currencies'] : null);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {

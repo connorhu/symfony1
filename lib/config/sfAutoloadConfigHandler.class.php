@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfAutoloadConfigHandler extends sfYamlConfigHandler
+class sfAutoloadConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -24,8 +24,8 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -84,11 +84,11 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
-        $configuration = sfProjectConfiguration::getActive();
+        $configuration = \sfProjectConfiguration::getActive();
 
         $pluginPaths = $configuration->getPluginPaths();
         $pluginConfigFiles = [];
@@ -113,7 +113,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
             }
         }
 
-        $event = $configuration->getEventDispatcher()->filter(new sfEvent(__CLASS__, 'autoload.filter_config'), $config);
+        $event = $configuration->getEventDispatcher()->filter(new \sfEvent(__CLASS__, 'autoload.filter_config'), $config);
         $config = $event->getReturnValue();
 
         return $config;
@@ -140,8 +140,8 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
                 $path = $entry['path'];
 
                 // we automatically add our php classes
-                require_once sfConfig::get('sf_symfony_lib_dir').'/util/sfFinder.class.php';
-                $finder = sfFinder::type('file')->name('*'.$ext)->follow_link();
+                require_once \sfConfig::get('sf_symfony_lib_dir').'/util/sfFinder.class.php';
+                $finder = \sfFinder::type('file')->name('*'.$ext)->follow_link();
 
                 // recursive mapping?
                 $recursive = isset($entry['recursive']) ? $entry['recursive'] : false;

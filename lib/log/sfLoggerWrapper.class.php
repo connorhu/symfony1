@@ -15,17 +15,17 @@
  *
  * @version    SVN: $Id$
  */
-class sfLoggerWrapper extends sfLogger
+class sfLoggerWrapper extends \sfLogger
 {
-    /** @var sfLoggerInterface */
+    /** @var \sfLoggerInterface */
     protected $logger;
 
     /**
      * Creates a new logger wrapper.
      *
-     * @param sfLoggerInterface $logger The wrapped logger
+     * @param \sfLoggerInterface $logger The wrapped logger
      */
-    public function __construct(sfLoggerInterface $logger)
+    public function __construct(\sfLoggerInterface $logger)
     {
         $this->logger = $logger;
     }

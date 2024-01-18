@@ -15,10 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectClearControllersTask extends sfBaseTask
+class sfProjectClearControllersTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
@@ -55,15 +55,12 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $finder = sfFinder::type('file')->maxdepth(1)->name('*.php');
-        foreach ($finder->in(sfConfig::get('sf_web_dir')) as $controller) {
+        $finder = \sfFinder::type('file')->maxdepth(1)->name('*.php');
+        foreach ($finder->in(\sfConfig::get('sf_web_dir')) as $controller) {
             $content = file_get_contents($controller);
 
             if (preg_match('/ProjectConfiguration::getApplicationConfiguration\(\'(.*?)\', \'(.*?)\'/', $content, $match)) {

@@ -18,7 +18,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfCompileConfigHandler extends sfYamlConfigHandler
+class sfCompileConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -27,8 +27,8 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -42,18 +42,18 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
         foreach ($config as $file) {
             if (!is_readable($file)) {
                 // file doesn't exist
-                throw new sfParseException(sprintf('Configuration file "%s" specifies nonexistent or unreadable file "%s".', $configFiles[0], $file));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies nonexistent or unreadable file "%s".', $configFiles[0], $file));
             }
 
             $contents = file_get_contents($file);
 
             // strip comments (not in debug mode)
-            if (!sfConfig::get('sf_debug')) {
-                $contents = sfToolkit::stripComments($contents);
+            if (!\sfConfig::get('sf_debug')) {
+                $contents = \sfToolkit::stripComments($contents);
             }
 
             // strip php tags
-            $contents = sfToolkit::pregtr($contents, ['/^\s*<\?(php\s*)?/m' => '', '/^\s*\?>/m' => '']);
+            $contents = \sfToolkit::pregtr($contents, ['/^\s*<\?(php\s*)?/m' => '', '/^\s*\?>/m' => '']);
 
             // replace windows and mac format with unix format
             $contents = str_replace("\r", "\n", $contents);
@@ -77,7 +77,7 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

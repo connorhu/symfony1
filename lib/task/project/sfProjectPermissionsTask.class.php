@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectPermissionsTask extends sfBaseTask
+class sfProjectPermissionsTask extends \sfBaseTask
 {
     protected $current;
     protected $failed = [];
@@ -25,11 +25,7 @@ class sfProjectPermissionsTask extends sfBaseTask
      *
      * @see http://www.php.net/set_error_handler
      *
-     * @param mixed|null $context
-     * @param mixed      $no
-     * @param mixed      $string
-     * @param mixed      $file
-     * @param mixed      $line
+     * @param \mixed|null $context
      */
     public function handleError($no, $string, $file, $line, $context = null)
     {
@@ -37,7 +33,7 @@ class sfProjectPermissionsTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
@@ -53,29 +49,26 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        if (file_exists(sfConfig::get('sf_upload_dir'))) {
-            $this->chmod(sfConfig::get('sf_upload_dir'), 0777);
+        if (file_exists(\sfConfig::get('sf_upload_dir'))) {
+            $this->chmod(\sfConfig::get('sf_upload_dir'), 0777);
         }
 
-        $this->chmod(sfConfig::get('sf_cache_dir'), 0777);
-        $this->chmod(sfConfig::get('sf_log_dir'), 0777);
-        $this->chmod(sfConfig::get('sf_root_dir').'/symfony', 0777);
+        $this->chmod(\sfConfig::get('sf_cache_dir'), 0777);
+        $this->chmod(\sfConfig::get('sf_log_dir'), 0777);
+        $this->chmod(\sfConfig::get('sf_root_dir').'/symfony', 0777);
 
         $dirs = [
-            sfConfig::get('sf_cache_dir'),
-            sfConfig::get('sf_log_dir'),
-            sfConfig::get('sf_upload_dir'),
+            \sfConfig::get('sf_cache_dir'),
+            \sfConfig::get('sf_log_dir'),
+            \sfConfig::get('sf_upload_dir'),
         ];
 
-        $dirFinder = sfFinder::type('dir');
-        $fileFinder = sfFinder::type('file');
+        $dirFinder = \sfFinder::type('dir');
+        $fileFinder = \sfFinder::type('file');
 
         foreach ($dirs as $dir) {
             $this->chmod($dirFinder->in($dir), 0777);
@@ -86,7 +79,7 @@ EOF;
         if (count($this->failed)) {
             $this->logBlock(array_merge(
                 ['Permissions on the following file(s) could not be fixed:', ''],
-                array_map(function ($f) { return ' - '.sfDebug::shortenFilePath($f); }, $this->failed)
+                array_map(function ($f) { return ' - '.\sfDebug::shortenFilePath($f); }, $this->failed)
             ), 'ERROR_LARGE');
         }
     }
@@ -98,7 +91,7 @@ EOF;
      * @param int    $mode
      * @param int    $umask
      *
-     * @see sfFilesystem
+     * @see \sfFilesystem
      */
     protected function chmod($file, $mode, $umask = 0000)
     {

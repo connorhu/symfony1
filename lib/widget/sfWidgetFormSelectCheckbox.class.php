@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
+class sfWidgetFormSelectCheckbox extends \sfWidgetFormChoiceBase
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -80,7 +80,7 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoiceBase
+     * @see \sfWidgetFormChoiceBase
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorI18nChoiceCountry extends sfValidatorChoice
+class sfValidatorI18nChoiceCountry extends \sfValidatorChoice
 {
     /**
      * Configures the current validator.
@@ -27,7 +27,7 @@ class sfValidatorI18nChoiceCountry extends sfValidatorChoice
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorChoice
+     * @see \sfValidatorChoice
      */
     protected function configure($options = [], $messages = [])
     {
@@ -36,12 +36,12 @@ class sfValidatorI18nChoiceCountry extends sfValidatorChoice
         $this->addOption('countries');
 
         // populate choices with all countries
-        $countries = array_keys(sfCultureInfo::getInstance()->getCountries());
+        $countries = array_keys(\sfCultureInfo::getInstance()->getCountries());
 
         // restrict countries to a sub-set
         if (isset($options['countries'])) {
             if ($problems = array_diff($options['countries'], $countries)) {
-                throw new InvalidArgumentException(sprintf('The following countries do not exist: %s.', implode(', ', $problems)));
+                throw new \InvalidArgumentException(sprintf('The following countries do not exist: %s.', implode(', ', $problems)));
             }
 
             $countries = $options['countries'];

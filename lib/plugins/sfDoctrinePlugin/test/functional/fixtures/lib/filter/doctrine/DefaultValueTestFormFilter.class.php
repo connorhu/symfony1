@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class DefaultValueTestFormFilter extends BaseDefaultValueTestFormFilter
+class DefaultValueTestFormFilter extends \BaseDefaultValueTestFormFilter
 {
     public function configure()
     {

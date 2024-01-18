@@ -17,20 +17,20 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginUninstallTask extends sfPluginBaseTask
+class sfPluginUninstallTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The plugin name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
-            new sfCommandOption('install_deps', 'd', sfCommandOption::PARAMETER_NONE, 'Whether to force installation of dependencies', null),
+            new \sfCommandOption('channel', 'c', \sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
+            new \sfCommandOption('install_deps', 'd', \sfCommandOption::PARAMETER_NONE, 'Whether to force installation of dependencies', null),
         ]);
 
         $this->namespace = 'plugin';
@@ -65,10 +65,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {

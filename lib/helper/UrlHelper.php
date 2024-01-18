@@ -14,11 +14,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * @version    SVN: $Id$
- *
- * @param mixed $name
- * @param mixed $routeName
- * @param mixed $params
- * @param mixed $options
  */
 
 /**
@@ -33,10 +28,6 @@ function link_to2($name, $routeName, $params, $options = [])
 
 /**
  * @ignore
- *
- * @param mixed $name
- * @param mixed $internal_uri
- * @param mixed $options
  */
 function link_to1($name, $internal_uri, $options = [])
 {
@@ -70,7 +61,7 @@ function link_to1($name, $internal_uri, $options = [])
         if (method_exists($name, '__toString')) {
             $name = $name->__toString();
         } else {
-            throw new sfException(sprintf('Object of class "%s" cannot be converted to string (Please create a __toString() method).', get_class($name)));
+            throw new \sfException(sprintf('Object of class "%s" cannot be converted to string (Please create a __toString() method).', get_class($name)));
         }
     }
 
@@ -83,10 +74,6 @@ function link_to1($name, $internal_uri, $options = [])
 
 /**
  * @ignore
- *
- * @param mixed $routeName
- * @param mixed $params
- * @param mixed $absolute
  */
 function url_for2($routeName, $params = [], $absolute = false)
 {
@@ -97,13 +84,10 @@ function url_for2($routeName, $params = [], $absolute = false)
 
 /**
  * @ignore
- *
- * @param mixed $internal_uri
- * @param mixed $absolute
  */
 function url_for1($internal_uri, $absolute = false)
 {
-    return sfContext::getInstance()->getController()->genUrl($internal_uri, $absolute);
+    return \sfContext::getInstance()->getController()->genUrl($internal_uri, $absolute);
 }
 
 /**
@@ -168,7 +152,7 @@ function url_for()
  *
  * @return string XHTML compliant <a href> tag
  *
- * @see    url_for
+ * @see    \url_for
  */
 function link_to()
 {
@@ -185,7 +169,7 @@ function link_to()
     return call_user_func_array('link_to2', $arguments);
 }
 
-function url_for_form(sfFormObject $form, $routePrefix)
+function url_for_form(\sfFormObject $form, $routePrefix)
 {
     $format = '%s/%s';
     if ('@' == $routePrefix[0]) {
@@ -198,7 +182,7 @@ function url_for_form(sfFormObject $form, $routePrefix)
     return url_for($uri, $form->getObject());
 }
 
-function form_tag_for(sfForm $form, $routePrefix, $attributes = [])
+function form_tag_for(\sfForm $form, $routePrefix, $attributes = [])
 {
     return $form->renderFormTag(url_for_form($form, $routePrefix), $attributes);
 }
@@ -228,7 +212,7 @@ function form_tag_for(sfForm $form, $routePrefix, $attributes = [])
  *
  * @return string XHTML compliant <a href> tag or name
  *
- * @see    link_to
+ * @see    \link_to
  */
 function link_to_if()
 {
@@ -279,7 +263,7 @@ function link_to_if()
  *
  * @return string XHTML compliant <a href> tag or name
  *
- * @see    link_to
+ * @see    \link_to
  */
 function link_to_unless()
 {
@@ -295,11 +279,11 @@ function link_to_unless()
  * @param string $path     The route to append
  * @param bool   $absolute If true, an absolute path is returned (optional)
  *
- * @return The web URL root
+ * @return \The web URL root
  */
 function public_path($path, $absolute = false)
 {
-    $request = sfContext::getInstance()->getRequest();
+    $request = \sfContext::getInstance()->getRequest();
     $root = $request->getRelativeUrlRoot();
 
     if ($absolute) {
@@ -353,7 +337,7 @@ function button_to($name, $internal_uri, $options = [])
 
     if (isset($html_options['post']) && $html_options['post']) {
         if (isset($html_options['popup'])) {
-            throw new sfConfigurationException('You can\'t use "popup" and "post" together.');
+            throw new \sfConfigurationException('You can\'t use "popup" and "post" together.');
         }
         $html_options['type'] = 'submit';
         unset($html_options['post']);
@@ -456,7 +440,7 @@ function form_tag($url_for_options = '', $options = [])
  *
  * @return string XHTML compliant <a href> tag
  *
- * @see    link_to
+ * @see    \link_to
  */
 function mail_to($email, $name = '', $options = [], $default_value = [])
 {
@@ -504,7 +488,7 @@ function _convert_options_to_javascript($html_options, $url = 'this.href')
     $onclick = isset($html_options['onclick']) ? $html_options['onclick'] : '';
 
     if ($popup && $method) {
-        throw new sfConfigurationException('You can\'t use "popup", "method" and "post" in the same link.');
+        throw new \sfConfigurationException('You can\'t use "popup", "method" and "post" in the same link.');
     }
     if ($confirm && $popup) {
         $html_options['onclick'] = $onclick.'if ('._confirm_javascript_function($confirm).') { '._popup_javascript_function($popup, $url).' };return false;';
@@ -558,7 +542,7 @@ function _method_javascript_function($method)
     }
 
     // CSRF protection
-    $form = new BaseForm();
+    $form = new \BaseForm();
     if ($form->isCSRFProtected()) {
         $function .= "var m = document.createElement('input'); m.setAttribute('type', 'hidden'); ";
         $function .= sprintf("m.setAttribute('name', '%s'); m.setAttribute('value', '%s'); f.appendChild(m);", $form->getCSRFFieldName(), $form->getCSRFToken());

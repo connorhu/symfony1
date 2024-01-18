@@ -1,9 +1,9 @@
 <?php
 
 require_once dirname(__FILE__).'/../../../../../../autoload/sfCoreAutoload.class.php';
-sfCoreAutoload::register();
+\sfCoreAutoload::register();
 
-class ProjectConfiguration extends sfProjectConfiguration
+class ProjectConfiguration extends \sfProjectConfiguration
 {
     public function setup()
     {
@@ -16,9 +16,9 @@ class ProjectConfiguration extends sfProjectConfiguration
 
     public function initializeDoctrine()
     {
-        chdir(sfConfig::get('sf_root_dir'));
+        chdir(\sfConfig::get('sf_root_dir'));
 
-        $task = new sfDoctrineBuildTask($this->dispatcher, new sfFormatter());
+        $task = new \sfDoctrineBuildTask($this->dispatcher, new \sfFormatter());
         $task->setConfiguration($this);
         $task->run([], [
             'no-confirmation' => true,
@@ -31,35 +31,35 @@ class ProjectConfiguration extends sfProjectConfiguration
 
     public function loadFixtures($fixtures)
     {
-        $path = sfConfig::get('sf_data_dir').'/'.$fixtures;
+        $path = \sfConfig::get('sf_data_dir').'/'.$fixtures;
         if (!file_exists($path)) {
-            throw new sfException('Invalid data fixtures file');
+            throw new \sfException('Invalid data fixtures file');
         }
-        chdir(sfConfig::get('sf_root_dir'));
-        $task = new sfDoctrineDataLoadTask($this->dispatcher, new sfFormatter());
+        chdir(\sfConfig::get('sf_root_dir'));
+        $task = new \sfDoctrineDataLoadTask($this->dispatcher, new \sfFormatter());
         $task->setConfiguration($this);
         $task->run([$path]);
     }
 
-    public function configureDoctrine(sfEvent $event)
+    public function configureDoctrine(\sfEvent $event)
     {
         $manager = $event->getSubject();
-        $manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, true);
+        $manager->setAttribute(\Doctrine_Core::ATTR_VALIDATE, true);
     }
 
-    public function configureDoctrineModelBuilder(sfEvent $event, $options)
+    public function configureDoctrineModelBuilder(\sfEvent $event, $options)
     {
         $options['baseClassName'] = 'myDoctrineRecord';
 
         return $options;
     }
 
-    public function configureDoctrineConnection(sfEvent $event)
+    public function configureDoctrineConnection(\sfEvent $event)
     {
         $parameters = $event->getParameters();
 
         if ('doctrine2' === $parameters['connection']->getName()) {
-            $parameters['connection']->setAttribute(Doctrine_Core::ATTR_VALIDATE, false);
+            $parameters['connection']->setAttribute(\Doctrine_Core::ATTR_VALIDATE, false);
         }
     }
 }

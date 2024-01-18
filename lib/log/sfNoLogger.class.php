@@ -15,15 +15,15 @@
  *
  * @version    SVN: $Id$
  */
-class sfNoLogger extends sfLogger
+class sfNoLogger extends \sfLogger
 {
     /**
      * Initializes this logger.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
     }
 

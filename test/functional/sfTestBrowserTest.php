@@ -13,17 +13,17 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-class TestBrowser extends sfTestBrowser
+class TestBrowser extends \sfTestBrowser
 {
     public $events = [];
 
-    public function listen(sfEvent $event)
+    public function listen(\sfEvent $event)
     {
         $this->events[] = $event;
     }
 }
 
-$b = new TestBrowser();
+$b = new \TestBrowser();
 $b->addListener('context.load_factories', [$b, 'listen']);
 
 // listeners
@@ -106,7 +106,7 @@ $b->
 try {
     $b->with('response')->checkElement('h1', 'text');
     $b->test()->fail('The DOM is not accessible if the response content type is not HTML');
-} catch (LogicException $e) {
+} catch (\LogicException $e) {
     $b->test()->pass('The DOM is not accessible if the response content type is not HTML');
 }
 

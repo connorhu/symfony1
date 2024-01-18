@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfAnsiColorFormatter extends sfFormatter
+class sfAnsiColorFormatter extends \sfFormatter
 {
     protected $styles = [
         'ERROR' => ['bg' => 'red', 'fg' => 'white', 'bold' => true],

@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nModuleExtract extends sfI18nExtract
+class sfI18nModuleExtract extends \sfI18nExtract
 {
     protected $module = '';
 
@@ -23,7 +23,7 @@ class sfI18nModuleExtract extends sfI18nExtract
     public function configure()
     {
         if (!isset($this->parameters['module'])) {
-            throw new sfException('You must give a "module" parameter when extracting for a module.');
+            throw new \sfException('You must give a "module" parameter when extracting for a module.');
         }
 
         $this->module = $this->parameters['module'];
@@ -41,7 +41,7 @@ class sfI18nModuleExtract extends sfI18nExtract
     public function extract()
     {
         // Extract from PHP files to find __() calls in actions/ lib/ and templates/ directories
-        $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$this->module;
+        $moduleDir = \sfConfig::get('sf_app_module_dir').'/'.$this->module;
         $this->extractFromPhpFiles([
             $moduleDir.'/actions',
             $moduleDir.'/lib',
@@ -51,7 +51,7 @@ class sfI18nModuleExtract extends sfI18nExtract
         // Extract from generator.yml files
         $generator = $moduleDir.'/config/generator.yml';
         if (file_exists($generator)) {
-            $yamlExtractor = new sfI18nYamlGeneratorExtractor();
+            $yamlExtractor = new \sfI18nYamlGeneratorExtractor();
             $this->updateMessages($yamlExtractor->extract(file_get_contents($generator)));
         }
 
@@ -59,7 +59,7 @@ class sfI18nModuleExtract extends sfI18nExtract
         $validateFiles = glob($moduleDir.'/validate/*.yml');
         if (is_array($validateFiles)) {
             foreach ($validateFiles as $validateFile) {
-                $yamlExtractor = new sfI18nYamlValidateExtractor();
+                $yamlExtractor = new \sfI18nYamlValidateExtractor();
                 $this->updateMessages($yamlExtractor->extract(file_get_contents($validateFile)));
             }
         }

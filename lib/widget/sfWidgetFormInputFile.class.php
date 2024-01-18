@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputFile extends sfWidgetFormInput
+class sfWidgetFormInputFile extends \sfWidgetFormInput
 {
     /**
      * Configures the current widget.
@@ -23,7 +23,7 @@ class sfWidgetFormInputFile extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -1,6 +1,6 @@
 <?php
 
-class I18nCustomCatalogueForm extends I18nForm
+class I18nCustomCatalogueForm extends \I18nForm
 {
     public function configure()
     {

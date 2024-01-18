@@ -20,7 +20,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPDOSessionStorage extends sfDatabaseSessionStorage
+class sfPDOSessionStorage extends \sfDatabaseSessionStorage
 {
     /**
      * Destroys a session.
@@ -42,10 +42,10 @@ class sfPDOSessionStorage extends sfDatabaseSessionStorage
 
         try {
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(1, $id, PDO::PARAM_STR);
+            $stmt->bindParam(1, $id, \PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException $e) {
-            throw new sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
+        } catch (\PDOException $e) {
+            throw new \sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
         }
 
         return true;
@@ -71,8 +71,8 @@ class sfPDOSessionStorage extends sfDatabaseSessionStorage
 
         try {
             $this->db->query($sql);
-        } catch (PDOException $e) {
-            throw new sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
+        } catch (\PDOException $e) {
+            throw new \sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
         }
 
         return true;
@@ -99,12 +99,12 @@ class sfPDOSessionStorage extends sfDatabaseSessionStorage
             $sql = 'SELECT '.$db_data_col.' FROM '.$db_table.' WHERE '.$db_id_col.'=?';
 
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(1, $id, PDO::PARAM_STR, 255);
+            $stmt->bindParam(1, $id, \PDO::PARAM_STR, 255);
 
             $stmt->execute();
             // it is recommended to use fetchAll so that PDO can close the DB cursor
             // we anyway expect either no rows, or one row with one column. fetchColumn, seems to be buggy #4777
-            $sessionRows = $stmt->fetchAll(PDO::FETCH_NUM);
+            $sessionRows = $stmt->fetchAll(\PDO::FETCH_NUM);
             if (1 == count($sessionRows)) {
                 return is_resource($sessionRows[0][0]) ? stream_get_contents($sessionRows[0][0]) : $sessionRows[0][0];
             }
@@ -113,14 +113,14 @@ class sfPDOSessionStorage extends sfDatabaseSessionStorage
             $sql = 'INSERT INTO '.$db_table.'('.$db_id_col.', '.$db_data_col.', '.$db_time_col.') VALUES (?, ?, ?)';
 
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(1, $id, PDO::PARAM_STR);
-            $stmt->bindValue(2, '', PDO::PARAM_STR);
-            $stmt->bindValue(3, time(), PDO::PARAM_INT);
+            $stmt->bindParam(1, $id, \PDO::PARAM_STR);
+            $stmt->bindValue(2, '', \PDO::PARAM_STR);
+            $stmt->bindValue(3, time(), \PDO::PARAM_INT);
             $stmt->execute();
 
             return '';
-        } catch (PDOException $e) {
-            throw new sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
+        } catch (\PDOException $e) {
+            throw new \sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
         }
     }
 
@@ -146,11 +146,11 @@ class sfPDOSessionStorage extends sfDatabaseSessionStorage
 
         try {
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(1, $data, PDO::PARAM_STR);
-            $stmt->bindParam(2, $id, PDO::PARAM_STR);
+            $stmt->bindParam(1, $data, \PDO::PARAM_STR);
+            $stmt->bindParam(2, $id, \PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException $e) {
-            throw new sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
+        } catch (\PDOException $e) {
+            throw new \sfDatabaseException(sprintf('PDOException was thrown when trying to manipulate session data. Message: %s', $e->getMessage()));
         }
 
         return true;

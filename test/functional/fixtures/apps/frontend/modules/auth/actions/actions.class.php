@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class authActions extends sfActions
+class authActions extends \sfActions
 {
     public function executeBasic()
     {

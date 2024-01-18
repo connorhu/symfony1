@@ -89,17 +89,17 @@ $invalidPrivateV6Ips = [
     'fdc6:c46b:bb8f:7d4c:0000:8a2e:0370:7334',
 ];
 
-$t = new lime_test(180, new lime_output_color());
+$t = new \lime_test(180, new \lime_output_color());
 
 $t->diag('testing against empty IP');
 
-$v = new sfValidatorIp(['required' => false]);
+$v = new \sfValidatorIp(['required' => false]);
 
 foreach ([null, ''] as $ip) {
     try {
         $v->clean($ip);
         $t->pass('Empty IP is considered as valid');
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->fail('Empty IP is considered as valid');
     }
 }
@@ -109,19 +109,19 @@ foreach (array_merge($validV4Ips, $validV6Ips) as $ip) {
     try {
         $v->clean($ip);
         $t->pass(sprintf('%s is considered as valid ip', $ip));
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->fail(sprintf('%s is considered as valid ip', $ip));
     }
 }
 
-foreach ([sfValidatorIp::IP_V4 => $validV4Ips, sfValidatorIp::IP_V6 => $validV6Ips] as $version => $ips) {
+foreach ([\sfValidatorIp::IP_V4 => $validV4Ips, \sfValidatorIp::IP_V6 => $validV6Ips] as $version => $ips) {
     $t->diag('testing against valid IP V'.$version);
     $v->setOption('version', $version);
     foreach ($ips as $ip) {
         try {
             $v->clean($ip);
             $t->pass(sprintf('%s is considered as valid ip', $ip));
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $t->fail(sprintf('%s is considered as valid ip', $ip));
         }
     }
@@ -132,58 +132,58 @@ foreach (array_merge($invalidV4Ips, $invalidV6Ips) as $ip) {
     try {
         $v->clean($ip);
         $t->fail(sprintf('%s is not considered as valid ip', $ip));
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass(sprintf('%s is not considered as valid ip', $ip));
     }
 }
 
-foreach ([sfValidatorIp::IP_V4 => $invalidV4Ips, sfValidatorIp::IP_V6 => $invalidV6Ips] as $version => $ips) {
+foreach ([\sfValidatorIp::IP_V4 => $invalidV4Ips, \sfValidatorIp::IP_V6 => $invalidV6Ips] as $version => $ips) {
     $t->diag('testing against invalid IP V'.$version);
     $v->setOption('version', $version);
     foreach ($ips as $ip) {
         try {
             $v->clean($ip);
             $t->fail(sprintf('%s is not considered as valid ip', $ip));
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $t->pass(sprintf('%s is not considered as valid ip', $ip));
         }
     }
 }
 
-foreach ([sfValidatorIp::IP_V4_NO_PRIV => $invalidPrivateV4Ips, sfValidatorIp::IP_V6_NO_PRIV => $invalidPrivateV6Ips] as $version => $ips) {
+foreach ([\sfValidatorIp::IP_V4_NO_PRIV => $invalidPrivateV4Ips, \sfValidatorIp::IP_V6_NO_PRIV => $invalidPrivateV6Ips] as $version => $ips) {
     $t->diag('testing against invalid IP V'.$version);
     $v->setOption('version', $version);
     foreach ($ips as $ip) {
         try {
             $v->clean($ip);
             $t->fail(sprintf('%s is not considered as valid ip', $ip));
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $t->pass(sprintf('%s is not considered as valid ip', $ip));
         }
     }
 }
 
-foreach ([sfValidatorIp::IP_V4_NO_RES => $invalidReservedV4Ips, sfValidatorIp::IP_V6_NO_RES => $invalidV6Ips] as $version => $ips) {
+foreach ([\sfValidatorIp::IP_V4_NO_RES => $invalidReservedV4Ips, \sfValidatorIp::IP_V6_NO_RES => $invalidV6Ips] as $version => $ips) {
     $t->diag('testing against invalid IP V'.$version);
     $v->setOption('version', $version);
     foreach ($ips as $ip) {
         try {
             $v->clean($ip);
             $t->fail(sprintf('%s is not considered as valid ip', $ip));
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $t->pass(sprintf('%s is not considered as valid ip', $ip));
         }
     }
 }
 
-foreach ([sfValidatorIp::IP_V4_ONLY_PUBLIC => array_merge($invalidReservedV4Ips, $invalidPrivateV4Ips), sfValidatorIp::IP_V6_ONLY_PUBLIC => array_merge($invalidPrivateV6Ips, $invalidV6Ips)] as $version => $ips) {
+foreach ([\sfValidatorIp::IP_V4_ONLY_PUBLIC => array_merge($invalidReservedV4Ips, $invalidPrivateV4Ips), \sfValidatorIp::IP_V6_ONLY_PUBLIC => array_merge($invalidPrivateV6Ips, $invalidV6Ips)] as $version => $ips) {
     $t->diag('testing against invalid IP V'.$version);
     $v->setOption('version', $version);
     foreach ($ips as $ip) {
         try {
             $v->clean($ip);
             $t->fail(sprintf('%s is not considered as valid ip', $ip));
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $t->pass(sprintf('%s is not considered as valid ip', $ip));
         }
     }
@@ -191,36 +191,36 @@ foreach ([sfValidatorIp::IP_V4_ONLY_PUBLIC => array_merge($invalidReservedV4Ips,
 
 $t->diag('testing against invalid private IP all');
 
-$v->setOption('version', sfValidatorIp::IP_ALL_NO_PRIV);
+$v->setOption('version', \sfValidatorIp::IP_ALL_NO_PRIV);
 foreach (array_merge($invalidPrivateV4Ips, $invalidPrivateV6Ips) as $ip) {
     try {
         $v->clean($ip);
         $t->fail(sprintf('%s is not considered as valid ip', $ip));
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass(sprintf('%s is not considered as valid ip', $ip));
     }
 }
 
 $t->diag('testing against invalid reserved IP all');
 
-$v->setOption('version', sfValidatorIp::IP_ALL_NO_RES);
+$v->setOption('version', \sfValidatorIp::IP_ALL_NO_RES);
 foreach (array_merge($invalidReservedV4Ips, $invalidV6Ips) as $ip) {
     try {
         $v->clean($ip);
         $t->fail(sprintf('%s is not considered as valid ip', $ip));
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass(sprintf('%s is not considered as valid ip', $ip));
     }
 }
 
 $t->diag('testing against invalid public IP all');
 
-$v->setOption('version', sfValidatorIp::IP_ALL_ONLY_PUBLIC);
+$v->setOption('version', \sfValidatorIp::IP_ALL_ONLY_PUBLIC);
 foreach (array_merge($invalidReservedV4Ips, $invalidV6Ips, $invalidPrivateV4Ips, $invalidPrivateV6Ips) as $ip) {
     try {
         $v->clean($ip);
         $t->fail(sprintf('%s is not considered as valid ip', $ip));
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass(sprintf('%s is not considered as valid ip', $ip));
     }
 }

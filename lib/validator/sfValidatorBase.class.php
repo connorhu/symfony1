@@ -60,17 +60,17 @@ abstract class sfValidatorBase
 
         // check option names
         if ($diff = array_diff($optionKeys, array_merge($currentOptionKeys, $this->requiredOptions))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         // check error code names
         if ($diff = array_diff(array_keys($messages), array_keys($this->messages))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following error codes: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following error codes: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         // check required options
         if ($diff = array_diff($this->requiredOptions, array_merge($currentOptionKeys, $optionKeys))) {
-            throw new RuntimeException(sprintf('%s requires the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \RuntimeException(sprintf('%s requires the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         $this->options = array_merge($this->options, $options);
@@ -95,7 +95,7 @@ abstract class sfValidatorBase
      * @param string $name  The error code
      * @param string $value The error message
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function addMessage($name, $value)
     {
@@ -110,12 +110,12 @@ abstract class sfValidatorBase
      * @param string $name  The error code
      * @param string $value The error message
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function setMessage($name, $value)
     {
         if (!array_key_exists($name, $this->messages)) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following error code: \'%s\'.', get_class($this), $name));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following error code: \'%s\'.', get_class($this), $name));
         }
 
         $this->messages[$name] = $value;
@@ -138,7 +138,7 @@ abstract class sfValidatorBase
      *
      * @param array $values An array of error messages
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function setMessages($values)
     {
@@ -165,7 +165,7 @@ abstract class sfValidatorBase
      * @param string $name  The option name
      * @param mixed  $value The default value
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function addOption($name, $value = null)
     {
@@ -180,12 +180,12 @@ abstract class sfValidatorBase
      * @param string $name  The option name
      * @param mixed  $value The value
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function setOption($name, $value)
     {
         if (!in_array($name, array_merge(array_keys($this->options), $this->requiredOptions))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following option: \'%s\'.', get_class($this), $name));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following option: \'%s\'.', get_class($this), $name));
         }
 
         $this->options[$name] = $value;
@@ -220,7 +220,7 @@ abstract class sfValidatorBase
      *
      * @param array $values An array of options
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function setOptions($values)
     {
@@ -234,7 +234,7 @@ abstract class sfValidatorBase
      *
      * @param string $name The option name
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
     public function addRequiredOption($name)
     {
@@ -274,7 +274,7 @@ abstract class sfValidatorBase
      *
      * @return mixed The cleaned value
      *
-     * @throws sfValidatorError
+     * @throws \sfValidatorError
      */
     public function clean($value)
     {
@@ -288,7 +288,7 @@ abstract class sfValidatorBase
         if ($this->isEmpty($clean)) {
             // required?
             if ($this->options['required']) {
-                throw new sfValidatorError($this, 'required');
+                throw new \sfValidatorError($this, 'required');
             }
 
             return $this->getEmptyValue();
@@ -365,8 +365,8 @@ abstract class sfValidatorBase
             '%s%s(%s%s)',
             str_repeat(' ', $indent),
             str_replace('sfValidator', '', get_class($this)),
-            $options ? sfYamlInline::dump($options) : ($messages ? '{}' : ''),
-            $messages ? ', '.sfYamlInline::dump($messages) : ''
+            $options ? \sfYamlInline::dump($options) : ($messages ? '{}' : ''),
+            $messages ? ', '.\sfYamlInline::dump($messages) : ''
         );
     }
 
@@ -398,7 +398,7 @@ abstract class sfValidatorBase
      *
      * @return mixed The cleaned value
      *
-     * @throws sfValidatorError
+     * @throws \sfValidatorError
      */
     abstract protected function doClean($value);
 

@@ -22,9 +22,9 @@ class sfFunctionCache
     /**
      * Constructor.
      *
-     * @param sfCache $cache An sfCache object instance
+     * @param \sfCache $cache An sfCache object instance
      */
-    public function __construct(sfCache $cache)
+    public function __construct(\sfCache $cache)
     {
         $this->cache = $cache;
     }
@@ -44,8 +44,8 @@ class sfFunctionCache
      *
      * @return mixed The result of the function/method
      *
-     * @throws Exception
-     * @throws sfException
+     * @throws \Exception
+     * @throws \sfException
      */
     public function call($callable, $arguments = [])
     {
@@ -59,7 +59,7 @@ class sfFunctionCache
             $data = [];
 
             if (!is_callable($callable)) {
-                throw new sfException('The first argument to call() must be a valid callable.');
+                throw new \sfException('The first argument to call() must be a valid callable.');
             }
 
             ob_start();
@@ -67,7 +67,7 @@ class sfFunctionCache
 
             try {
                 $data['result'] = call_user_func_array($callable, $arguments);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 ob_end_clean();
 
                 throw $e;
@@ -86,7 +86,7 @@ class sfFunctionCache
     /**
      * Returns the cache instance.
      *
-     * @return sfCache The sfCache instance
+     * @return \sfCache The sfCache instance
      */
     public function getCache()
     {

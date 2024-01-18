@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfTestBaseTask extends sfBaseTask
+abstract class sfTestBaseTask extends \sfBaseTask
 {
     /**
      * Filters tests through the "task.test.filter_test_files" event.
@@ -28,7 +28,7 @@ abstract class sfTestBaseTask extends sfBaseTask
      */
     protected function filterTestFiles($tests, $arguments, $options)
     {
-        $event = new sfEvent($this, 'task.test.filter_test_files', ['arguments' => $arguments, 'options' => $options]);
+        $event = new \sfEvent($this, 'task.test.filter_test_files', ['arguments' => $arguments, 'options' => $options]);
 
         $this->dispatcher->filter($event, $tests);
 
@@ -48,10 +48,10 @@ abstract class sfTestBaseTask extends sfBaseTask
     protected function checkPluginExists($plugin)
     {
         try {
-            sfApplicationConfiguration::getActive()->getPluginConfiguration($plugin);
+            \sfApplicationConfiguration::getActive()->getPluginConfiguration($plugin);
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

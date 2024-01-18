@@ -21,7 +21,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfMySQLiSessionStorage extends sfMySQLSessionStorage
+class sfMySQLiSessionStorage extends \sfMySQLSessionStorage
 {
     /**
      * Execute an SQL Query.

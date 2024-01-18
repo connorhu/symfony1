@@ -15,18 +15,18 @@
  *
  * @version    SVN: $Id$
  */
-class sfAppRoutesTask extends sfBaseTask
+class sfAppRoutesTask extends \sfBaseTask
 {
     protected $routes = [];
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('name', sfCommandArgument::OPTIONAL, 'A route name'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('name', \sfCommandArgument::OPTIONAL, 'A route name'),
         ]);
 
         $this->namespace = 'app';
@@ -41,10 +41,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -89,7 +86,7 @@ EOF;
         $this->logSection('app', sprintf('Route "%s" for application "%s"', $name, $application));
 
         if (!isset($this->routes[$name])) {
-            throw new sfCommandException(sprintf('The route "%s" does not exist.', $name));
+            throw new \sfCommandException(sprintf('The route "%s" does not exist.', $name));
         }
 
         $route = $this->routes[$name];

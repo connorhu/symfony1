@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfViewParameterHolder extends sfParameterHolder
+class sfViewParameterHolder extends \sfParameterHolder
 {
     protected $dispatcher;
     protected $escaping;
@@ -25,11 +25,8 @@ class sfViewParameterHolder extends sfParameterHolder
 
     /**
      * Constructor.
-     *
-     * @param mixed $parameters
-     * @param mixed $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $parameters = [], $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, $parameters = [], $options = [])
     {
         $this->initialize($dispatcher, $parameters, $options);
     }
@@ -52,7 +49,7 @@ class sfViewParameterHolder extends sfParameterHolder
     public function __unserialize($data)
     {
         list($this->parameters, $escapingMethod, $escaping) = $data;
-        $this->initialize(sfContext::hasInstance() ? sfContext::getInstance()->getEventDispatcher() : new sfEventDispatcher());
+        $this->initialize(\sfContext::hasInstance() ? \sfContext::getInstance()->getEventDispatcher() : new \sfEventDispatcher());
 
         $this->setEscapingMethod($escapingMethod);
         $this->setEscaping($escaping);
@@ -61,9 +58,9 @@ class sfViewParameterHolder extends sfParameterHolder
     /**
      * Initializes this view parameter holder.
      *
-     * @param sfEventDispatcher $dispatcher an sfEventDispatcher instance
-     * @param array             $parameters an associative array of initialization parameters
-     * @param array             $options    An associative array of options.
+     * @param \sfEventDispatcher $dispatcher an sfEventDispatcher instance
+     * @param array              $parameters an associative array of initialization parameters
+     * @param array              $options    An associative array of options.
      *
      * <b>Options:</b>
      *
@@ -72,9 +69,9 @@ class sfViewParameterHolder extends sfParameterHolder
      *
      * @return bool true, if initialization completes successfully, otherwise false
      *
-     * @throws sfInitializationException if an error occurs while initializing this view parameter holder
+     * @throws \sfInitializationException if an error occurs while initializing this view parameter holder
      */
-    public function initialize(sfEventDispatcher $dispatcher, $parameters = [], $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $parameters = [], $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -99,24 +96,24 @@ class sfViewParameterHolder extends sfParameterHolder
      *
      * @return array An array of view parameters
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function toArray()
     {
-        $event = $this->dispatcher->filter(new sfEvent($this, 'template.filter_parameters'), $this->getAll());
+        $event = $this->dispatcher->filter(new \sfEvent($this, 'template.filter_parameters'), $this->getAll());
         $parameters = $event->getReturnValue();
         $attributes = [];
 
         if ($this->isEscaped()) {
-            $attributes['sf_data'] = sfOutputEscaper::escape($this->getEscapingMethod(), $parameters);
+            $attributes['sf_data'] = \sfOutputEscaper::escape($this->getEscapingMethod(), $parameters);
             foreach ($attributes['sf_data'] as $key => $value) {
                 $attributes[$key] = $value;
             }
         } elseif (in_array($this->getEscaping(), ['off', false], true)) {
             $attributes = $parameters;
-            $attributes['sf_data'] = sfOutputEscaper::escape(ESC_RAW, $parameters);
+            $attributes['sf_data'] = \sfOutputEscaper::escape(ESC_RAW, $parameters);
         } else {
-            throw new InvalidArgumentException(sprintf('Unknown strategy "%s".', $this->getEscaping()));
+            throw new \InvalidArgumentException(sprintf('Unknown strategy "%s".', $this->getEscaping()));
         }
 
         return $attributes;
@@ -154,7 +151,7 @@ class sfViewParameterHolder extends sfParameterHolder
      *
      * @return string The escaping method as the name of the function to use
      *
-     * @throws InvalidArgumentException If the method does not exist
+     * @throws \InvalidArgumentException If the method does not exist
      */
     public function getEscapingMethod()
     {
@@ -163,7 +160,7 @@ class sfViewParameterHolder extends sfParameterHolder
         }
 
         if (!defined($this->escapingMethod)) {
-            throw new InvalidArgumentException(sprintf('The escaping method "%s" is not available.', $this->escapingMethod));
+            throw new \InvalidArgumentException(sprintf('The escaping method "%s" is not available.', $this->escapingMethod));
         }
 
         return constant($this->escapingMethod);

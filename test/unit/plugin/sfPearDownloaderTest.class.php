@@ -21,25 +21,20 @@ require_once 'PEAR/Downloader.php';
  *
  * @coversNothing
  */
-class sfPearDownloaderTest extends sfPearDownloader
+class sfPearDownloaderTest extends \sfPearDownloader
 {
     /**
      * @see PEAR_REST::downloadHttp()
      *
-     * @param mixed|null $callback
-     * @param mixed|null $lastmodified
-     * @param mixed      $url
-     * @param mixed      $ui
-     * @param mixed      $save_dir
-     * @param mixed      $accept
-     * @param mixed      $channel
+     * @param \mixed|null $callback
+     * @param \mixed|null $lastmodified
      */
     public function downloadHttp($url, &$ui, $save_dir = '.', $callback = null, $lastmodified = null, $accept = false, $channel = false)
     {
         try {
-            $file = sfPluginTestHelper::convertUrlToFixture($url);
-        } catch (sfException $e) {
-            return PEAR::raiseError($e->getMessage());
+            $file = \sfPluginTestHelper::convertUrlToFixture($url);
+        } catch (\sfException $e) {
+            return \PEAR::raiseError($e->getMessage());
         }
 
         if (false === $lastmodified || $lastmodified) {

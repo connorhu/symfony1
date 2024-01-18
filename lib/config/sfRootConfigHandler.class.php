@@ -16,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfRootConfigHandler extends sfYamlConfigHandler
+class sfRootConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -25,8 +25,8 @@ class sfRootConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -55,7 +55,7 @@ class sfRootConfigHandler extends sfYamlConfigHandler
 
             if (!isset($keys['class'])) {
                 // missing class key
-                throw new sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $category));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $category));
             }
 
             $class = $keys['class'];
@@ -63,7 +63,7 @@ class sfRootConfigHandler extends sfYamlConfigHandler
             if (isset($keys['file'])) {
                 if (!is_readable($keys['file'])) {
                     // handler file doesn't exist
-                    throw new sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $class, $keys['file']));
+                    throw new \sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $class, $keys['file']));
                 }
 
                 // append our data
@@ -91,7 +91,7 @@ class sfRootConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

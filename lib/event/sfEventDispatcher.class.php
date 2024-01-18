@@ -60,11 +60,11 @@ class sfEventDispatcher
     /**
      * Notifies all listeners of a given event.
      *
-     * @param sfEvent $event A sfEvent instance
+     * @param \sfEvent $event A sfEvent instance
      *
-     * @return sfEvent The sfEvent instance
+     * @return \sfEvent The sfEvent instance
      */
-    public function notify(sfEvent $event)
+    public function notify(\sfEvent $event)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
             call_user_func($listener, $event);
@@ -76,11 +76,11 @@ class sfEventDispatcher
     /**
      * Notifies all listeners of a given event until one returns a non null value.
      *
-     * @param sfEvent $event A sfEvent instance
+     * @param \sfEvent $event A sfEvent instance
      *
-     * @return sfEvent The sfEvent instance
+     * @return \sfEvent The sfEvent instance
      */
-    public function notifyUntil(sfEvent $event)
+    public function notifyUntil(\sfEvent $event)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
             if (call_user_func($listener, $event)) {
@@ -96,12 +96,12 @@ class sfEventDispatcher
     /**
      * Filters a value by calling all listeners of a given event.
      *
-     * @param sfEvent $event A sfEvent instance
-     * @param mixed   $value The value to be filtered
+     * @param \sfEvent $event A sfEvent instance
+     * @param mixed    $value The value to be filtered
      *
-     * @return sfEvent The sfEvent instance
+     * @return \sfEvent The sfEvent instance
      */
-    public function filter(sfEvent $event, $value)
+    public function filter(\sfEvent $event, $value)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
             $value = call_user_func_array($listener, [$event, $value]);

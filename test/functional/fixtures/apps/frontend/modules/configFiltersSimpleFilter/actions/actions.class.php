@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class configFiltersSimpleFilterActions extends sfActions
+class configFiltersSimpleFilterActions extends \sfActions
 {
     public function executeIndex()
     {

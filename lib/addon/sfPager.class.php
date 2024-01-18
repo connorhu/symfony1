@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfPager implements Iterator, Countable
+abstract class sfPager implements \Iterator, \Countable
 {
     protected $page = 1;
     protected $maxPerPage = 0;
@@ -43,7 +43,7 @@ abstract class sfPager implements Iterator, Countable
     {
         $this->setClass($class);
         $this->setMaxPerPage($maxPerPage);
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the next object.
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function getNext()
     {
@@ -188,7 +188,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the previous object.
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function getPrevious()
     {
@@ -382,7 +382,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the current pager's parameter holder.
      *
-     * @return sfParameterHolder
+     * @return \sfParameterHolder
      */
     public function getParameterHolder()
     {
@@ -392,8 +392,8 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns a parameter.
      *
-     * @param string     $name
-     * @param mixed|null $default
+     * @param string      $name
+     * @param \mixed|null $default
      */
     public function getParameter($name, $default = null)
     {
@@ -416,7 +416,6 @@ abstract class sfPager implements Iterator, Countable
      * Sets a parameter.
      *
      * @param string $name
-     * @param mixed  $value
      */
     public function setParameter($name, $value)
     {
@@ -426,7 +425,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the current result.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -441,7 +440,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the current key.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function key()
@@ -456,7 +455,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Advances the internal pointer and returns the current result.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function next()
@@ -473,7 +472,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Resets the internal pointer and returns the current result.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function rewind()
@@ -490,7 +489,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns true if pointer is within bounds.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function valid()
@@ -505,7 +504,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the total number of results.
      *
-     * @see Countable
+     * @see \Countable
      */
     #[\ReturnTypeWillChange]
     public function count()

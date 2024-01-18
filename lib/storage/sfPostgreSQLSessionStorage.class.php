@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
+class sfPostgreSQLSessionStorage extends \sfDatabaseSessionStorage
 {
     /**
      * Destroys a session.
@@ -47,7 +47,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         }
 
         // failed to destroy session
-        throw new sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot destroy session id "%s".', $id));
+        throw new \sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot destroy session id "%s".', $id));
     }
 
     /**
@@ -69,7 +69,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         $sql = 'DELETE FROM '.$db_table.' WHERE '.$db_time_col.' < '.(time() - $lifetime);
 
         if (!@pg_query($this->db, $sql)) {
-            throw new sfDatabaseException('sfPostgreSQLSessionStorage cannot delete old sessions.');
+            throw new \sfDatabaseException('sfPostgreSQLSessionStorage cannot delete old sessions.');
         }
 
         return true;
@@ -115,7 +115,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         }
 
         // can't create record
-        throw new sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot create new record for id "%s".', $id));
+        throw new \sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot create new record for id "%s".', $id));
     }
 
     /**
@@ -148,6 +148,6 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         }
 
         // failed to write session data
-        throw new sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot write session data for id "%s".', $id));
+        throw new \sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot write session data for id "%s".', $id));
     }
 }

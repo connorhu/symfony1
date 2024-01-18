@@ -11,13 +11,13 @@
 /**
  * Abstract output escaping decorator class for "getter" objects.
  *
- * @see        sfOutputEscaper
+ * @see        \sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
  *
  * @version    SVN: $Id$
  */
-abstract class sfOutputEscaperGetterDecorator extends sfOutputEscaper
+abstract class sfOutputEscaperGetterDecorator extends \sfOutputEscaper
 {
     /**
      * Returns the raw, unescaped value associated with the key supplied.
@@ -48,6 +48,6 @@ abstract class sfOutputEscaperGetterDecorator extends sfOutputEscaper
             $escapingMethod = $this->escapingMethod;
         }
 
-        return sfOutputEscaper::escape($escapingMethod, $this->getRaw($key));
+        return \sfOutputEscaper::escape($escapingMethod, $this->getRaw($key));
     }
 }

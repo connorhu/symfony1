@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSchemaFormatterList extends sfWidgetFormSchemaFormatter
+class sfWidgetFormSchemaFormatterList extends \sfWidgetFormSchemaFormatter
 {
     protected $rowFormat = "<li>\n  %error%%label%\n  %field%%help%\n%hidden_fields%</li>\n";
     protected $errorRowFormat = "<li>\n%errors%</li>\n";

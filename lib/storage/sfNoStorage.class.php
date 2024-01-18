@@ -20,7 +20,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfNoStorage extends sfStorage
+class sfNoStorage extends \sfStorage
 {
     /**
      * Reads data from this storage.

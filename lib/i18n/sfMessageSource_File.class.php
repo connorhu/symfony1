@@ -26,7 +26,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:18:44 EST 2004
  */
-abstract class sfMessageSource_File extends sfMessageSource
+abstract class sfMessageSource_File extends \sfMessageSource
 {
     /**
      * Separator between culture name and source.
@@ -162,8 +162,8 @@ abstract class sfMessageSource_File extends sfMessageSource
      * of directory structures.
      * E.g. array('messages', 'en_AU').
      *
-     * @param mixed|null $dir
-     * @param mixed|null $variant
+     * @param \mixed|null $dir
+     * @param \mixed|null $variant
      *
      * @return array list of catalogues
      */

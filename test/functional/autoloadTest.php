@@ -13,7 +13,7 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-$b = new sfTestBrowser();
+$b = new \sfTestBrowser();
 
 $b->
   get('/autoload/myAutoload')->
@@ -29,7 +29,7 @@ $b->
 $t = $b->test();
 
 $t->ok(class_exists('BaseExtendMe'), 'plugin lib directory added to autoload');
-$r = new ReflectionClass('ExtendMe');
+$r = new \ReflectionClass('ExtendMe');
 $t->like(str_replace(DIRECTORY_SEPARATOR, '/', $r->getFilename()), '~fixtures/lib/ExtendMe~', 'plugin class can be replaced by project');
 $t->ok(class_exists('NotInLib'), 'plugin autoload sets class paths');
 $t->ok(!class_exists('ExcludedFromAutoload'), 'plugin autoload excludes directories');

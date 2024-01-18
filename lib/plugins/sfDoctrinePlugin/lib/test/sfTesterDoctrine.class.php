@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterDoctrine extends sfTester
+class sfTesterDoctrine extends \sfTester
 {
     /**
      * Prepares the tester.
@@ -43,18 +43,18 @@ class sfTesterDoctrine extends sfTester
     public function check($model, $query, $value = true)
     {
         if (null === $query) {
-            $query = Doctrine_Core::getTable($model)
+            $query = \Doctrine_Core::getTable($model)
                 ->createQuery('a')
             ;
         }
 
         if (is_array($query)) {
             $conditions = $query;
-            $query = $query = Doctrine_Core::getTable($model)
+            $query = $query = \Doctrine_Core::getTable($model)
                 ->createQuery('a')
             ;
             foreach ($conditions as $column => $condition) {
-                $column = Doctrine_Core::getTable($model)->getFieldName($column);
+                $column = \Doctrine_Core::getTable($model)->getFieldName($column);
 
                 if (null === $condition) {
                     $query->andWhere('a.'.$column.' IS NULL');
@@ -83,7 +83,7 @@ class sfTesterDoctrine extends sfTester
         } elseif (is_int($value)) {
             $this->tester->is(count($objects), $value, sprintf('"%s" %s objects have been found', $value, $model));
         } else {
-            throw new InvalidArgumentException('The "check()" method does not takes this kind of argument.');
+            throw new \InvalidArgumentException('The "check()" method does not takes this kind of argument.');
         }
 
         return $this->getObjectToReturn();
@@ -97,13 +97,13 @@ class sfTesterDoctrine extends sfTester
     public function debug($limit = null)
     {
         if (!$databaseManager = $this->browser->getContext()->getDatabaseManager()) {
-            throw new LogicConnection('The current context does not include a database manager.');
+            throw new \LogicConnection('The current context does not include a database manager.');
         }
 
         $events = [];
         foreach ($databaseManager->getNames() as $name) {
             $database = $databaseManager->getDatabase($name);
-            if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler()) {
+            if ($database instanceof \sfDoctrineDatabase && $profiler = $database->getProfiler()) {
                 foreach ($profiler->getQueryExecutionEvents() as $event) {
                     $events[$event->getSequence()] = $event;
                 }
@@ -135,10 +135,10 @@ class sfTesterDoctrine extends sfTester
                 || (isset($pattern) && $match == preg_match($pattern, $event->getQuery()))
                 || (isset($substring) && false !== stripos($event->getQuery(), $substring))
             ) {
-                $conn = $event->getInvoker() instanceof Doctrine_Connection ? $event->getInvoker() : $event->getInvoker()->getConnection();
+                $conn = $event->getInvoker() instanceof \Doctrine_Connection ? $event->getInvoker() : $event->getInvoker()->getConnection();
 
                 echo $event->getQuery()."\n";
-                echo '  Parameters: '.sfYaml::dump(sfDoctrineConnectionProfiler::fixParams($event->getParams()), 0)."\n";
+                echo '  Parameters: '.\sfYaml::dump(\sfDoctrineConnectionProfiler::fixParams($event->getParams()), 0)."\n";
                 echo '  Connection: '.$conn->getName()."\n";
                 echo '  Time:       '.number_format($event->getElapsedSecs(), 2)."s\n\n";
             }

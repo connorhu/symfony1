@@ -16,10 +16,6 @@
  * @author     David Heinemeier Hansson
  *
  * @version    SVN: $Id$
- *
- * @param mixed $name
- * @param mixed $options
- * @param mixed $open
  */
 
 /**
@@ -71,8 +67,6 @@ function comment_as_conditional($condition, $content)
 
 /**
  * Escape carrier returns and single and double quotes for Javascript segments.
- *
- * @param mixed $javascript
  */
 function escape_javascript($javascript = '')
 {
@@ -90,7 +84,7 @@ function escape_javascript($javascript = '')
  */
 function escape_once($html)
 {
-    return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, sfConfig::get('sf_charset')));
+    return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, \sfConfig::get('sf_charset')));
 }
 
 /**
@@ -119,7 +113,7 @@ function _tag_options($options = [])
 
 function _parse_attributes($string)
 {
-    return is_array($string) ? $string : sfToolkit::stringToArray($string);
+    return is_array($string) ? $string : \sfToolkit::stringToArray($string);
 }
 
 function _get_option(&$options, $name, $default = null)

@@ -33,12 +33,12 @@ class sfAutoload
     /**
      * Retrieves the singleton instance of this class.
      *
-     * @return sfAutoload a sfAutoload implementation instance
+     * @return \sfAutoload a sfAutoload implementation instance
      */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            self::$instance = new sfAutoload();
+            self::$instance = new \sfAutoload();
         }
 
         return self::$instance;
@@ -47,14 +47,14 @@ class sfAutoload
     /**
      * Register sfAutoload in spl autoloader.
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public static function register()
     {
         ini_set('unserialize_callback_func', 'spl_autoload_call');
 
         if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
-            throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
+            throw new \sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
     }
 
@@ -86,7 +86,7 @@ class sfAutoload
      *
      * @param string $class A PHP class name
      *
-     * @return string|null An absolute path
+     * @return \string|null An absolute path
      */
     public function getClassPath($class)
     {
@@ -109,8 +109,8 @@ class sfAutoload
             return false;
         }
 
-        $configuration = sfProjectConfiguration::getActive();
-        if (!$configuration || !$configuration instanceof sfApplicationConfiguration) {
+        $configuration = \sfProjectConfiguration::getActive();
+        if (!$configuration || !$configuration instanceof \sfApplicationConfiguration) {
             return false;
         }
 
@@ -177,10 +177,10 @@ class sfAutoload
         if (isset($this->classes[$class])) {
             try {
                 require $this->classes[$class];
-            } catch (sfException $e) {
+            } catch (\sfException $e) {
                 $e->printStackTrace();
-            } catch (Exception $e) {
-                sfException::createFromException($e)->printStackTrace();
+            } catch (\Exception $e) {
+                \sfException::createFromException($e)->printStackTrace();
             }
 
             return true;
@@ -188,16 +188,16 @@ class sfAutoload
 
         // see if the file exists in the current module lib directory
         if (
-            sfContext::hasInstance()
-            && ($module = sfContext::getInstance()->getModuleName())
+            \sfContext::hasInstance()
+            && ($module = \sfContext::getInstance()->getModuleName())
             && isset($this->classes[$module.'/'.$class])
         ) {
             try {
                 require $this->classes[$module.'/'.$class];
-            } catch (sfException $e) {
+            } catch (\sfException $e) {
                 $e->printStackTrace();
-            } catch (Exception $e) {
-                sfException::createFromException($e)->printStackTrace();
+            } catch (\Exception $e) {
+                \sfException::createFromException($e)->printStackTrace();
             }
 
             return true;

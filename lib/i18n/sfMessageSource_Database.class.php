@@ -26,7 +26,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:18:44 EST 2004
  */
-abstract class sfMessageSource_Database extends sfMessageSource
+abstract class sfMessageSource_Database extends \sfMessageSource
 {
     /**
      * Gets all the variants of a particular catalogue.
@@ -128,7 +128,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
             $proto = $match[1];
             $proto_opts = (!empty($match[2])) ? $match[2] : false;
             $dsn = $match[3];
-        // $dsn => protocol+hostspec/database (old format)
+            // $dsn => protocol+hostspec/database (old format)
         } else {
             if (false !== strpos($dsn, '+')) {
                 list($proto, $dsn) = explode('+', $dsn, 2);
@@ -160,7 +160,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
             // /database
             if (($pos = strpos($dsn, '?')) === false) {
                 $parsed['database'] = $dsn;
-            // /database?param1=value1&param2=value2
+                // /database?param1=value1&param2=value2
             } else {
                 $parsed['database'] = substr($dsn, 0, $pos);
                 $dsn = substr($dsn, $pos + 1);

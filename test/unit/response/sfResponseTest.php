@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-class myResponse extends sfResponse
+class myResponse extends \sfResponse
 {
     public function __serialize()
     {
@@ -33,13 +33,13 @@ class fakeResponse
 {
 }
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 
 // ->initialize()
 $t->diag('->initialize()');
-$response = new myResponse($dispatcher, ['foo' => 'bar']);
+$response = new \myResponse($dispatcher, ['foo' => 'bar']);
 $options = $response->getOptions();
 $t->is($options['foo'], 'bar', '->initialize() takes an array of options as its second argument');
 $t->is($options['logging'], false, '->getOptions() returns options for response instance');
@@ -59,9 +59,9 @@ $t->is($content, 'test', '->sendContent() output the current response content');
 
 // ->serialize() ->unserialize()
 $t->diag('->serialize() ->unserialize()');
-$t->ok(new myResponse($dispatcher) instanceof Serializable, 'sfResponse implements the Serializable interface');
+$t->ok(new \myResponse($dispatcher) instanceof \Serializable, 'sfResponse implements the Serializable interface');
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
-$dispatcherTest = new sfEventDispatcherTest($t);
+$dispatcherTest = new \sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($dispatcher, $response, 'response');

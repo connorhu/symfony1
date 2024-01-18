@@ -64,7 +64,7 @@ class sfNumberFormat
     /**
      * The DateTimeFormatInfo, containing culture specific patterns and names.
      *
-     * @var DateTimeFormatInfo
+     * @var \DateTimeFormatInfo
      */
     protected $formatInfo;
 
@@ -76,18 +76,18 @@ class sfNumberFormat
      *
      * @param mixed $formatInfo either null, a sfCultureInfo, a sfNumberFormatInfo, or string
      *
-     * @return sfNumberFormat
+     * @return \sfNumberFormat
      */
     public function __construct($formatInfo = null)
     {
         if (null === $formatInfo) {
-            $this->formatInfo = sfNumberFormatInfo::getInvariantInfo();
-        } elseif ($formatInfo instanceof sfCultureInfo) {
+            $this->formatInfo = \sfNumberFormatInfo::getInvariantInfo();
+        } elseif ($formatInfo instanceof \sfCultureInfo) {
             $this->formatInfo = $formatInfo->getNumberFormat();
-        } elseif ($formatInfo instanceof sfNumberFormatInfo) {
+        } elseif ($formatInfo instanceof \sfNumberFormatInfo) {
             $this->formatInfo = $formatInfo;
         } else {
-            $this->formatInfo = sfNumberFormatInfo::getInstance($formatInfo);
+            $this->formatInfo = \sfNumberFormatInfo::getInstance($formatInfo);
         }
     }
 
@@ -143,7 +143,7 @@ class sfNumberFormat
 
         $result = str_replace('¤', $symbol ?: '', $result);
 
-        return sfToolkit::I18N_toEncoding($result, $charset);
+        return \sfToolkit::I18N_toEncoding($result, $charset);
     }
 
     /**
@@ -263,25 +263,25 @@ class sfNumberFormat
         switch ($pattern) {
             case 'c':
             case 'C':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::CURRENCY);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::CURRENCY);
 
                 break;
 
             case 'd':
             case 'D':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::DECIMAL);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::DECIMAL);
 
                 break;
 
             case 'e':
             case 'E':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::SCIENTIFIC);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::SCIENTIFIC);
 
                 break;
 
             case 'p':
             case 'P':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::PERCENTAGE);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::PERCENTAGE);
 
                 break;
 

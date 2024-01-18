@@ -70,7 +70,7 @@ class sfYamlInline
      */
     public static function dump($value)
     {
-        if ('1.1' === sfYaml::getSpecVersion()) {
+        if ('1.1' === \sfYaml::getSpecVersion()) {
             $trueValues = ['true', 'on', '+', 'yes', 'y'];
             $falseValues = ['false', 'off', '-', 'no', 'n'];
         } else {
@@ -132,11 +132,10 @@ class sfYamlInline
     /**
      * Parses a scalar to a YAML string.
      *
-     * @param scalar $scalar
-     * @param string $delimiters
-     * @param int    $i
-     * @param bool   $evaluate
-     * @param mixed  $stringDelimiters
+     * @param \scalar $scalar
+     * @param string  $delimiters
+     * @param int     $i
+     * @param bool    $evaluate
      *
      * @return string A YAML string
      */
@@ -159,7 +158,7 @@ class sfYamlInline
                 $output = $match[1];
                 $i += strlen($output);
             } else {
-                throw new InvalidArgumentException(sprintf('Malformed inline YAML string (%s).', $scalar));
+                throw new \InvalidArgumentException(sprintf('Malformed inline YAML string (%s).', $scalar));
             }
 
             $output = $evaluate ? self::evaluateScalar($output) : $output;
@@ -210,7 +209,7 @@ class sfYamlInline
     protected static function parseQuotedScalar($scalar, &$i)
     {
         if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
-            throw new InvalidArgumentException(sprintf('Malformed inline YAML string (%s).', substr($scalar, $i)));
+            throw new \InvalidArgumentException(sprintf('Malformed inline YAML string (%s).', substr($scalar, $i)));
         }
 
         $output = substr($match[0], 1, strlen($match[0]) - 2);
@@ -272,7 +271,7 @@ class sfYamlInline
                         // embedded mapping?
                         try {
                             $value = self::parseMapping('{'.$value.'}');
-                        } catch (InvalidArgumentException $e) {
+                        } catch (\InvalidArgumentException $e) {
                             // no, it's not
                         }
                     }
@@ -285,7 +284,7 @@ class sfYamlInline
             ++$i;
         }
 
-        throw new InvalidArgumentException(sprintf('Malformed inline YAML string %s', $sequence));
+        throw new \InvalidArgumentException(sprintf('Malformed inline YAML string %s', $sequence));
     }
 
     /**
@@ -353,7 +352,7 @@ class sfYamlInline
             }
         }
 
-        throw new InvalidArgumentException(sprintf('Malformed inline YAML string %s', $mapping));
+        throw new \InvalidArgumentException(sprintf('Malformed inline YAML string %s', $mapping));
     }
 
     /**
@@ -367,7 +366,7 @@ class sfYamlInline
     {
         $scalar = trim($scalar);
 
-        if ('1.1' === sfYaml::getSpecVersion()) {
+        if ('1.1' === \sfYaml::getSpecVersion()) {
             $trueValues = ['true', 'on', '+', 'yes', 'y'];
             $falseValues = ['false', 'off', '-', 'no', 'n'];
         } else {

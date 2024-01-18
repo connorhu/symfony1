@@ -7,17 +7,17 @@
  *
  * @version    SVN: $Id$
  */
-class doctrine_route_testActions extends sfActions
+class doctrine_route_testActions extends \sfActions
 {
-    public function executeIndex(sfWebRequest $request)
+    public function executeIndex(\sfWebRequest $request)
     {
         try {
             $this->object = $this->getRoute()->getObjects();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             try {
                 $this->object = $this->getRoute()->getObject();
-            } catch (Exception $e) {
-                return sfView::NONE;
+            } catch (\Exception $e) {
+                return \sfView::NONE;
             }
         }
     }

@@ -24,10 +24,10 @@ abstract class sfTester
     /**
      * Constructor.
      *
-     * @param sfTestFunctionalBase $browser A browser
-     * @param lime_test            $tester  A tester object
+     * @param \sfTestFunctionalBase $browser A browser
+     * @param \lime_test            $tester  A tester object
      */
-    public function __construct(sfTestFunctionalBase $browser, $tester)
+    public function __construct(\sfTestFunctionalBase $browser, $tester)
     {
         $this->browser = $browser;
         $this->tester = $tester;
@@ -53,7 +53,7 @@ abstract class sfTester
     /**
      * Begins a block.
      *
-     * @return sfTester This sfTester instance
+     * @return \sfTester This sfTester instance
      */
     public function begin()
     {
@@ -65,7 +65,7 @@ abstract class sfTester
     /**
      * Ends a block.
      *
-     * @param sfTestFunctionalBase
+     * @param \sfTestFunctionalBase
      */
     public function end()
     {

@@ -9,6 +9,6 @@
  *
  * @version    SVN: $Id$
  */
-class Attachment extends BaseAttachment
+class Attachment extends \BaseAttachment
 {
 }

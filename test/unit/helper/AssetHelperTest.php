@@ -18,7 +18,7 @@ require_once __DIR__.'/../../../lib/helper/UrlHelper.php';
 
 require_once __DIR__.'/../../../lib/helper/AssetHelper.php';
 
-$t = new lime_test(68);
+$t = new \lime_test(68);
 
 class myRequest
 {
@@ -40,7 +40,7 @@ class myRequest
     }
 }
 
-class myResponse extends sfWebResponse
+class myResponse extends \sfWebResponse
 {
     public function resetAssets()
     {
@@ -57,7 +57,7 @@ class myController
     }
 }
 
-$context = sfContext::getInstance(['request' => 'myRequest', 'response' => 'myResponse', 'controller' => 'myController']);
+$context = \sfContext::getInstance(['request' => 'myRequest', 'response' => 'myResponse', 'controller' => 'myController']);
 
 // _compute_public_path()
 $t->diag('_compute_public_path');
@@ -242,7 +242,7 @@ $t->is(dynamic_javascript_include_tag('module/action'), '<script type="text/java
 $t->is(dynamic_javascript_include_tag('module/action', true), '<script type="text/javascript" src="/module/action?sf_format=js"></script>'."\n", 'dynamic_javascript_include_tag() takes an absolute boolean as its second argument');
 $t->is(dynamic_javascript_include_tag('module/action', true, ['class' => 'foo']), '<script type="text/javascript" src="/module/action?sf_format=js" class="foo"></script>'."\n", 'dynamic_javascript_include_tag() takes an array of HTML attributes as its third argument');
 
-$context->response = new myResponse($context->getEventDispatcher());
+$context->response = new \myResponse($context->getEventDispatcher());
 
 // use_dynamic_javascript()
 $t->diag('use_dynamic_javascript()');
@@ -262,7 +262,7 @@ $t->is(
     'use_dynamic_stylesheet() register a dynamic stylesheet in the response'
 );
 
-class MyForm extends sfForm
+class MyForm extends \sfForm
 {
     public function getStylesheets()
     {
@@ -277,7 +277,7 @@ class MyForm extends sfForm
 
 // get_javascripts_for_form() get_stylesheets_for_form()
 $t->diag('get_javascripts_for_form() get_stylesheets_for_form()');
-$form = new MyForm();
+$form = new \MyForm();
 $output = <<<'EOF'
 <script type="text/javascript" src="/path/to/a/foo.js"></script>
 <script type="text/javascript" src="/path/to/a/bar.js"></script>
@@ -294,8 +294,8 @@ $t->is(get_stylesheets_for_form($form), fix_linebreaks($output), 'get_stylesheet
 // use_javascripts_for_form() use_stylesheets_for_form()
 $t->diag('use_javascripts_for_form() use_stylesheets_for_form()');
 
-$response = sfContext::getInstance()->getResponse();
-$form = new MyForm();
+$response = \sfContext::getInstance()->getResponse();
+$form = new \MyForm();
 
 $response->resetAssets();
 use_stylesheets_for_form($form);
@@ -308,7 +308,7 @@ $t->is_deeply($response->getJavaScripts(), ['/path/to/a/foo.js' => [], '/path/to
 // custom web paths
 $t->diag('Custom asset path handling');
 
-sfConfig::set('sf_web_js_dir_name', 'static/js');
+\sfConfig::set('sf_web_js_dir_name', 'static/js');
 $t->is(javascript_path('xmlhr'), '/static/js/xmlhr.js', 'javascript_path() decorates a relative filename with js dir name and extension with custom js dir');
 $t->is(
     javascript_include_tag('xmlhr'),
@@ -316,7 +316,7 @@ $t->is(
     'javascript_include_tag() takes a javascript name as its first argument'
 );
 
-sfConfig::set('sf_web_css_dir_name', 'static/css');
+\sfConfig::set('sf_web_css_dir_name', 'static/css');
 $t->is(stylesheet_path('style'), '/static/css/style.css', 'stylesheet_path() decorates a relative filename with css dir name and extension with custom css dir');
 $t->is(
     stylesheet_tag('style'),
@@ -324,6 +324,6 @@ $t->is(
     'stylesheet_tag() takes a stylesheet name as its first argument'
 );
 
-sfConfig::set('sf_web_images_dir_name', 'static/img');
+\sfConfig::set('sf_web_images_dir_name', 'static/img');
 $t->is(image_path('img'), '/static/img/img.png', 'image_path() decorates a relative filename with images dir name and png extension with custom images dir');
 $t->is(image_tag('test'), '<img src="/static/img/test.png" />', 'image_tag() takes an image name as its first argument');

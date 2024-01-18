@@ -12,13 +12,13 @@
  * Output escaping object decorator that intercepts all method calls and escapes
  * their return values.
  *
- * @see        sfOutputEscaper
+ * @see        \sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
  *
  * @version    SVN: $Id$
  */
-class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator implements Countable
+class sfOutputEscaperObjectDecorator extends \sfOutputEscaperGetterDecorator implements \Countable
 {
     /**
      * Magic PHP method that intercepts method calls, calls them on the objects
@@ -57,7 +57,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
 
         $value = call_user_func_array([$this->value, $method], $args);
 
-        return sfOutputEscaper::escape($escapingMethod, $value);
+        return \sfOutputEscaper::escape($escapingMethod, $value);
     }
 
     /**
@@ -72,8 +72,6 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
 
     /**
      * Asks the wrapped object whether a property is set.
-     *
-     * @param mixed $key
      *
      * @return bool
      */
@@ -92,12 +90,12 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
      *
      * @return mixed The unescaped value returned
      *
-     * @throws sfException if the object does not have a callable get() method
+     * @throws \sfException if the object does not have a callable get() method
      */
     public function getRaw($key)
     {
         if (!is_callable([$this->value, 'get'])) {
-            throw new sfException('Object does not have a callable get() method.');
+            throw new \sfException('Object does not have a callable get() method.');
         }
 
         return $this->value->get($key);
@@ -114,7 +112,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
     public function count()
     {
         // See https://github.com/symfony/polyfill/commit/d330c0094a47d8edceeea1ed553d6e08215a9fc2
-        if (is_array($this->value) || $this->value instanceof Countable || $this->value instanceof ResourceBundle || $this->value instanceof SimpleXMLElement) {
+        if (is_array($this->value) || $this->value instanceof \Countable || $this->value instanceof \ResourceBundle || $this->value instanceof \SimpleXMLElement) {
             return count($this->value);
         }
 

@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class AuthorInheritanceForm extends BaseAuthorInheritanceForm
+class AuthorInheritanceForm extends \BaseAuthorInheritanceForm
 {
     public function configure()
     {

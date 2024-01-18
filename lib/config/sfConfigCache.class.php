@@ -28,9 +28,9 @@ class sfConfigCache
     /**
      * Constructor.
      *
-     * @param sfApplicationConfiguration $configuration A sfApplicationConfiguration instance
+     * @param \sfApplicationConfiguration $configuration A sfApplicationConfiguration instance
      */
-    public function __construct(sfApplicationConfiguration $configuration)
+    public function __construct(\sfApplicationConfiguration $configuration)
     {
         $this->configuration = $configuration;
     }
@@ -55,18 +55,18 @@ class sfConfigCache
      */
     public function checkConfig($configPath, $optional = false)
     {
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled')) {
-            $timer = sfTimerManager::getTimer('Configuration');
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_logging_enabled')) {
+            $timer = \sfTimerManager::getTimer('Configuration');
         }
 
         // the cache filename we'll be using
         $cache = $this->getCacheName($configPath);
 
-        if (!sfConfig::get('sf_debug') && !sfConfig::get('sf_test') && is_readable($cache)) {
+        if (!\sfConfig::get('sf_debug') && !\sfConfig::get('sf_test') && is_readable($cache)) {
             return $cache;
         }
 
-        if (!sfToolkit::isPathAbsolute($configPath)) {
+        if (!\sfToolkit::isPathAbsolute($configPath)) {
             $files = $this->configuration->getConfigPaths($configPath);
         } else {
             $files = is_readable($configPath) ? [$configPath] : [];
@@ -78,7 +78,7 @@ class sfConfigCache
             }
 
             // configuration does not exist
-            throw new sfConfigurationException(sprintf('Configuration "%s" does not exist or is unreadable.', $configPath));
+            throw new \sfConfigurationException(sprintf('Configuration "%s" does not exist or is unreadable.', $configPath));
         }
 
         // find the more recent configuration file last modification time
@@ -94,7 +94,7 @@ class sfConfigCache
             $this->callHandler($configPath, $files, $cache);
         }
 
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled')) {
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_logging_enabled')) {
             // @var $timer sfTimer
             $timer->addTime();
         }
@@ -107,7 +107,7 @@ class sfConfigCache
      */
     public function clear()
     {
-        sfToolkit::clearDirectory(sfConfig::get('sf_config_cache_dir'));
+        \sfToolkit::clearDirectory(\sfConfig::get('sf_config_cache_dir'));
     }
 
     /**
@@ -128,7 +128,7 @@ class sfConfigCache
         $config = str_replace(['\\', '/', ' '], '_', $config);
         $config .= '.php';
 
-        return sfConfig::get('sf_config_cache_dir').'/'.$config;
+        return \sfConfig::get('sf_config_cache_dir').'/'.$config;
     }
 
     /**
@@ -160,7 +160,7 @@ class sfConfigCache
      * Registers a configuration handler.
      *
      * @param string $handler The handler to use when parsing a configuration file
-     * @param class  $class   A configuration handler class
+     * @param \class $class   A configuration handler class
      * @param string $params  An array of options for the handler class initialization
      */
     public function registerConfigHandler($handler, $class, $params = [])
@@ -222,7 +222,7 @@ class sfConfigCache
 
         if (!$handlerInstance) {
             // we do not have a registered handler for this file
-            throw new sfConfigurationException(sprintf('Configuration file "%s" does not have a registered handler.', implode(', ', $configs)));
+            throw new \sfConfigurationException(sprintf('Configuration file "%s" does not have a registered handler.', implode(', ', $configs)));
         }
 
         // call the handler and retrieve the cache data
@@ -236,7 +236,7 @@ class sfConfigCache
      *
      * @param string $name The config handler name
      *
-     * @return sfConfigHandler A sfConfigHandler instance
+     * @return \sfConfigHandler A sfConfigHandler instance
      */
     protected function getHandler($name)
     {
@@ -256,7 +256,7 @@ class sfConfigCache
     protected function loadConfigHandlers()
     {
         // manually create our config_handlers.yml handler
-        $this->handlers['config_handlers.yml'] = new sfRootConfigHandler();
+        $this->handlers['config_handlers.yml'] = new \sfRootConfigHandler();
 
         // application configuration handlers
 
@@ -265,7 +265,7 @@ class sfConfigCache
         // module level configuration handlers
 
         // checks modules directory exists
-        if (!is_readable($sf_app_module_dir = sfConfig::get('sf_app_module_dir'))) {
+        if (!is_readable($sf_app_module_dir = \sfConfig::get('sf_app_module_dir'))) {
             return;
         }
 
@@ -308,7 +308,7 @@ class sfConfigCache
      * @param string $cache  An absolute filesystem path to the cache file that will be written
      * @param string $data   Data to be written to the cache file
      *
-     * @throws sfCacheException If the cache file cannot be written
+     * @throws \sfCacheException If the cache file cannot be written
      */
     protected function writeCacheFile($config, $cache, $data)
     {
@@ -321,7 +321,7 @@ class sfConfigCache
         $tmpFile = tempnam($cacheDir, basename($cache));
 
         if (!$fp = @fopen($tmpFile, 'wb')) {
-            throw new sfCacheException(sprintf('Failed to write cache file "%s" generated from configuration file "%s".', $tmpFile, $config));
+            throw new \sfCacheException(sprintf('Failed to write cache file "%s" generated from configuration file "%s".', $tmpFile, $config));
         }
 
         @fwrite($fp, $data);

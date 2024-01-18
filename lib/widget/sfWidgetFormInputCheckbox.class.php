@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputCheckbox extends sfWidgetFormInput
+class sfWidgetFormInputCheckbox extends \sfWidgetFormInput
 {
     /**
      * Constructor.
@@ -27,7 +27,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
     public function __construct($options = [], $attributes = [])
     {
@@ -46,7 +46,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -65,7 +65,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
     protected function configure($options = [], $attributes = [])
     {

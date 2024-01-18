@@ -19,7 +19,7 @@ abstract class sfGenerator
 {
     protected $generatorClass = '';
 
-    /** @var sfGeneratorManager */
+    /** @var \sfGeneratorManager */
     protected $generatorManager;
     protected $generatedModuleName = '';
     protected $theme = 'default';
@@ -30,7 +30,7 @@ abstract class sfGenerator
      *
      * @see initialize()
      */
-    public function __construct(sfGeneratorManager $generatorManager)
+    public function __construct(\sfGeneratorManager $generatorManager)
     {
         $this->initialize($generatorManager);
     }
@@ -38,9 +38,9 @@ abstract class sfGenerator
     /**
      * Initializes the current sfGenerator instance.
      *
-     * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
+     * @param \sfGeneratorManager $generatorManager A sfGeneratorManager instance
      */
-    public function initialize(sfGeneratorManager $generatorManager)
+    public function initialize(\sfGeneratorManager $generatorManager)
     {
         $this->generatorManager = $generatorManager;
     }
@@ -184,7 +184,7 @@ abstract class sfGenerator
     /**
      * Gets the sfGeneratorManager instance.
      *
-     * @return sfGeneratorManager The sfGeneratorManager instance
+     * @return \sfGeneratorManager The sfGeneratorManager instance
      */
     protected function getGeneratorManager()
     {

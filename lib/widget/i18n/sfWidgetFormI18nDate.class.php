@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nDate extends sfWidgetFormDate
+class sfWidgetFormI18nDate extends \sfWidgetFormDate
 {
     /**
      * Constructor.
@@ -28,7 +28,7 @@ class sfWidgetFormI18nDate extends sfWidgetFormDate
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormDate
+     * @see \sfWidgetFormDate
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -51,22 +51,22 @@ class sfWidgetFormI18nDate extends sfWidgetFormDate
     {
         switch ($monthFormat) {
             case 'name':
-                return array_combine(range(1, 12), sfDateTimeFormatInfo::getInstance($culture)->getMonthNames());
+                return array_combine(range(1, 12), \sfDateTimeFormatInfo::getInstance($culture)->getMonthNames());
 
             case 'short_name':
-                return array_combine(range(1, 12), sfDateTimeFormatInfo::getInstance($culture)->getAbbreviatedMonthNames());
+                return array_combine(range(1, 12), \sfDateTimeFormatInfo::getInstance($culture)->getAbbreviatedMonthNames());
 
             case 'number':
                 return $this->getOption('months');
 
             default:
-                throw new InvalidArgumentException(sprintf('The month format "%s" is invalid.', $monthFormat));
+                throw new \InvalidArgumentException(sprintf('The month format "%s" is invalid.', $monthFormat));
         }
     }
 
     protected function getDateFormat($culture)
     {
-        $dateFormat = sfDateTimeFormatInfo::getInstance($culture)->getShortDatePattern();
+        $dateFormat = \sfDateTimeFormatInfo::getInstance($culture)->getShortDatePattern();
 
         if (false === ($dayPos = stripos($dateFormat, 'd')) || false === ($monthPos = stripos($dateFormat, 'm')) || false === ($yearPos = stripos($dateFormat, 'y'))) {
             return $this->getOption('format');

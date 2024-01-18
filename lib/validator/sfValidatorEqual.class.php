@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorEqual extends sfValidatorBase
+class sfValidatorEqual extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -33,7 +33,7 @@ class sfValidatorEqual extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -45,16 +45,14 @@ class sfValidatorEqual extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         $isStrict = $this->getOption('strict');
 
         if (($isStrict && $value !== $this->getOption('value')) || (!$isStrict && $value != $this->getOption('value'))) {
-            throw new sfValidatorError($this, $isStrict ? 'not_strictly_equal' : 'not_equal', ['value' => $value, 'compared_value' => $this->getOption('value')]);
+            throw new \sfValidatorError($this, $isStrict ? 'not_strictly_equal' : 'not_equal', ['value' => $value, 'compared_value' => $this->getOption('value')]);
         }
 
         return $value;

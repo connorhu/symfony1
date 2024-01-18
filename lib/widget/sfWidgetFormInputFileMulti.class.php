@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
+class sfWidgetFormInputFileMulti extends \sfWidgetFormInputFile
 {
     /**
      * Renders the widget.
@@ -19,7 +19,7 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -37,7 +37,7 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
     protected function configure($options = [], $attributes = [])
     {

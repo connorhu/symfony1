@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormChoice extends sfWidgetFormChoiceBase
+class sfWidgetFormChoice extends \sfWidgetFormChoiceBase
 {
     /**
      * Sets the format for HTML id attributes. This is made avaiable to the renderer,
@@ -23,7 +23,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      *
      * @param string $format The format string (must contain a %s for the id placeholder)
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function setIdFormat($format)
     {
@@ -40,7 +40,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -91,7 +91,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
         }
 
         $options = $this->options['renderer_options'];
-        $options['choices'] = new sfCallable([$this, 'getChoices']);
+        $options['choices'] = new \sfCallable([$this, 'getChoices']);
 
         $renderer = new $class($options, $this->getAttributes());
 
@@ -124,7 +124,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoiceBase
+     * @see \sfWidgetFormChoiceBase
      */
     protected function configure($options = [], $attributes = [])
     {

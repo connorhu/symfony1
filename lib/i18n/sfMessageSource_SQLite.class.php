@@ -83,7 +83,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:58:58 EST 2004
  */
-class sfMessageSource_SQLite extends sfMessageSource_Database
+class sfMessageSource_SQLite extends \sfMessageSource_Database
 {
     /**
      * The SQLite datasource, the filename of the database.
@@ -369,10 +369,6 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
 
     /**
      * Updates the catalogue last modified time.
-     *
-     * @param mixed $cat_id
-     * @param mixed $variant
-     * @param mixed $db
      *
      * @return bool true if updated, false otherwise
      */

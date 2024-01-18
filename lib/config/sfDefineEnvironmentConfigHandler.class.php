@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
+class sfDefineEnvironmentConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -22,8 +22,8 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -64,7 +64,7 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

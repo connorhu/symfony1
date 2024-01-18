@@ -15,8 +15,7 @@
  *
  * @version    SVN: $Id$
  *
- * @param mixed|null $culture
- * @param mixed      $number
+ * @param \mixed|null $culture
  */
 function format_number($number, $culture = null)
 {
@@ -24,7 +23,7 @@ function format_number($number, $culture = null)
         return null;
     }
 
-    $numberFormat = new sfNumberFormat(_current_language($culture));
+    $numberFormat = new \sfNumberFormat(_current_language($culture));
 
     return $numberFormat->format($number);
 }
@@ -35,12 +34,12 @@ function format_currency($amount, $currency = null, $culture = null)
         return null;
     }
 
-    $numberFormat = new sfNumberFormat(_current_language($culture));
+    $numberFormat = new \sfNumberFormat(_current_language($culture));
 
     return $numberFormat->format($amount, 'c', $currency);
 }
 
 function _current_language($culture)
 {
-    return $culture ?: sfContext::getInstance()->getUser()->getCulture();
+    return $culture ?: \sfContext::getInstance()->getUser()->getCulture();
 }

@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class exceptionActions extends sfActions
+class exceptionActions extends \sfActions
 {
     public function executeNoException()
     {
@@ -16,11 +16,11 @@ class exceptionActions extends sfActions
 
     public function executeThrowsException()
     {
-        throw new Exception('Exception message');
+        throw new \Exception('Exception message');
     }
 
     public function executeThrowsSfException()
     {
-        throw new sfException('sfException message');
+        throw new \sfException('sfException message');
     }
 }

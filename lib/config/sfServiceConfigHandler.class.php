@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfServiceConfigHandler extends sfYamlConfigHandler
+class sfServiceConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -26,14 +26,14 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
      */
     public function execute($configFiles)
     {
-        $class = sfConfig::get('sf_app').'_'.sfConfig::get('sf_environment').'ServiceContainer';
+        $class = \sfConfig::get('sf_app').'_'.\sfConfig::get('sf_environment').'ServiceContainer';
 
-        $serviceContainerBuilder = new sfServiceContainerBuilder();
+        $serviceContainerBuilder = new \sfServiceContainerBuilder();
 
-        $loader = new sfServiceContainerLoaderArray($serviceContainerBuilder);
+        $loader = new \sfServiceContainerLoaderArray($serviceContainerBuilder);
         $loader->load(static::getConfiguration($configFiles));
 
-        $dumper = new sfServiceContainerDumperPhp($serviceContainerBuilder);
+        $dumper = new \sfServiceContainerDumperPhp($serviceContainerBuilder);
         $code = $dumper->dump([
             'class' => $class,
             'base_class' => $this->parameterHolder->get('base_class'),
@@ -58,7 +58,7 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

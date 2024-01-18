@@ -15,16 +15,16 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineGenerator extends sfModelGenerator
+class sfDoctrineGenerator extends \sfModelGenerator
 {
     protected $table;
 
     /**
      * Initializes the current sfGenerator instance.
      *
-     * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
+     * @param \sfGeneratorManager $generatorManager A sfGeneratorManager instance
      */
-    public function initialize(sfGeneratorManager $generatorManager)
+    public function initialize(\sfGeneratorManager $generatorManager)
     {
         parent::initialize($generatorManager);
 
@@ -36,7 +36,7 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     public function configure()
     {
-        $this->table = Doctrine_Core::getTable($this->modelClass);
+        $this->table = \Doctrine_Core::getTable($this->modelClass);
 
         // load all primary keys
         $this->loadPrimaryKeys();
@@ -53,7 +53,7 @@ class sfDoctrineGenerator extends sfModelGenerator
     {
         $relations = [];
         foreach ($this->table->getRelations() as $relation) {
-            if (Doctrine_Relation::MANY === $relation->getType() && isset($relation['refTable'])) {
+            if (\Doctrine_Relation::MANY === $relation->getType() && isset($relation['refTable'])) {
                 $relations[] = $relation;
             }
         }
@@ -72,7 +72,7 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     public function getColumnGetter($column, $developed = false, $prefix = '')
     {
-        $getter = 'get'.sfInflector::camelize($column);
+        $getter = 'get'.\sfInflector::camelize($column);
         if ($developed) {
             $getter = sprintf('$%s%s->%s()', $prefix, $this->getSingularName(), $getter);
         }
@@ -134,7 +134,7 @@ class sfDoctrineGenerator extends sfModelGenerator
         }
 
         foreach ($this->getManyToManyTables() as $tables) {
-            $name = sfInflector::underscore($tables['alias']).'_list';
+            $name = \sfInflector::underscore($tables['alias']).'_list';
             $names[] = $name;
             $fields[$name] = array_merge([
                 'is_link' => false,
@@ -184,7 +184,7 @@ class sfDoctrineGenerator extends sfModelGenerator
         }
 
         foreach ($this->getManyToManyTables() as $tables) {
-            $name = sfInflector::underscore($tables['alias']).'_list';
+            $name = \sfInflector::underscore($tables['alias']).'_list';
             $names[] = $name;
             $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : [];
         }
@@ -220,7 +220,7 @@ class sfDoctrineGenerator extends sfModelGenerator
 
         if ($withM2M) {
             foreach ($this->getManyToManyTables() as $tables) {
-                $names[] = sfInflector::underscore($tables['alias']).'_list';
+                $names[] = \sfInflector::underscore($tables['alias']).'_list';
             }
         }
 
@@ -236,7 +236,7 @@ class sfDoctrineGenerator extends sfModelGenerator
     {
         foreach (array_keys($this->table->getColumns()) as $name) {
             $name = $this->table->getFieldName($name);
-            $columns[$name] = new sfDoctrineColumn($name, $this->table);
+            $columns[$name] = new \sfDoctrineColumn($name, $this->table);
         }
 
         return $columns;
@@ -245,7 +245,7 @@ class sfDoctrineGenerator extends sfModelGenerator
     /**
      * Loads primary keys.
      *
-     * @throws sfException
+     * @throws \sfException
      */
     protected function loadPrimaryKeys()
     {
@@ -257,7 +257,7 @@ class sfDoctrineGenerator extends sfModelGenerator
         }
 
         if (!count($this->primaryKey)) {
-            throw new sfException(sprintf('Cannot generate a module for a model without a primary key (%s)', $this->modelClass));
+            throw new \sfException(sprintf('Cannot generate a module for a model without a primary key (%s)', $this->modelClass));
         }
     }
 }

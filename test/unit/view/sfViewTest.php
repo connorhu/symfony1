@@ -12,9 +12,9 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once $_test_dir.'/unit/sfContextMock.class.php';
 
-$t = new lime_test(19);
+$t = new \lime_test(19);
 
-class myView extends sfView
+class myView extends \sfView
 {
     public function execute()
     {
@@ -33,7 +33,7 @@ class myView extends sfView
     }
 }
 
-class configuredView extends myView
+class configuredView extends \myView
 {
     public static $isDecorated = false;
 
@@ -45,9 +45,9 @@ class configuredView extends myView
     }
 }
 
-$context = sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse']);
+$context = \sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse']);
 
-$view = new myView($context, '', '', '');
+$view = new \myView($context, '', '', '');
 
 // ->isDecorator() ->setDecorator()
 $t->diag('->isDecorator() ->setDecorator()');
@@ -57,34 +57,34 @@ $t->is($view->isDecorator(), true, '->setDecorator() sets the decorator status f
 
 // format
 $t->diag('format');
-$context = sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse'], true);
+$context = \sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse'], true);
 $context->getRequest()->setFormat('js', 'application/x-javascript');
 $context->getRequest()->setRequestFormat('js');
-configuredView::$isDecorated = true;
-$view = new configuredView($context, '', '', '');
+\configuredView::$isDecorated = true;
+$view = new \configuredView($context, '', '', '');
 $t->is($view->isDecorator(), false, '->initialize() uses the format to configure the view');
 $t->is($context->getResponse()->getContentType(), 'application/x-javascript', '->initialize() uses the format to configure the view');
 $t->is($view->getExtension(), '.js.php', '->initialize() uses the format to configure the view');
-$context = sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse'], true);
+$context = \sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse'], true);
 $context->getEventDispatcher()->connect('view.configure_format', 'configure_format');
 
 $context->getRequest()->setRequestFormat('js');
-configuredView::$isDecorated = true;
-$view = new configuredView($context, '', '', '');
+\configuredView::$isDecorated = true;
+$view = new \configuredView($context, '', '', '');
 $t->is($view->isDecorator(), true, '->initialize() uses the format to configure the view');
 $t->is($context->getResponse()->getContentType(), 'application/javascript', '->initialize() uses the format to configure the view');
 
 // parameter holder proxy
 require_once $_test_dir.'/unit/sfParameterHolderTest.class.php';
-$pht = new sfParameterHolderProxyTest($t);
+$pht = new \sfParameterHolderProxyTest($t);
 $pht->launchTests($view, 'parameter');
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
-$dispatcherTest = new sfEventDispatcherTest($t);
+$dispatcherTest = new \sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($context->getEventDispatcher(), $view, 'view');
 
-function configure_format(sfEvent $event)
+function configure_format(\sfEvent $event)
 {
     $event->getSubject()->setDecorator(true);
     $event['response']->setContentType('application/javascript');

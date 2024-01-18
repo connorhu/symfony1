@@ -21,26 +21,23 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nExtractTask extends sfBaseTask
+class sfI18nExtractTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     public function execute($arguments = [], $options = [])
     {
         $this->logSection('i18n', sprintf('extracting i18n strings for the "%s" application', $arguments['application']));
 
         // get i18n configuration from factories.yml
-        $config = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
+        $config = \sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
 
         $class = $config['i18n']['class'];
         $params = $config['i18n']['param'];
         unset($params['cache']);
 
-        $extract = new sfI18nApplicationExtract(new $class($this->configuration, new sfNoCache(), $params), $arguments['culture']);
+        $extract = new \sfI18nApplicationExtract(new $class($this->configuration, new \sfNoCache(), $params), $arguments['culture']);
         $extract->extract();
 
         $this->logSection('i18n', sprintf('found "%d" new i18n strings', count($extract->getNewMessages())));
@@ -74,21 +71,21 @@ class sfI18nExtractTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('culture', \sfCommandArgument::REQUIRED, 'The target culture'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'The environment', 'dev'),
-            new sfCommandOption('display-new', null, sfCommandOption::PARAMETER_NONE, 'Output all new found strings'),
-            new sfCommandOption('display-old', null, sfCommandOption::PARAMETER_NONE, 'Output all old strings'),
-            new sfCommandOption('auto-save', null, sfCommandOption::PARAMETER_NONE, 'Save the new strings'),
-            new sfCommandOption('auto-delete', null, sfCommandOption::PARAMETER_NONE, 'Delete old strings'),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The environment', 'dev'),
+            new \sfCommandOption('display-new', null, \sfCommandOption::PARAMETER_NONE, 'Output all new found strings'),
+            new \sfCommandOption('display-old', null, \sfCommandOption::PARAMETER_NONE, 'Output all old strings'),
+            new \sfCommandOption('auto-save', null, \sfCommandOption::PARAMETER_NONE, 'Save the new strings'),
+            new \sfCommandOption('auto-delete', null, \sfCommandOption::PARAMETER_NONE, 'Delete old strings'),
         ]);
 
         $this->namespace = 'i18n';

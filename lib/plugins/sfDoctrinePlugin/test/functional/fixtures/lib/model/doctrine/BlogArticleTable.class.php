@@ -1,5 +1,5 @@
 <?php
 
-class BlogArticleTable extends ArticleTable
+class BlogArticleTable extends \ArticleTable
 {
 }

@@ -32,7 +32,7 @@ class sfYamlDumper
         $prefix = $indent ? str_repeat(' ', $indent) : '';
 
         if ($inline <= 0 || !is_array($input) || empty($input)) {
-            $output .= $prefix.sfYamlInline::dump($input);
+            $output .= $prefix.\sfYamlInline::dump($input);
         } else {
             $isAHash = array_keys($input) !== range(0, count($input) - 1);
 
@@ -42,7 +42,7 @@ class sfYamlDumper
                 $output .= sprintf(
                     '%s%s%s%s',
                     $prefix,
-                    $isAHash ? sfYamlInline::dump($key).':' : '-',
+                    $isAHash ? \sfYamlInline::dump($key).':' : '-',
                     $willBeInlined ? ' ' : "\n",
                     $this->dump($value, $inline - 1, $willBeInlined ? 0 : $indent + 2)
                 ).($willBeInlined ? "\n" : '');

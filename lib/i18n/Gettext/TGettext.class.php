@@ -83,7 +83,7 @@ class TGettext
         $format = strtoupper($format);
         $filename = __DIR__.'/'.$format.'.php';
         if (false == is_file($filename)) {
-            throw new Exception("Class file {$file} not found");
+            throw new \Exception("Class file {$file} not found");
         }
 
         include_once $filename;
@@ -108,12 +108,12 @@ class TGettext
     public function poFile2moFile($pofile, $mofile)
     {
         if (!is_file($pofile)) {
-            throw new Exception("File {$pofile} doesn't exist.");
+            throw new \Exception("File {$pofile} doesn't exist.");
         }
 
         include_once __DIR__.'/PO.php';
 
-        $PO = new TGettext_PO($pofile);
+        $PO = new \TGettext_PO($pofile);
         if (true !== ($e = $PO->load())) {
             return $e;
         }
@@ -252,7 +252,7 @@ class TGettext
     public function toMO()
     {
         include_once __DIR__.'/MO.php';
-        $MO = new TGettext_MO();
+        $MO = new \TGettext_MO();
         $MO->fromArray($this->toArray());
 
         return $MO;
@@ -266,7 +266,7 @@ class TGettext
     public function toPO()
     {
         include_once __DIR__.'/PO.php';
-        $PO = new TGettext_PO();
+        $PO = new \TGettext_PO();
         $PO->fromArray($this->toArray());
 
         return $PO;

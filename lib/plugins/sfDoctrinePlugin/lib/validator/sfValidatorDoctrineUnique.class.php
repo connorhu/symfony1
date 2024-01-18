@@ -21,17 +21,15 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorDoctrineUnique extends sfValidatorSchema
+class sfValidatorDoctrineUnique extends \sfValidatorSchema
 {
     /**
      * Constructor.
      *
      * @param array  An array of options
      * @param array  An array of error messages
-     * @param mixed $options
-     * @param mixed $messages
      *
-     * @see sfValidatorSchema
+     * @see \sfValidatorSchema
      */
     public function __construct($options = [], $messages = [])
     {
@@ -51,10 +49,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
      *  * connection:         The Doctrine connection to use (null by default)
      *  * throw_global_error: Whether to throw a global error (false by default) or an error tied to the first field related to the column option array
      *
-     * @see sfValidatorBase
-     *
-     * @param mixed $options
-     * @param mixed $messages
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -68,14 +63,12 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $values
+     * @see \sfValidatorBase
      */
     protected function doClean($values)
     {
         $originalValues = $values;
-        $table = Doctrine_Core::getTable($this->getOption('model'));
+        $table = \Doctrine_Core::getTable($this->getOption('model'));
         if (!is_array($this->getOption('column'))) {
             $this->setOption('column', [$this->getOption('column')]);
         }
@@ -87,7 +80,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
             $values = [$columns[0] => $values];
         }
 
-        $q = Doctrine_Core::getTable($this->getOption('model'))->createQuery('a');
+        $q = \Doctrine_Core::getTable($this->getOption('model'))->createQuery('a');
         foreach ($this->getOption('column') as $column) {
             $colName = $table->getColumnName($column);
             if (!array_key_exists($column, $values)) {
@@ -105,7 +98,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
             return $originalValues;
         }
 
-        $error = new sfValidatorError($this, 'invalid', ['column' => implode(', ', $this->getOption('column'))]);
+        $error = new \sfValidatorError($this, 'invalid', ['column' => implode(', ', $this->getOption('column'))]);
 
         if ($this->getOption('throw_global_error')) {
             throw $error;
@@ -113,7 +106,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
 
         $columns = $this->getOption('column');
 
-        $errorSchema = new sfValidatorErrorSchema($this);
+        $errorSchema = new \sfValidatorErrorSchema($this);
         $errorSchema->addError($error, $columns[0]);
 
         throw $errorSchema;
@@ -122,12 +115,11 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
     /**
      * Returns whether the object is being updated.
      *
-     * @param BaseObject  A Doctrine object
+     * @param \BaseObject  A Doctrine object
      * @param array       An array of values
      * @param bool     true if the object is being updated, false otherwise
-     * @param mixed $values
      */
-    protected function isUpdate(Doctrine_Record $object, $values)
+    protected function isUpdate(\Doctrine_Record $object, $values)
     {
         // check each primary key column
         foreach ($this->getPrimaryKeys() as $column) {
@@ -147,7 +139,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
     protected function getPrimaryKeys()
     {
         if (null === $this->getOption('primary_key')) {
-            $primaryKeys = Doctrine_Core::getTable($this->getOption('model'))->getIdentifier();
+            $primaryKeys = \Doctrine_Core::getTable($this->getOption('model'))->getIdentifier();
             $this->setOption('primary_key', $primaryKeys);
         }
 

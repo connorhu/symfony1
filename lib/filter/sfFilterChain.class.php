@@ -25,11 +25,11 @@ class sfFilterChain
     /**
      * Loads filters configuration for a given action instance.
      *
-     * @param sfComponent $actionInstance A sfComponent instance
+     * @param \sfComponent $actionInstance A sfComponent instance
      */
     public function loadConfiguration($actionInstance)
     {
-        require sfContext::getInstance()->getConfigCache()->checkConfig('modules/'.$actionInstance->getModuleName().'/config/filters.yml');
+        require \sfContext::getInstance()->getConfigCache()->checkConfig('modules/'.$actionInstance->getModuleName().'/config/filters.yml');
     }
 
     /**
@@ -41,8 +41,8 @@ class sfFilterChain
         ++$this->index;
 
         if ($this->index < count($this->chain)) {
-            if (sfConfig::get('sf_logging_enabled')) {
-                sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($this, 'application.log', [sprintf('Executing filter "%s"', get_class($this->chain[$this->index]))]));
+            if (\sfConfig::get('sf_logging_enabled')) {
+                \sfContext::getInstance()->getEventDispatcher()->notify(new \sfEvent($this, 'application.log', [sprintf('Executing filter "%s"', get_class($this->chain[$this->index]))]));
             }
 
             // execute the next filter
@@ -71,7 +71,7 @@ class sfFilterChain
     /**
      * Registers a filter with this chain.
      *
-     * @param sfFilter $filter a sfFilter implementation instance
+     * @param \sfFilter $filter a sfFilter implementation instance
      */
     public function register($filter)
     {

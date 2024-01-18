@@ -16,12 +16,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfRenderingFilter extends sfFilter
+class sfRenderingFilter extends \sfFilter
 {
     /**
      * Executes this filter.
      *
-     * @param sfFilterChain $filterChain the filter chain
+     * @param \sfFilterChain $filterChain the filter chain
      *
      * @throws <b>sfInitializeException</b> If an error occurs during view initialization
      * @throws <b>sfViewException</b>       If an error occurs while executing the view
@@ -35,15 +35,15 @@ class sfRenderingFilter extends sfFilter
         $response = $this->context->getResponse();
 
         // hack to rethrow sfForm and|or sfFormField __toString() exceptions (see sfForm and sfFormField)
-        if (sfForm::hasToStringException()) {
-            throw sfForm::getToStringException();
+        if (\sfForm::hasToStringException()) {
+            throw \sfForm::getToStringException();
         }
-        if (sfFormField::hasToStringException()) {
-            throw sfFormField::getToStringException();
+        if (\sfFormField::hasToStringException()) {
+            throw \sfFormField::getToStringException();
         }
 
         // send headers + content
-        if (sfView::RENDER_VAR != $this->context->getController()->getRenderMode()) {
+        if (\sfView::RENDER_VAR != $this->context->getController()->getRenderMode()) {
             $response->send();
         }
     }

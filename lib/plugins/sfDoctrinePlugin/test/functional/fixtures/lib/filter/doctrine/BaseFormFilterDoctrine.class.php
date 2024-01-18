@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class BaseFormFilterDoctrine extends sfFormFilterDoctrine
+abstract class BaseFormFilterDoctrine extends \sfFormFilterDoctrine
 {
     public function setup()
     {

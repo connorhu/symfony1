@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorBoolean extends sfValidatorBase
+class sfValidatorBoolean extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -28,7 +28,7 @@ class sfValidatorBoolean extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -40,9 +40,7 @@ class sfValidatorBoolean extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
@@ -55,6 +53,6 @@ class sfValidatorBoolean extends sfValidatorBase
             return false;
         }
 
-        throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+        throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
     }
 }

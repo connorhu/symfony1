@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorAnd extends sfValidatorBase
+class sfValidatorAnd extends \sfValidatorBase
 {
     protected $validators = [];
 
@@ -32,18 +32,18 @@ class sfValidatorAnd extends sfValidatorBase
      * @param array $options    An array of options
      * @param array $messages   An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function __construct($validators = null, $options = [], $messages = [])
     {
-        if ($validators instanceof sfValidatorBase) {
+        if ($validators instanceof \sfValidatorBase) {
             $this->addValidator($validators);
         } elseif (is_array($validators)) {
             foreach ($validators as $validator) {
                 $this->addValidator($validator);
             }
         } elseif (null !== $validators) {
-            throw new InvalidArgumentException('sfValidatorAnd constructor takes a sfValidatorBase object, or a sfValidatorBase array.');
+            throw new \InvalidArgumentException('sfValidatorAnd constructor takes a sfValidatorBase object, or a sfValidatorBase array.');
         }
 
         parent::__construct($options, $messages);
@@ -52,9 +52,9 @@ class sfValidatorAnd extends sfValidatorBase
     /**
      * Adds a validator.
      *
-     * @param sfValidatorBase $validator A sfValidatorBase instance
+     * @param \sfValidatorBase $validator A sfValidatorBase instance
      */
-    public function addValidator(sfValidatorBase $validator)
+    public function addValidator(\sfValidatorBase $validator)
     {
         $this->validators[] = $validator;
     }
@@ -70,9 +70,7 @@ class sfValidatorAnd extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $indent
+     * @see \sfValidatorBase
      */
     public function asString($indent = 0)
     {
@@ -91,8 +89,8 @@ class sfValidatorAnd extends sfValidatorBase
                 if ($options || $messages) {
                     $validators .= sprintf(
                         '(%s%s)',
-                        $options ? sfYamlInline::dump($options) : ($messages ? '{}' : ''),
-                        $messages ? ', '.sfYamlInline::dump($messages) : ''
+                        $options ? \sfYamlInline::dump($options) : ($messages ? '{}' : ''),
+                        $messages ? ', '.\sfYamlInline::dump($messages) : ''
                     );
                 }
             }
@@ -111,7 +109,7 @@ class sfValidatorAnd extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -121,18 +119,16 @@ class sfValidatorAnd extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         $clean = $value;
-        $errors = new sfValidatorErrorSchema($this);
+        $errors = new \sfValidatorErrorSchema($this);
         foreach ($this->validators as $validator) {
             try {
                 $clean = $validator->clean($clean);
-            } catch (sfValidatorError $e) {
+            } catch (\sfValidatorError $e) {
                 $errors->addError($e);
 
                 if ($this->getOption('halt_on_error')) {
@@ -143,7 +139,7 @@ class sfValidatorAnd extends sfValidatorBase
 
         if ($errors->count()) {
             if ($this->getMessage('invalid')) {
-                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
 
             throw $errors;

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDeprecatedConfigurationFilesValidation extends sfValidation
+class sfDeprecatedConfigurationFilesValidation extends \sfValidation
 {
     public function getHeader()
     {
@@ -36,25 +36,25 @@ class sfDeprecatedConfigurationFilesValidation extends sfValidation
     public function validate()
     {
         // mailer.yml
-        $files = sfFinder::type('file')->name('mailer.yml')->in($this->getProjectConfigDirectories());
+        $files = \sfFinder::type('file')->name('mailer.yml')->in($this->getProjectConfigDirectories());
         $found = [];
         foreach ($files as $file) {
             $found[$file] = true;
         }
 
         // modules/*/validate/*.yml
-        $files = sfFinder::type('file')->name('*.yml')->in(array_merge(
-            glob(sfConfig::get('sf_apps_dir').'/*/modules/*/validate'),
-            glob(sfConfig::get('sf_plugins_dir').'/*/modules/*/validate')
+        $files = \sfFinder::type('file')->name('*.yml')->in(array_merge(
+            glob(\sfConfig::get('sf_apps_dir').'/*/modules/*/validate'),
+            glob(\sfConfig::get('sf_plugins_dir').'/*/modules/*/validate')
         ));
         foreach ($files as $file) {
             $found[$file] = true;
         }
 
         // old generator.yml
-        $files = sfFinder::type('file')->name('generator.yml')->in([
-            sfConfig::get('sf_apps_dir'),
-            sfConfig::get('sf_plugins_dir'),
+        $files = \sfFinder::type('file')->name('generator.yml')->in([
+            \sfConfig::get('sf_apps_dir'),
+            \sfConfig::get('sf_plugins_dir'),
         ]);
         foreach ($files as $file) {
             $content = file_get_contents($file);

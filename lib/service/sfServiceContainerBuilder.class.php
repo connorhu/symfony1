@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id: sfServiceContainerBuilder.php 269 2009-03-26 20:39:16Z fabien $
  */
-class sfServiceContainerBuilder extends sfServiceContainer
+class sfServiceContainerBuilder extends \sfServiceContainer
 {
     protected $definitions = [];
     protected $aliases = [];
@@ -60,9 +60,9 @@ class sfServiceContainerBuilder extends sfServiceContainer
     {
         try {
             return parent::getService($id);
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             if (isset($this->loading[$id])) {
-                throw new LogicException(sprintf('The service "%s" has a circular reference to itself.', $id));
+                throw new \LogicException(sprintf('The service "%s" has a circular reference to itself.', $id));
             }
 
             if (!$this->hasServiceDefinition($id) && isset($this->aliases[$id])) {
@@ -125,11 +125,11 @@ class sfServiceContainerBuilder extends sfServiceContainer
      * @param string $id    The service identifier
      * @param string $class The service class
      *
-     * @return sfServiceDefinition A sfServiceDefinition instance
+     * @return \sfServiceDefinition A sfServiceDefinition instance
      */
     public function register($id, $class)
     {
-        return $this->setServiceDefinition($id, new sfServiceDefinition($class));
+        return $this->setServiceDefinition($id, new \sfServiceDefinition($class));
     }
 
     /**
@@ -168,12 +168,12 @@ class sfServiceContainerBuilder extends sfServiceContainer
     /**
      * Sets a service definition.
      *
-     * @param string              $id         The service identifier
-     * @param sfServiceDefinition $definition A sfServiceDefinition instance
+     * @param string               $id         The service identifier
+     * @param \sfServiceDefinition $definition A sfServiceDefinition instance
      *
-     * @return sfServiceDefinition
+     * @return \sfServiceDefinition
      */
-    public function setServiceDefinition($id, sfServiceDefinition $definition)
+    public function setServiceDefinition($id, \sfServiceDefinition $definition)
     {
         unset($this->aliases[$id]);
 
@@ -197,14 +197,14 @@ class sfServiceContainerBuilder extends sfServiceContainer
      *
      * @param string $id The service identifier
      *
-     * @return sfServiceDefinition A sfServiceDefinition instance
+     * @return \sfServiceDefinition A sfServiceDefinition instance
      *
      * @throw InvalidArgumentException if the service definition does not exist
      */
     public function getServiceDefinition($id)
     {
         if (!$this->hasServiceDefinition($id)) {
-            throw new InvalidArgumentException(sprintf('The service definition "%s" does not exist.', $id));
+            throw new \InvalidArgumentException(sprintf('The service definition "%s" does not exist.', $id));
         }
 
         return $this->definitions[$id];
@@ -250,7 +250,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
     {
         if (is_array($value)) {
             $value = array_map([$this, 'resolveServices'], $value);
-        } elseif (is_object($value) && $value instanceof sfServiceReference) {
+        } elseif (is_object($value) && $value instanceof \sfServiceReference) {
             $value = $this->getService((string) $value);
         }
 
@@ -260,17 +260,17 @@ class sfServiceContainerBuilder extends sfServiceContainer
     /**
      * Creates a service for a service definition.
      *
-     * @param sfServiceDefinition $definition A service definition instance
+     * @param \sfServiceDefinition $definition A service definition instance
      *
      * @return object The service described by the service definition
      */
-    protected function createService(sfServiceDefinition $definition)
+    protected function createService(\sfServiceDefinition $definition)
     {
         if (null !== $definition->getFile()) {
             require_once $this->resolveValue($definition->getFile());
         }
 
-        $r = new ReflectionClass($this->resolveValue($definition->getClass()));
+        $r = new \ReflectionClass($this->resolveValue($definition->getClass()));
 
         $arguments = $this->resolveServices($this->resolveValue($definition->getArguments()));
 
@@ -285,14 +285,14 @@ class sfServiceContainerBuilder extends sfServiceContainer
         }
 
         if ($callable = $definition->getConfigurator()) {
-            if (is_array($callable) && is_object($callable[0]) && $callable[0] instanceof sfServiceReference) {
+            if (is_array($callable) && is_object($callable[0]) && $callable[0] instanceof \sfServiceReference) {
                 $callable[0] = $this->getService((string) $callable[0]);
             } elseif (is_array($callable)) {
                 $callable[0] = $this->resolveValue($callable[0]);
             }
 
             if (!is_callable($callable)) {
-                throw new InvalidArgumentException(sprintf('The configure callable for class "%s" is not a callable.', get_class($service)));
+                throw new \InvalidArgumentException(sprintf('The configure callable for class "%s" is not a callable.', get_class($service)));
             }
 
             call_user_func($callable, $service);

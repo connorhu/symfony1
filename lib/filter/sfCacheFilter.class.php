@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfCacheFilter extends sfFilter
+class sfCacheFilter extends \sfFilter
 {
     protected $cacheManager;
     protected $request;
@@ -26,8 +26,8 @@ class sfCacheFilter extends sfFilter
     /**
      * Initializes this Filter.
      *
-     * @param sfContext $context    The current application context
-     * @param array     $parameters An associative array of initialization parameters
+     * @param \sfContext $context    The current application context
+     * @param array      $parameters An associative array of initialization parameters
      *
      * @throws <b>sfInitializationException</b> If an error occurs while initializing this Filter
      */
@@ -44,12 +44,12 @@ class sfCacheFilter extends sfFilter
     /**
      * Executes this filter.
      *
-     * @param sfFilterChain $filterChain A sfFilterChain instance
+     * @param \sfFilterChain $filterChain A sfFilterChain instance
      */
     public function execute($filterChain)
     {
         // execute this filter only once, if cache is set and no GET or POST parameters
-        if (!sfConfig::get('sf_cache')) {
+        if (!\sfConfig::get('sf_cache')) {
             $filterChain->execute();
 
             return;
@@ -160,7 +160,7 @@ class sfCacheFilter extends sfFilter
             $this->response->setHttpHeader('Last-Modified', $this->response->getDate(time()), false);
         }
 
-        if (sfConfig::get('sf_etag')) {
+        if (\sfConfig::get('sf_etag')) {
             $etag = '"'.md5($this->response->getContent()).'"';
             $this->response->setHttpHeader('ETag', $etag);
         }
@@ -172,29 +172,29 @@ class sfCacheFilter extends sfFilter
     protected function checkCacheValidation()
     {
         // Etag support
-        if (sfConfig::get('sf_etag')) {
+        if (\sfConfig::get('sf_etag')) {
             $etag = '"'.md5($this->response->getContent()).'"';
 
             if ($this->request->getHttpHeader('IF_NONE_MATCH') == $etag) {
                 $this->response->setStatusCode(304);
                 $this->response->setHeaderOnly(true);
 
-                if (sfConfig::get('sf_logging_enabled')) {
-                    $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', ['ETag matches If-None-Match (send 304)']));
+                if (\sfConfig::get('sf_logging_enabled')) {
+                    $this->context->getEventDispatcher()->notify(new \sfEvent($this, 'application.log', ['ETag matches If-None-Match (send 304)']));
                 }
             }
         }
 
         // conditional GET support
         // never in debug mode
-        if ($this->response->hasHttpHeader('Last-Modified') && (!sfConfig::get('sf_debug') || sfConfig::get('sf_test'))) {
+        if ($this->response->hasHttpHeader('Last-Modified') && (!\sfConfig::get('sf_debug') || \sfConfig::get('sf_test'))) {
             $lastModified = $this->response->getHttpHeader('Last-Modified');
             if ($this->request->getHttpHeader('IF_MODIFIED_SINCE') == $lastModified) {
                 $this->response->setStatusCode(304);
                 $this->response->setHeaderOnly(true);
 
-                if (sfConfig::get('sf_logging_enabled')) {
-                    $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', ['Last-Modified matches If-Modified-Since (send 304)']));
+                if (\sfConfig::get('sf_logging_enabled')) {
+                    $this->context->getEventDispatcher()->notify(new \sfEvent($this, 'application.log', ['Last-Modified matches If-Modified-Since (send 304)']));
                 }
             }
         }

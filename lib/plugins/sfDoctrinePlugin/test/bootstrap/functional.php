@@ -15,8 +15,8 @@ if (!isset($root_dir)) {
 }
 
 include $root_dir.'/config/ProjectConfiguration.class.php';
-$configuration = ProjectConfiguration::getApplicationConfiguration($app, 'test', isset($debug) ? $debug : true);
-sfContext::createInstance($configuration);
+$configuration = \ProjectConfiguration::getApplicationConfiguration($app, 'test', isset($debug) ? $debug : true);
+\sfContext::createInstance($configuration);
 
 // remove all cache
 sf_functional_test_shutdown();
@@ -29,9 +29,9 @@ if (isset($fixtures)) {
 
 function sf_functional_test_shutdown_cleanup()
 {
-    sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
-    sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
-    $databases = glob(sfConfig::get('sf_data_dir').'/*.sqlite');
+    \sfToolkit::clearDirectory(\sfConfig::get('sf_cache_dir'));
+    \sfToolkit::clearDirectory(\sfConfig::get('sf_log_dir'));
+    $databases = glob(\sfConfig::get('sf_data_dir').'/*.sqlite');
     foreach ($databases as $database) {
         unlink($database);
     }
@@ -42,7 +42,7 @@ function sf_functional_test_shutdown()
     // try/catch needed due to http://bugs.php.net/bug.php?id=33598
     try {
         sf_functional_test_shutdown_cleanup();
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         echo $e.PHP_EOL;
     }
 }

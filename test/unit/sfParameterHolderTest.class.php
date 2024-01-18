@@ -29,7 +29,7 @@ class sfParameterHolderProxyTest
 
         $t->diag(ucfirst($methodName).' holder proxy');
 
-        $namespaced = $object->{$holderMethod}() instanceof sfNamespacedParameterHolder ? true : false;
+        $namespaced = $object->{$holderMethod}() instanceof \sfNamespacedParameterHolder ? true : false;
 
         $t->isa_ok($object->{$holderMethod}(), $namespaced ? 'sfNamespacedParameterHolder' : 'sfParameterHolder', "->{$holderMethod}() returns a parameter holder instance");
         $t->is($object->{$hasMethod}('foo'), false, "->{$hasMethod}() returns false if the {$methodName} does not exist");

@@ -18,6 +18,6 @@
  *
  * @version    SVN: $Id$
  */
-class sfParseException extends sfException
+class sfParseException extends \sfException
 {
 }

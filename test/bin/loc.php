@@ -14,18 +14,18 @@ printf("==============%s\n\n", str_repeat('=', strlen($version)));
 
 // symfony core LOC
 $total_loc = 0;
-$files = sfFinder::type('file')->name('*.php')->prune('vendor', 'plugins')->in($root_dir.'/lib');
+$files = \sfFinder::type('file')->name('*.php')->prune('vendor', 'plugins')->in($root_dir.'/lib');
 foreach ($files as $file) {
-    $total_loc += count(lime_coverage::get_php_lines($file));
+    $total_loc += count(\lime_coverage::get_php_lines($file));
 }
-$files = sfFinder::type('file')->name('*.php')->prune('vendor')->in($root_dir.'/lib/plugins/*/lib');
+$files = \sfFinder::type('file')->name('*.php')->prune('vendor')->in($root_dir.'/lib/plugins/*/lib');
 foreach ($files as $file) {
-    $total_loc += count(lime_coverage::get_php_lines($file));
+    $total_loc += count(\lime_coverage::get_php_lines($file));
 }
 
 // symfony tests LOC
 $total_tests_loc = 0;
-$files = sfFinder::type('file')->name('*Test.php')->in([
+$files = \sfFinder::type('file')->name('*Test.php')->in([
     $root_dir.'/lib/plugins/sfDoctrinePlugin/test/unit',
     $root_dir.'/lib/plugins/sfDoctrinePlugin/test/functional',
     $root_dir.'/test/unit',
@@ -33,7 +33,7 @@ $files = sfFinder::type('file')->name('*Test.php')->in([
     $root_dir.'/test/other',
 ]);
 foreach ($files as $file) {
-    $total_tests_loc += count(lime_coverage::get_php_lines($file));
+    $total_tests_loc += count(\lime_coverage::get_php_lines($file));
 }
 
 printf("core librairies:           %6d\n", $total_loc);

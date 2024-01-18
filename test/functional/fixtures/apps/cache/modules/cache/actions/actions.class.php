@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class cacheActions extends sfActions
+class cacheActions extends \sfActions
 {
     public function executeIndex()
     {
@@ -61,7 +61,7 @@ class cacheActions extends sfActions
         $response->addMeta('meta1', 'bar');
         $response->addHttpMeta('httpmeta1', 'foobar');
 
-        sfConfig::set('ACTION_EXECUTED', true);
+        \sfConfig::set('ACTION_EXECUTED', true);
     }
 
     public function executeImageWithLayoutCacheWithLayout()
@@ -90,7 +90,7 @@ class cacheActions extends sfActions
 
     public function executeLastModifiedResponse()
     {
-        $this->getResponse()->setHttpHeader('Last-Modified', $this->getResponse()->getDate(sfConfig::get('LAST_MODIFIED')));
+        $this->getResponse()->setHttpHeader('Last-Modified', $this->getResponse()->getDate(\sfConfig::get('LAST_MODIFIED')));
         $this->setTemplate('action');
     }
 

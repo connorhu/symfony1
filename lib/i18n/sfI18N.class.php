@@ -29,10 +29,8 @@ class sfI18N
      * Class constructor.
      *
      * @see initialize()
-     *
-     * @param mixed $options
      */
-    public function __construct(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = [])
+    public function __construct(\sfApplicationConfiguration $configuration, \sfCache $cache = null, $options = [])
     {
         $this->initialize($configuration, $cache, $options);
     }
@@ -63,11 +61,11 @@ class sfI18N
      *  * untranslated_prefix: The prefix to use when a message is not translated
      *  * untranslated_suffix: The suffix to use when a message is not translated
      *
-     * @param sfApplicationConfiguration $configuration A sfApplicationConfiguration instance
-     * @param sfCache                    $cache         A sfCache instance
-     * @param array                      $options       An array of options
+     * @param \sfApplicationConfiguration $configuration A sfApplicationConfiguration instance
+     * @param \sfCache                    $cache         A sfCache instance
+     * @param array                       $options       An array of options
      */
-    public function initialize(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = [])
+    public function initialize(\sfApplicationConfiguration $configuration, \sfCache $cache = null, $options = [])
     {
         $this->configuration = $configuration;
         $this->dispatcher = $configuration->getEventDispatcher();
@@ -106,7 +104,7 @@ class sfI18N
     /**
      * Returns the configuration instance.
      *
-     * @return sfApplicationConfiguration An sfApplicationConfiguration instance
+     * @return \sfApplicationConfiguration An sfApplicationConfiguration instance
      */
     public function getConfiguration()
     {
@@ -124,7 +122,7 @@ class sfI18N
         if (null === $dirs) {
             $this->messageSource = $this->createMessageSource();
         } else {
-            $this->messageSource = sfMessageSource::factory('Aggregate', array_map([$this, 'createMessageSource'], $dirs));
+            $this->messageSource = \sfMessageSource::factory('Aggregate', array_map([$this, 'createMessageSource'], $dirs));
         }
 
         if (null !== $this->cache) {
@@ -145,11 +143,11 @@ class sfI18N
      *
      * @param mixed $dir An array of i18n directories to create a XLIFF or gettext message source, null otherwise
      *
-     * @return sfMessageSource A sfMessageSource object
+     * @return \sfMessageSource A sfMessageSource object
      */
     public function createMessageSource($dir = null)
     {
-        return sfMessageSource::factory($this->options['source'], self::isMessageSourceFileBased($this->options['source']) ? $dir : $this->options['database']);
+        return \sfMessageSource::factory($this->options['source'], self::isMessageSourceFileBased($this->options['source']) ? $dir : $this->options['database']);
     }
 
     /**
@@ -187,7 +185,7 @@ class sfI18N
     /**
      * Gets the message source.
      *
-     * @return sfMessageSource A sfMessageSource object
+     * @return \sfMessageSource A sfMessageSource object
      */
     public function getMessageSource()
     {
@@ -202,12 +200,12 @@ class sfI18N
     /**
      * Gets the message format.
      *
-     * @return sfMessageFormat A sfMessageFormat object
+     * @return \sfMessageFormat A sfMessageFormat object
      */
     public function getMessageFormat()
     {
         if (!isset($this->messageFormat)) {
-            $this->messageFormat = new sfMessageFormat($this->getMessageSource(), sfConfig::get('sf_charset'));
+            $this->messageFormat = new \sfMessageFormat($this->getMessageSource(), \sfConfig::get('sf_charset'));
 
             if ($this->options['debug']) {
                 $this->messageFormat->setUntranslatedPS([$this->options['untranslated_prefix'], $this->options['untranslated_suffix']]);
@@ -227,7 +225,7 @@ class sfI18N
      */
     public function getCountry($iso, $culture = null)
     {
-        $c = sfCultureInfo::getInstance(null === $culture ? $this->culture : $culture);
+        $c = \sfCultureInfo::getInstance(null === $culture ? $this->culture : $culture);
         $countries = $c->getCountries();
 
         return (array_key_exists($iso, $countries)) ? $countries[$iso] : '';
@@ -242,7 +240,7 @@ class sfI18N
      */
     public function getNativeName($culture)
     {
-        return sfCultureInfo::getInstance($culture)->getNativeName();
+        return \sfCultureInfo::getInstance($culture)->getNativeName();
     }
 
     /**
@@ -279,7 +277,7 @@ class sfI18N
             return null;
         }
 
-        $dateFormatInfo = @sfDateTimeFormatInfo::getInstance(null === $culture ? $this->culture : $culture);
+        $dateFormatInfo = @\sfDateTimeFormatInfo::getInstance(null === $culture ? $this->culture : $culture);
         $dateFormat = $dateFormatInfo->getShortDatePattern();
 
         // We construct the regexp based on date format
@@ -325,7 +323,7 @@ class sfI18N
 
         $culture = null === $culture ? $this->culture : $culture;
 
-        $timeFormatInfo = @sfDateTimeFormatInfo::getInstance($culture);
+        $timeFormatInfo = @\sfDateTimeFormatInfo::getInstance($culture);
         $timeFormat = $timeFormatInfo->getShortTimePattern();
 
         // We construct the regexp based on time format
@@ -389,9 +387,9 @@ class sfI18N
     /**
      * Listens to the user.change_culture event.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
-    public function listenToChangeCultureEvent(sfEvent $event)
+    public function listenToChangeCultureEvent(\sfEvent $event)
     {
         // change the message format object with the new culture
         $this->setCulture($event['culture']);
@@ -400,9 +398,9 @@ class sfI18N
     /**
      * Listens to the controller.change_action event.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
-    public function listenToChangeActionEvent(sfEvent $event)
+    public function listenToChangeActionEvent(\sfEvent $event)
     {
         // change message source directory to our module
         $this->setMessageSource($this->configuration->getI18NDirs($event['module']));

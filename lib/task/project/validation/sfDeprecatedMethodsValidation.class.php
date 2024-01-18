@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDeprecatedMethodsValidation extends sfValidation
+class sfDeprecatedMethodsValidation extends \sfValidation
 {
     public function getHeader()
     {
@@ -53,15 +53,15 @@ class sfDeprecatedMethodsValidation extends sfValidation
                 'checkSymfonyVersion',
                 'sh',
             ], [
-                sfConfig::get('sf_apps_dir'),
-                sfConfig::get('sf_lib_dir'),
-                sfConfig::get('sf_test_dir'),
-                sfConfig::get('sf_plugins_dir'),
+                \sfConfig::get('sf_apps_dir'),
+                \sfConfig::get('sf_lib_dir'),
+                \sfConfig::get('sf_test_dir'),
+                \sfConfig::get('sf_plugins_dir'),
             ]),
             $this->doValidate([
                 'contains', 'responseContains', 'isRequestParameter', 'isResponseHeader',
                 'isUserCulture', 'isRequestFormat', 'checkResponseElement',
-            ], sfConfig::get('sf_test_dir')),
+            ], \sfConfig::get('sf_test_dir')),
             $this->doValidate([
                 'getDefaultView', 'handleError', 'validate', 'debugMessage', 'getController()->sendEmail',
             ], $this->getProjectActionDirectories())
@@ -71,9 +71,9 @@ class sfDeprecatedMethodsValidation extends sfValidation
     public function doValidate($methods, $dir)
     {
         $found = [];
-        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in($dir);
+        $files = \sfFinder::type('file')->name('*.php')->prune('vendor')->in($dir);
         foreach ($files as $file) {
-            $content = sfToolkit::stripComments(file_get_contents($file));
+            $content = \sfToolkit::stripComments(file_get_contents($file));
 
             $matches = [];
             foreach ($methods as $method) {

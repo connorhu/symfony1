@@ -20,7 +20,7 @@ require_once __DIR__.'/../vendor/lime/lime.php';
  *
  * @version    SVN: $Id$
  */
-class sfTestBrowser extends sfTestFunctional
+class sfTestBrowser extends \sfTestFunctional
 {
     /**
      * Initializes the browser tester instance.
@@ -35,10 +35,10 @@ class sfTestBrowser extends sfTestFunctional
             // new signature
             parent::__construct($hostname, $remote);
         } else {
-            $browser = new sfBrowser($hostname, $remote, $options);
+            $browser = new \sfBrowser($hostname, $remote, $options);
 
             if (null === self::$test) {
-                $lime = new lime_test(null, isset($options['output']) ? $options['output'] : null);
+                $lime = new \lime_test(null, isset($options['output']) ? $options['output'] : null);
             } else {
                 $lime = null;
             }

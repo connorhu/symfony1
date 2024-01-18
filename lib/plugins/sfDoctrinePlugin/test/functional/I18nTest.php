@@ -12,13 +12,13 @@ $app = 'frontend';
 
 require_once dirname(__FILE__).'/../bootstrap/functional.php';
 
-$t = new lime_test(13);
+$t = new \lime_test(13);
 
-$article = new Article();
+$article = new \Article();
 $article->title = 'test';
 $t->is($article->Translation['en']->title, 'test');
 
-sfContext::getInstance()->getUser()->setCulture('fr');
+\sfContext::getInstance()->getUser()->setCulture('fr');
 $article->title = 'fr test';
 $t->is($article->Translation['fr']->title, 'fr test');
 
@@ -32,7 +32,7 @@ $t->is($article->Translation['fr']['test_column'], 'test');
 
 $article->free(true);
 
-class MyArticleForm extends ArticleForm
+class MyArticleForm extends \ArticleForm
 {
     public function configure()
     {
@@ -40,7 +40,7 @@ class MyArticleForm extends ArticleForm
 
         $this->embedI18n(['en', 'fr']);
 
-        $authorForm = new AuthorForm($this->object->Author);
+        $authorForm = new \AuthorForm($this->object->Author);
         unset($authorForm['id']);
 
         $this->embedForm('Author', $authorForm);
@@ -49,8 +49,8 @@ class MyArticleForm extends ArticleForm
     }
 }
 
-$article = new Article();
-$articleForm = new MyArticleForm($article);
+$article = new \Article();
+$articleForm = new \MyArticleForm($article);
 
 $data = [
     'is_on_homepage' => 1,
@@ -136,7 +136,7 @@ $expected = [
 
 $t->is($article->toArray(true), $expected);
 
-$articleForm = new MyArticleForm($article);
+$articleForm = new \MyArticleForm($article);
 
 $expected = [
     'id' => $article->id,
@@ -203,8 +203,8 @@ $data = [
 $articleForm->bind($data);
 $t->is($articleForm->isValid(), true);
 
-$article = new Article();
-$articleForm = new MyArticleForm($article);
+$article = new \Article();
+$articleForm = new \MyArticleForm($article);
 
 $data = [
     'is_on_homepage' => 1,
@@ -225,8 +225,8 @@ $articleForm->bind($data);
 $t->is($articleForm->isValid(), false);
 // END: Bug #7486
 
-$article = new Article();
-sfContext::getInstance()->getUser()->setCulture('en');
+$article = new \Article();
+\sfContext::getInstance()->getUser()->setCulture('en');
 $article->title = 'test';
-sfContext::getInstance()->getUser()->setCulture('fr');
+\sfContext::getInstance()->getUser()->setCulture('fr');
 $t->is($article->title, 'test');

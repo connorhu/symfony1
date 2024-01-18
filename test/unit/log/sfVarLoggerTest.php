@@ -10,15 +10,15 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(9);
+$t = new \lime_test(9);
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 
 $buffer = fopen('php://memory', 'rw');
-$logger = new sfVarLogger($dispatcher);
+$logger = new \sfVarLogger($dispatcher);
 
 $logger->log('foo');
-$logger->log('{sfFoo} bar', sfLogger::ERR);
+$logger->log('{sfFoo} bar', \sfLogger::ERR);
 
 $logs = $logger->getLogs();
 $t->is(count($logs), 2, 'sfVarLogger logs all messages into its instance');

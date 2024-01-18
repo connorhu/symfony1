@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterViewCache extends sfTester
+class sfTesterViewCache extends \sfTester
 {
     protected $viewCacheManager;
     protected $response;

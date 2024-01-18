@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterResponse extends sfTester
+class sfTesterResponse extends \sfTester
 {
     protected $response;
     protected $dom;
@@ -38,7 +38,7 @@ class sfTesterResponse extends sfTester
         $this->dom = null;
         $this->domCssSelector = null;
         if (preg_match('/(x|ht)ml/i', $this->response->getContentType(), $matches)) {
-            $this->dom = new DOMDocument('1.0', $this->response->getCharset());
+            $this->dom = new \DOMDocument('1.0', $this->response->getCharset());
             $this->dom->validateOnParse = true;
             if ('x' == $matches[1]) {
                 @$this->dom->loadXML($this->response->getContent());
@@ -47,7 +47,7 @@ class sfTesterResponse extends sfTester
                     @$this->dom->loadHTML($content);
                 }
             }
-            $this->domCssSelector = new sfDomCssSelector($this->dom);
+            $this->domCssSelector = new \sfDomCssSelector($this->dom);
         }
     }
 
@@ -63,7 +63,7 @@ class sfTesterResponse extends sfTester
     public function checkElement($selector, $value = true, $options = [])
     {
         if (null === $this->dom) {
-            throw new LogicException('The DOM is not accessible because the browser response content type is not HTML.');
+            throw new \LogicException('The DOM is not accessible because the browser response content type is not HTML.');
         }
 
         if (is_object($selector)) {
@@ -107,7 +107,7 @@ class sfTesterResponse extends sfTester
      */
     public function checkForm($form, $selector = 'form')
     {
-        if (!$form instanceof sfForm) {
+        if (!$form instanceof \sfForm) {
             $form = new $form();
         }
 
@@ -117,7 +117,7 @@ class sfTesterResponse extends sfTester
         }
 
         foreach ($form as $field => $widget) {
-            $dom = new DOMDocument('1.0', sfConfig::get('sf_charset'));
+            $dom = new \DOMDocument('1.0', \sfConfig::get('sf_charset'));
             $dom->loadHTML((string) $widget);
 
             foreach ($dom->getElementsByTagName('*') as $element) {
@@ -142,18 +142,18 @@ class sfTesterResponse extends sfTester
      *
      * @return sfTester|sfTestFunctionalBase
      *
-     * @throws LogicException If the response is neither XML nor (X)HTML
+     * @throws \LogicException If the response is neither XML nor (X)HTML
      */
     public function isValid($checkDTD = false)
     {
         if (preg_match('/(x|ht)ml/i', $this->response->getContentType())) {
             $revert = libxml_use_internal_errors(true);
 
-            $dom = new DOMDocument('1.0', $this->response->getCharset());
+            $dom = new \DOMDocument('1.0', $this->response->getCharset());
             $content = $this->response->getContent();
 
             if (true === $checkDTD) {
-                $cache = sfConfig::get('sf_cache_dir').'/sf_tester_response/w3';
+                $cache = \sfConfig::get('sf_cache_dir').'/sf_tester_response/w3';
                 if (':' == $cache[1]) {
                     // On Windows systems the path will be like c:\symfony\cache\xml.dtd
                     // I did not manage to get DOMDocument loading a file protocol url including the drive letter
@@ -168,12 +168,12 @@ class sfTesterResponse extends sfTester
                 }
 
                 if (!file_exists($cache.'/TR/xhtml11/DTD/xhtml11.dtd')) {
-                    $filesystem = new sfFilesystem();
+                    $filesystem = new \sfFilesystem();
 
-                    $finder = sfFinder::type('any')->discard('.sf');
+                    $finder = \sfFinder::type('any')->discard('.sf');
                     $filesystem->mirror(__DIR__.'/w3', $cache, $finder);
 
-                    $finder = sfFinder::type('file');
+                    $finder = \sfFinder::type('file');
                     $filesystem->replaceTokens($finder->in($cache), '##', '##', ['LOCAL_W3' => $local]);
                 }
 
@@ -218,7 +218,7 @@ class sfTesterResponse extends sfTester
 
             libxml_use_internal_errors($revert);
         } else {
-            throw new LogicException(sprintf('Unable to validate responses of content type "%s"', $this->response->getContentType()));
+            throw new \LogicException(sprintf('Unable to validate responses of content type "%s"', $this->response->getContentType()));
         }
 
         return $this->getObjectToReturn();
@@ -303,7 +303,7 @@ class sfTesterResponse extends sfTester
 
                 foreach ($attributes as $attributeName => $attributeValue) {
                     if (!array_key_exists($attributeName, $cookie)) {
-                        throw new LogicException(sprintf('The cookie attribute "%s" is not valid.', $attributeName));
+                        throw new \LogicException(sprintf('The cookie attribute "%s" is not valid.', $attributeName));
                     }
 
                     $this->tester->is($cookie[$attributeName], $attributeValue, sprintf('"%s" cookie "%s" attribute is "%s"', $name, $attributeName, $attributeValue));
@@ -322,14 +322,13 @@ class sfTesterResponse extends sfTester
      * Tests the response content against a regex.
      *
      * @param string Regex
-     * @param mixed $regex
      *
      * @return sfTester|sfTestFunctionalBase
      */
     public function matches($regex)
     {
         if (!preg_match('/^(!)?([^a-zA-Z0-9\\\\]).+?\\2[ims]?$/', $regex, $match)) {
-            throw new InvalidArgumentException(sprintf('"%s" is not a valid regular expression.', $regex));
+            throw new \InvalidArgumentException(sprintf('"%s" is not a valid regular expression.', $regex));
         }
 
         if ('!' == $match[1]) {
@@ -383,7 +382,7 @@ class sfTesterResponse extends sfTester
     {
         echo $this->tester->error('Response debug');
 
-        if (!$realOutput && null !== sfException::getLastException()) {
+        if (!$realOutput && null !== \sfException::getLastException()) {
             // print the exception and the stack trace instead of the "normal" output
             $this->tester->comment('WARNING');
             $this->tester->comment('An error occurred when processing this request.');
@@ -409,7 +408,7 @@ class sfTesterResponse extends sfTester
         }
 
         echo "\n";
-        if (!$realOutput && null !== $exception = sfException::getLastException()) {
+        if (!$realOutput && null !== $exception = \sfException::getLastException()) {
             echo $exception;
         } else {
             echo $this->response->getContent();

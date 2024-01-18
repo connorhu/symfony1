@@ -25,11 +25,11 @@ abstract class sfPluginConfiguration
     /**
      * Constructor.
      *
-     * @param sfProjectConfiguration $configuration The project configuration
-     * @param string                 $rootDir       The plugin root directory
-     * @param string                 $name          The plugin name
+     * @param \sfProjectConfiguration $configuration The project configuration
+     * @param string                  $rootDir       The plugin root directory
+     * @param string                  $name          The plugin name
      */
-    public function __construct(sfProjectConfiguration $configuration, $rootDir = null, $name = null)
+    public function __construct(\sfProjectConfiguration $configuration, $rootDir = null, $name = null)
     {
         $this->configuration = $configuration;
         $this->dispatcher = $configuration->getEventDispatcher();
@@ -39,7 +39,7 @@ abstract class sfPluginConfiguration
         $this->setup();
         $this->configure();
 
-        if (!$this->configuration instanceof sfApplicationConfiguration) {
+        if (!$this->configuration instanceof \sfApplicationConfiguration) {
             $this->initializeAutoload();
             $this->initialize();
         }
@@ -68,7 +68,7 @@ abstract class sfPluginConfiguration
      *
      * This method is called after the plugin's classes have been added to sfAutoload.
      *
-     * @return bool|null If false sfApplicationConfiguration will look for a config.php (maintains BC with symfony < 1.2)
+     * @return \bool|null If false sfApplicationConfiguration will look for a config.php (maintains BC with symfony < 1.2)
      */
     public function initialize()
     {
@@ -101,11 +101,11 @@ abstract class sfPluginConfiguration
      * configuration. Otherwise, autoload is handled in
      * {@link sfApplicationConfiguration} using {@link sfAutoload}.
      *
-     * @see sfSimpleAutoload
+     * @see \sfSimpleAutoload
      */
     public function initializeAutoload()
     {
-        $autoload = sfSimpleAutoload::getInstance(sfConfig::get('sf_cache_dir').'/project_autoload.cache');
+        $autoload = \sfSimpleAutoload::getInstance(\sfConfig::get('sf_cache_dir').'/project_autoload.cache');
 
         if (is_readable($file = $this->rootDir.'/config/autoload.yml')) {
             $this->configuration->getEventDispatcher()->connect('autoload.filter_config', [$this, 'filterAutoloadConfig']);
@@ -123,7 +123,7 @@ abstract class sfPluginConfiguration
      *
      * @return array
      */
-    public function filterAutoloadConfig(sfEvent $event, array $config)
+    public function filterAutoloadConfig(\sfEvent $event, array $config)
     {
         // use array_merge so config is added to the front of the autoload array
         if (!isset($config['autoload'][$this->name.'_lib'])) {
@@ -163,17 +163,17 @@ abstract class sfPluginConfiguration
      *
      * @return array An array of files with the appropriate tests from the current plugin merged in
      */
-    public function filterTestFiles(sfEvent $event, $files)
+    public function filterTestFiles(\sfEvent $event, $files)
     {
         $task = $event->getSubject();
 
-        if ($task instanceof sfTestAllTask) {
+        if ($task instanceof \sfTestAllTask) {
             $directory = $this->rootDir.'/test';
             $names = [];
-        } elseif ($task instanceof sfTestFunctionalTask) {
+        } elseif ($task instanceof \sfTestFunctionalTask) {
             $directory = $this->rootDir.'/test/functional';
             $names = $event['arguments']['controller'];
-        } elseif ($task instanceof sfTestUnitTask) {
+        } elseif ($task instanceof \sfTestUnitTask) {
             $directory = $this->rootDir.'/test/unit';
             $names = $event['arguments']['name'];
         }
@@ -183,7 +183,7 @@ abstract class sfPluginConfiguration
         }
 
         foreach ($names as $name) {
-            $finder = sfFinder::type('file')->follow_link()->name(basename($name).'Test.php');
+            $finder = \sfFinder::type('file')->follow_link()->name(basename($name).'Test.php');
             $files = array_merge($files, $finder->in($directory.'/'.dirname($name)));
         }
 
@@ -197,7 +197,7 @@ abstract class sfPluginConfiguration
      */
     protected function guessRootDir()
     {
-        $r = new ReflectionClass(get_class($this));
+        $r = new \ReflectionClass(get_class($this));
 
         return realpath(dirname($r->getFileName()).'/..');
     }

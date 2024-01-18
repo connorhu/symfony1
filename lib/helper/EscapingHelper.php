@@ -28,8 +28,6 @@
  * @author     Mike Squire <mike@somosis.co.uk>
  *
  * @version    SVN: $Id$
- *
- * @param mixed $value
  */
 
 /**
@@ -43,7 +41,7 @@ function esc_entities($value)
 {
     // Numbers and boolean values get turned into strings which can cause problems
     // with type comparisons (e.g. === or is_int() etc).
-    return is_string($value) ? htmlentities($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
+    return is_string($value) ? htmlentities($value, ENT_QUOTES, \sfConfig::get('sf_charset')) : $value;
 }
 
 define('ESC_ENTITIES', 'esc_entities');
@@ -59,7 +57,7 @@ function esc_specialchars($value)
 {
     // Numbers and boolean values get turned into strings which can cause problems
     // with type comparisons (e.g. === or is_int() etc).
-    return is_string($value) ? htmlspecialchars($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
+    return is_string($value) ? htmlspecialchars($value, ENT_QUOTES, \sfConfig::get('sf_charset')) : $value;
 }
 
 define('ESC_SPECIALCHARS', 'esc_specialchars');

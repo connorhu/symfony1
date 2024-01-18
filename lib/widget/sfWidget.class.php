@@ -30,8 +30,8 @@ abstract class sfWidget
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @throws InvalidArgumentException when a option is not supported
-     * @throws RuntimeException         when a required option is not given
+     * @throws \InvalidArgumentException when a option is not supported
+     * @throws \RuntimeException         when a required option is not given
      */
     public function __construct($options = [], $attributes = [])
     {
@@ -42,12 +42,12 @@ abstract class sfWidget
 
         // check option names
         if ($diff = array_diff($optionKeys, array_merge($currentOptionKeys, $this->requiredOptions))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         // check required options
         if ($diff = array_diff($this->requiredOptions, array_merge($currentOptionKeys, $optionKeys))) {
-            throw new RuntimeException(sprintf('%s requires the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \RuntimeException(sprintf('%s requires the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         $this->options = array_merge($this->options, $options);
@@ -73,7 +73,7 @@ abstract class sfWidget
      *
      * @param string $name The option name
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function addRequiredOption($name)
     {
@@ -98,7 +98,7 @@ abstract class sfWidget
      * @param string $name  The option name
      * @param mixed  $value The default value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function addOption($name, $value = null)
     {
@@ -113,14 +113,14 @@ abstract class sfWidget
      * @param string $name  The option name
      * @param mixed  $value The value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      *
-     * @throws InvalidArgumentException when a option is not supported
+     * @throws \InvalidArgumentException when a option is not supported
      */
     public function setOption($name, $value)
     {
         if (!in_array($name, array_merge(array_keys($this->options), $this->requiredOptions))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following option: \'%s\'.', get_class($this), $name));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following option: \'%s\'.', get_class($this), $name));
         }
 
         $this->options[$name] = $value;
@@ -168,7 +168,7 @@ abstract class sfWidget
      *
      * @param array $options An array of options
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setOptions($options)
     {
@@ -193,7 +193,7 @@ abstract class sfWidget
      * @param string $name  The attribute name
      * @param string $value The attribute value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setAttribute($name, $value)
     {
@@ -219,7 +219,7 @@ abstract class sfWidget
      *
      * @param array $attributes An array of HTML attributes
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setAttributes($attributes)
     {

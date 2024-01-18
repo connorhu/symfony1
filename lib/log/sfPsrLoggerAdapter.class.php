@@ -1,4 +1,7 @@
 <?php
+
+use Psr\Log\LoggerInterface;
+
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -14,7 +17,7 @@
  *
  * @author     Martin Poirier Theoret <mpoiriert@gmail.com>
  */
-class sfPsrLoggerAdapter extends sfLogger
+class sfPsrLoggerAdapter extends \sfLogger
 {
     /**
      * Buffer to keep all the log before the psr logger is registered.
@@ -26,7 +29,7 @@ class sfPsrLoggerAdapter extends sfLogger
     /**
      * The logger that will the log will be forward to.
      *
-     * @var Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
@@ -47,7 +50,7 @@ class sfPsrLoggerAdapter extends sfLogger
      *
      * @param array $options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         if (isset($options['logger_service_id'])) {
             $this->loggerServiceId = $options['logger_service_id'];
@@ -63,7 +66,7 @@ class sfPsrLoggerAdapter extends sfLogger
     /**
      * Listen the context load factories to get the configure service after the service container is available.
      */
-    public function listenContextLoadFactoriesEvent(sfEvent $event)
+    public function listenContextLoadFactoriesEvent(\sfEvent $event)
     {
         $context = $event->getSubject();
         // @var $context sfContext
@@ -74,7 +77,7 @@ class sfPsrLoggerAdapter extends sfLogger
     /**
      * Set the logger.
      */
-    public function setLogger(Psr\Log\LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
         $this->flushBuffer();
@@ -113,42 +116,42 @@ class sfPsrLoggerAdapter extends sfLogger
         }
 
         switch ($priority) {
-            case sfLogger::EMERG:
+            case \sfLogger::EMERG:
                 $this->logger->emergency($message);
 
                 break;
 
-            case sfLogger::ALERT:
+            case \sfLogger::ALERT:
                 $this->logger->alert($message);
 
                 break;
 
-            case sfLogger::CRIT:
+            case \sfLogger::CRIT:
                 $this->logger->critical($message);
 
                 break;
 
-            case sfLogger::ERR:
+            case \sfLogger::ERR:
                 $this->logger->error($message);
 
                 break;
 
-            case sfLogger::WARNING:
+            case \sfLogger::WARNING:
                 $this->logger->warning($message);
 
                 break;
 
-            case sfLogger::NOTICE:
+            case \sfLogger::NOTICE:
                 $this->logger->notice($message);
 
                 break;
 
-            case sfLogger::INFO:
+            case \sfLogger::INFO:
                 $this->logger->info($message);
 
                 break;
 
-            case sfLogger::DEBUG:
+            case \sfLogger::DEBUG:
                 $this->logger->debug($message);
 
                 break;

@@ -17,10 +17,10 @@
  */
 abstract class sfRouting
 {
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
-    /** @var sfCache|null */
+    /** @var \sfCache|null */
     protected $cache;
     protected $defaultParameters = [];
     protected $options = [];
@@ -32,7 +32,7 @@ abstract class sfRouting
      *
      * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, \sfCache $cache = null, $options = [])
     {
         $this->initialize($dispatcher, $cache, $options);
 
@@ -44,7 +44,7 @@ abstract class sfRouting
     /**
      * Returns the routing cache object.
      *
-     * @return sfCache A sfCache instance or null
+     * @return \sfCache A sfCache instance or null
      */
     public function getCache()
     {
@@ -62,11 +62,11 @@ abstract class sfRouting
      *  * debug:          Whether to cache or not (false by default)
      *  * context:        An array of context variables to help URL matching and generation
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param sfCache           $cache      An sfCache instance
-     * @param array             $options    an associative array of initialization options
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param \sfCache           $cache      An sfCache instance
+     * @param array              $options    an associative array of initialization options
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, \sfCache $cache = null, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -111,7 +111,7 @@ abstract class sfRouting
      */
     public function loadConfiguration()
     {
-        $this->dispatcher->notify(new sfEvent($this, 'routing.load_configuration'));
+        $this->dispatcher->notify(new \sfEvent($this, 'routing.load_configuration'));
     }
 
     /**
@@ -136,7 +136,7 @@ abstract class sfRouting
      *
      * @param string $name The route name
      *
-     * @return sfRoute
+     * @return \sfRoute
      */
     abstract public function getRoute($name);
 
@@ -229,9 +229,9 @@ abstract class sfRouting
     /**
      * Listens to the user.change_culture event.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
-    public function listenToChangeCultureEvent(sfEvent $event)
+    public function listenToChangeCultureEvent(\sfEvent $event)
     {
         // change the culture in the routing default parameters
         $this->setDefaultParameter('sf_culture', $event['culture']);
@@ -240,12 +240,12 @@ abstract class sfRouting
     /**
      * Listens to the request.filter_parameters event.
      *
-     * @param sfEvent $event      An sfEvent instance
-     * @param array   $parameters
+     * @param \sfEvent $event      An sfEvent instance
+     * @param array    $parameters
      *
      * @return array $parameters  An array of parameters for the event
      */
-    public function filterParametersEvent(sfEvent $event, $parameters)
+    public function filterParametersEvent(\sfEvent $event, $parameters)
     {
         $context = $event->getParameters();
 

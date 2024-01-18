@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfXCacheCache extends sfCache
+class sfXCacheCache extends \sfCache
 {
     /**
      * Initializes this sfCache instance.
@@ -24,28 +24,25 @@ class sfXCacheCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
-     *
-     * @param mixed $options
+     * @see \sfCache
      */
     public function initialize($options = [])
     {
         parent::initialize($options);
 
         if (!function_exists('xcache_set')) {
-            throw new sfInitializationException('You must have XCache installed and enabled to use sfXCacheCache class.');
+            throw new \sfInitializationException('You must have XCache installed and enabled to use sfXCacheCache class.');
         }
 
         if (!ini_get('xcache.var_size')) {
-            throw new sfInitializationException('You must set the "xcache.var_size" variable to a value greater than 0 to use sfXCacheCache class.');
+            throw new \sfInitializationException('You must set the "xcache.var_size" variable to a value greater than 0 to use sfXCacheCache class.');
         }
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
-     * @param mixed      $key
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -59,9 +56,7 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -69,11 +64,9 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
-     * @param mixed      $key
-     * @param mixed      $data
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -89,9 +82,7 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -99,13 +90,11 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $mode
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
-        if (sfCache::ALL !== $mode) {
+        if (\sfCache::ALL !== $mode) {
             return true;
         }
 
@@ -121,9 +110,7 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -137,9 +124,7 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getTimeout($key)
     {
@@ -155,7 +140,7 @@ class sfXCacheCache extends sfCache
     /**
      * @param string $key
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function getBaseValue($key)
     {
@@ -163,9 +148,7 @@ class sfXCacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $pattern
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {
@@ -190,7 +173,7 @@ class sfXCacheCache extends sfCache
     /**
      * @param string $key
      *
-     * @return array|null
+     * @return \array|null
      */
     public function getCacheInfo($key)
     {
@@ -214,7 +197,7 @@ class sfXCacheCache extends sfCache
     protected function checkAuth()
     {
         if (ini_get('xcache.admin.enable_auth')) {
-            throw new sfConfigurationException('To use all features of the "sfXCacheCache" class, you must set "xcache.admin.enable_auth" to "Off" in your php.ini.');
+            throw new \sfConfigurationException('To use all features of the "sfXCacheCache" class, you must set "xcache.admin.enable_auth" to "Off" in your php.ini.');
         }
     }
 }

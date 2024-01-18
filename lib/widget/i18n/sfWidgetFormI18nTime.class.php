@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nTime extends sfWidgetFormTime
+class sfWidgetFormI18nTime extends \sfWidgetFormTime
 {
     /**
      * Constructor.
@@ -27,7 +27,7 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormTime
+     * @see \sfWidgetFormTime
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -46,7 +46,7 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
 
     protected function getTimeFormat($culture, $withSeconds)
     {
-        $timeFormat = $withSeconds ? sfDateTimeFormatInfo::getInstance($culture)->getMediumTimePattern() : sfDateTimeFormatInfo::getInstance($culture)->getShortTimePattern();
+        $timeFormat = $withSeconds ? \sfDateTimeFormatInfo::getInstance($culture)->getMediumTimePattern() : \sfDateTimeFormatInfo::getInstance($culture)->getShortTimePattern();
 
         if (false === ($hourPos = stripos($timeFormat, 'h')) || false === ($minutePos = stripos($timeFormat, 'm'))) {
             return $this->getOption('format');

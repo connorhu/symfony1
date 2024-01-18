@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfActions extends sfAction
+abstract class sfActions extends \sfAction
 {
     /**
      * Dispatches to the action defined by the 'action' parameter of the sfRequest object.
@@ -25,13 +25,13 @@ abstract class sfActions extends sfAction
      * This method try to execute the executeXXX() method of the current object where XXX is the
      * defined action name.
      *
-     * @param sfRequest $request The current sfRequest object
+     * @param \sfRequest $request The current sfRequest object
      *
      * @return string A string containing the view name associated with this action
      *
-     * @throws sfInitializationException
+     * @throws \sfInitializationException
      *
-     * @see sfAction
+     * @see \sfAction
      */
     public function execute($request)
     {
@@ -40,16 +40,16 @@ abstract class sfActions extends sfAction
 
         if ('execute' === $actionToRun) {
             // no action given
-            throw new sfInitializationException(sprintf('sfAction initialization failed for module "%s". There was no action given.', $this->getModuleName()));
+            throw new \sfInitializationException(sprintf('sfAction initialization failed for module "%s". There was no action given.', $this->getModuleName()));
         }
 
         if (!is_callable([$this, $actionToRun])) {
             // action not found
-            throw new sfInitializationException(sprintf('sfAction initialization failed for module "%s", action "%s". You must create a "%s" method.', $this->getModuleName(), $this->getActionName(), $actionToRun));
+            throw new \sfInitializationException(sprintf('sfAction initialization failed for module "%s", action "%s". You must create a "%s" method.', $this->getModuleName(), $this->getActionName(), $actionToRun));
         }
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Call "%s->%s()"', get_class($this), $actionToRun)]));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Call "%s->%s()"', get_class($this), $actionToRun)]));
         }
 
         // run action

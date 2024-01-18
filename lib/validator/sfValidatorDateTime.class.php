@@ -15,13 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorDateTime extends sfValidatorDate
+class sfValidatorDateTime extends \sfValidatorDate
 {
     /**
-     * @see sfValidatorDate
-     *
-     * @param mixed $options
-     * @param mixed $messages
+     * @see \sfValidatorDate
      */
     protected function configure($options = [], $messages = [])
     {

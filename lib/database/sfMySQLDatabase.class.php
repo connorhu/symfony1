@@ -25,7 +25,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfMySQLDatabase extends sfDatabase
+class sfMySQLDatabase extends \sfDatabase
 {
     /**
      * Connects to the database.
@@ -55,13 +55,13 @@ class sfMySQLDatabase extends sfDatabase
         // make sure the connection went through
         if (false === $this->connection) {
             // the connection's foobar'd
-            throw new sfDatabaseException('Failed to create a MySQLDatabase connection.');
+            throw new \sfDatabaseException('Failed to create a MySQLDatabase connection.');
         }
 
         // select our database
         if ($this->selectDatabase($database)) {
             // can't select the database
-            throw new sfDatabaseException(sprintf('Failed to select MySQLDatabase "%s".', $database));
+            throw new \sfDatabaseException(sprintf('Failed to select MySQLDatabase "%s".', $database));
         }
 
         // set encoding if specified

@@ -18,21 +18,21 @@ $_test_dir = realpath(__DIR__.'/../../');
 
 require_once $_test_dir.'/../lib/vendor/lime/lime.php';
 
-sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
+\sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
 // initialize the storage
 try {
-    $storage = new sfSessionStorage();
+    $storage = new \sfSessionStorage();
     $t->pass('->__construct() does not throw an exception when not provided with options');
     $storage->shutdown();
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->fail('->__construct() Startup failure');
 }
 
-$storage = new sfSessionStorage();
-$t->ok($storage instanceof sfStorage, '->__construct() is an instance of sfStorage');
+$storage = new \sfSessionStorage();
+$t->ok($storage instanceof \sfStorage, '->__construct() is an instance of sfStorage');
 
 $storage->write('test', 123);
 

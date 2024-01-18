@@ -26,11 +26,8 @@ abstract class sfI18nExtract
      * Class constructor.
      *
      * @see initialize()
-     *
-     * @param mixed $culture
-     * @param mixed $parameters
      */
-    public function __construct(sfI18N $i18n, $culture, $parameters = [])
+    public function __construct(\sfI18N $i18n, $culture, $parameters = [])
     {
         $this->initialize($i18n, $culture, $parameters);
     }
@@ -38,11 +35,11 @@ abstract class sfI18nExtract
     /**
      * Initializes the current extract object.
      *
-     * @param sfI18N $i18n       A sfI18N instance
-     * @param string $culture    The culture
-     * @param array  $parameters An array of parameters
+     * @param \sfI18N $i18n       A sfI18N instance
+     * @param string  $culture    The culture
+     * @param array   $parameters An array of parameters
      */
-    public function initialize(sfI18N $i18n, $culture, $parameters = [])
+    public function initialize(\sfI18N $i18n, $culture, $parameters = [])
     {
         $this->allSeenMessages = [];
         $this->newMessages = [];
@@ -175,9 +172,9 @@ abstract class sfI18nExtract
      */
     protected function extractFromPhpFiles($dir)
     {
-        $phpExtractor = new sfI18nPhpExtractor();
+        $phpExtractor = new \sfI18nPhpExtractor();
 
-        $files = sfFinder::type('file')->name('*.php');
+        $files = \sfFinder::type('file')->name('*.php');
         $messages = [];
         foreach ($files->in($dir) as $file) {
             $messages = array_merge($messages, $phpExtractor->extract(file_get_contents($file)));

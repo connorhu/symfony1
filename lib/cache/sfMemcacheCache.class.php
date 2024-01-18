@@ -15,9 +15,9 @@
  *
  * @version    SVN: $Id$
  */
-class sfMemcacheCache extends sfCache
+class sfMemcacheCache extends \sfCache
 {
-    /** @var Memcache */
+    /** @var \Memcache */
     protected $memcache;
 
     /**
@@ -35,43 +35,41 @@ class sfMemcacheCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
-     *
-     * @param mixed $options
+     * @see \sfCache
      */
     public function initialize($options = [])
     {
         parent::initialize($options);
 
         if (!class_exists('Memcache')) {
-            throw new sfInitializationException('You must have memcache installed and enabled to use sfMemcacheCache class.');
+            throw new \sfInitializationException('You must have memcache installed and enabled to use sfMemcacheCache class.');
         }
 
         if ($this->getOption('memcache')) {
             $this->memcache = $this->getOption('memcache');
         } else {
-            $this->memcache = new Memcache();
+            $this->memcache = new \Memcache();
 
             if ($this->getOption('servers')) {
                 foreach ($this->getOption('servers') as $server) {
                     $port = isset($server['port']) ? $server['port'] : 11211;
                     if (!$this->memcache->addServer($server['host'], $port, isset($server['persistent']) ? $server['persistent'] : true)) {
-                        throw new sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $server['host'], $port));
+                        throw new \sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $server['host'], $port));
                     }
                 }
             } else {
                 $method = $this->getOption('persistent', true) ? 'pconnect' : 'connect';
                 if (!$this->memcache->{$method}($this->getOption('host', 'localhost'), $this->getOption('port', 11211), $this->getOption('timeout', 1))) {
-                    throw new sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $this->getOption('host', 'localhost'), $this->getOption('port', 11211)));
+                    throw new \sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $this->getOption('host', 'localhost'), $this->getOption('port', 11211)));
                 }
             }
         }
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @return Memcache
+     * @return \Memcache
      */
     public function getBackend()
     {
@@ -79,10 +77,9 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
-     * @param mixed      $key
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -92,9 +89,7 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -107,11 +102,9 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
-     * @param mixed      $key
-     * @param mixed      $data
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -133,9 +126,7 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -149,21 +140,17 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $mode
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
-        if (sfCache::ALL === $mode) {
+        if (\sfCache::ALL === $mode) {
             return $this->memcache->flush();
         }
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -175,9 +162,7 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getTimeout($key)
     {
@@ -189,16 +174,14 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed $pattern
-     *
-     * @throws sfCacheException
+     * @throws \sfCacheException
      */
     public function removePattern($pattern)
     {
         if (!$this->getOption('storeCacheInfo', false)) {
-            throw new sfCacheException('To use the "removePattern" method, you must set the "storeCacheInfo" option to "true".');
+            throw new \sfCacheException('To use the "removePattern" method, you must set the "storeCacheInfo" option to "true".');
         }
 
         $regexp = self::patternToRegexp($this->getOption('prefix').$pattern);
@@ -210,9 +193,7 @@ class sfMemcacheCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $keys
+     * @see \sfCache
      */
     public function getMany($keys)
     {

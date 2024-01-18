@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-class FormFormatterStub extends sfWidgetFormSchemaFormatter
+class FormFormatterStub extends \sfWidgetFormSchemaFormatter
 {
     public function __construct()
     {
@@ -22,14 +22,14 @@ class FormFormatterStub extends sfWidgetFormSchemaFormatter
     }
 }
 
-$t = new lime_test(13);
+$t = new \lime_test(13);
 
-$dom = new DOMDocument('1.0', 'utf-8');
+$dom = new \DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->render()
 $t->diag('->render()');
-$w = new sfWidgetFormSelectCheckbox(['choices' => ['foo' => 'bar', 'foobar' => 'foo'], 'separator' => '']);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => ['foo' => 'bar', 'foobar' => 'foo'], 'separator' => '']);
 $output = '<ul class="checkbox_list">'.
 '<li><input name="foo[]" type="checkbox" value="foo" id="foo_foo" />&nbsp;<label for="foo_foo">bar</label></li>'.
 '<li><input name="foo[]" type="checkbox" value="foobar" id="foo_foobar" checked="checked" />&nbsp;<label for="foo_foobar">foo</label></li>'.
@@ -45,26 +45,26 @@ $onChange = '<ul class="checkbox_list">'.
 '</ul>';
 $t->is($w->render('foo', ['foobar'], ['onChange' => 'alert(42)']), $onChange, '->render() renders a checkbox tag using extra attributes');
 
-$w = new sfWidgetFormSelectCheckbox(['choices' => ['0' => 'bar', '1' => 'foo']]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => ['0' => 'bar', '1' => 'foo']]);
 $output = <<< 'EOF'
 <ul class="checkbox_list"><li><input name="myname[]" type="checkbox" value="0" id="myname_0" checked="checked" />&nbsp;<label for="myname_0">bar</label></li>
 <li><input name="myname[]" type="checkbox" value="1" id="myname_1" />&nbsp;<label for="myname_1">foo</label></li></ul>
 EOF;
 $t->is($w->render('myname', [false]), fix_linebreaks($output), '->render() considers false to be an integer 0');
 
-$w = new sfWidgetFormSelectCheckbox(['choices' => ['0' => 'bar', '1' => 'foo']]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => ['0' => 'bar', '1' => 'foo']]);
 $output = <<< 'EOF'
 <ul class="checkbox_list"><li><input name="myname[]" type="checkbox" value="0" id="myname_0" />&nbsp;<label for="myname_0">bar</label></li>
 <li><input name="myname[]" type="checkbox" value="1" id="myname_1" checked="checked" />&nbsp;<label for="myname_1">foo</label></li></ul>
 EOF;
 $t->is($w->render('myname', [true]), fix_linebreaks($output), '->render() considers true to be an integer 1');
 
-$w = new sfWidgetFormSelectCheckbox(['choices' => []]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => []]);
 $t->is($w->render('myname', []), '', '->render() returns an empty HTML string if no choices');
 
 // group support
 $t->diag('group support');
-$w = new sfWidgetFormSelectCheckbox(['choices' => ['foo' => ['foo' => 'bar', 'bar' => 'foo'], 'bar' => ['foobar' => 'barfoo']]]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => ['foo' => ['foo' => 'bar', 'bar' => 'foo'], 'bar' => ['foobar' => 'barfoo']]]);
 $output = <<<'EOF'
 foo <ul class="checkbox_list"><li><input name="foo[]" type="checkbox" value="foo" id="foo_foo" checked="checked" />&nbsp;<label for="foo_foo">bar</label></li>
 <li><input name="foo[]" type="checkbox" value="bar" id="foo_bar" />&nbsp;<label for="foo_bar">foo</label></li></ul>
@@ -80,9 +80,9 @@ EOF;
 $t->is($w->render('foo', ['bar']), fix_linebreaks($output), '->render() accepts a single group');
 
 try {
-    $w = new sfWidgetFormSelectCheckbox();
+    $w = new \sfWidgetFormSelectCheckbox();
     $t->fail('__construct() throws an RuntimeException if you don\'t pass a choices option');
-} catch (RuntimeException $e) {
+} catch (\RuntimeException $e) {
     $t->pass('__construct() throws an RuntimeException if you don\'t pass a choices option');
 }
 
@@ -93,18 +93,18 @@ function choice_callable()
 {
     return [1, 2, 3];
 }
-$w = new sfWidgetFormSelectCheckbox(['choices' => new sfCallable('choice_callable')]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => new \sfCallable('choice_callable')]);
 $dom->loadHTML($w->render('foo'));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is(count($css->matchAll('input[type="checkbox"]')->getNodes()), 3, '->render() accepts a sfCallable as a choices option');
 
 // choices are translated
 $t->diag('choices are translated');
 
-$ws = new sfWidgetFormSchema();
-$ws->addFormFormatter('stub', new FormFormatterStub());
+$ws = new \sfWidgetFormSchema();
+$ws->addFormFormatter('stub', new \FormFormatterStub());
 $ws->setFormFormatterName('stub');
-$w = new sfWidgetFormSelectCheckbox(['choices' => ['foo' => 'bar', 'foobar' => 'foo'], 'separator' => '']);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => ['foo' => 'bar', 'foobar' => 'foo'], 'separator' => '']);
 $w->setParent($ws);
 $output = '<ul class="checkbox_list">'.
 '<li><input name="foo[]" type="checkbox" value="foo" id="foo_foo" />&nbsp;<label for="foo_foo">translation[bar]</label></li>'.
@@ -115,17 +115,17 @@ $t->is($w->render('foo'), $output, '->render() translates the options');
 // choices are escaped
 $t->diag('choices are escaped');
 
-$w = new sfWidgetFormSelectCheckbox(['choices' => ['<b>Hello world</b>']]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => ['<b>Hello world</b>']]);
 $t->is($w->render('foo'), '<ul class="checkbox_list"><li><input name="foo[]" type="checkbox" value="0" id="foo_0" />&nbsp;<label for="foo_0">&lt;b&gt;Hello world&lt;/b&gt;</label></li></ul>', '->render() escapes the choices');
 
 // __clone()
 $t->diag('__clone()');
-$w = new sfWidgetFormSelectCheckbox(['choices' => new sfCallable([$w, 'foo'])]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => new \sfCallable([$w, 'foo'])]);
 $w1 = clone $w;
 $callable = $w1->getOption('choices')->getCallable();
 $t->is(spl_object_hash($callable[0]), spl_object_hash($w1), '__clone() changes the choices is a callable and the object is an instance of the current object');
 
-$w = new sfWidgetFormSelectCheckbox(['choices' => new sfCallable([$a = new stdClass(), 'foo'])]);
+$w = new \sfWidgetFormSelectCheckbox(['choices' => new \sfCallable([$a = new \stdClass(), 'foo'])]);
 $w1 = clone $w;
 $callable = $w1->getOption('choices')->getCallable();
 $t->is(spl_object_hash($callable[0]), spl_object_hash($a), '__clone() changes nothing if the choices is a callable and the object is not an instance of the current object');

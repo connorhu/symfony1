@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18NPluginActions extends sfActions
+class sfI18NPluginActions extends \sfActions
 {
     public function executeIndex()
     {

@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(52);
+$t = new \lime_test(52);
 
-$v = new sfValidatorDate();
+$v = new \sfValidatorDate();
 
 // ->clean()
 $t->diag('->clean()');
@@ -29,7 +29,7 @@ try {
     $v->clean('This is not a date');
     $t->fail('->clean() throws a sfValidatorError if the date is a string and is not parsable by strtotime');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the date is a string and is not parsable by strtotime');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -49,7 +49,7 @@ try {
     $v->clean(['year' => '', 'month' => 1, 'day' => 15]);
     $t->fail('->clean() throws a sfValidatorError if the date is not valid');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the date is not valid');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -58,7 +58,7 @@ try {
     $v->clean(['year' => -2, 'month' => 1, 'day' => 15]);
     $t->fail('->clean() throws a sfValidatorError if the date is not valid');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the date is not valid');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -67,7 +67,7 @@ try {
     $v->clean(['year' => 2008, 'month' => 2, 'day' => 30]);
     $t->fail('->clean() throws a sfValidatorError if the date is not valid');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the date is not valid');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
@@ -82,7 +82,7 @@ try {
     $v->clean('2005-10-18');
     $t->fail('->clean() throws a sfValidatorError if the date does not match the regex');
     $t->skip('', 2);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the date does not match the regex');
     $t->like($e->getMessage(), '/'.preg_quote(htmlspecialchars($v->getOption('date_format'), ENT_QUOTES, 'UTF-8'), '/').'/', '->clean() returns the expected date format in the error message');
     $t->is($e->getCode(), 'bad_format', '->clean() throws a sfValidatorError');
@@ -93,7 +93,7 @@ $v->setOption('date_format_error', 'dd/mm/YYYY');
 try {
     $v->clean('2005-10-18');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->like($e->getMessage(), '/'.preg_quote('dd/mm/YYYY', '/').'/', '->clean() returns the expected date format error if provided');
 }
 
@@ -115,7 +115,7 @@ $t->is($v->clean(['year' => 2005, 'month' => 10, 'day' => 15, 'hour' => 0]), '20
 try {
     $v->clean(['year' => 2005, 'month' => 1, 'day' => 15, 'hour' => 12, 'minute' => '', 'second' => 12]);
     $t->fail('->clean() throws a sfValidatorError if the time is not valid');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws a sfValidatorError if the time is not valid');
 }
 
@@ -137,7 +137,7 @@ $v->setOption('with_time', true);
 $t->is($v->clean(time()), time(), '->clean() output format can be change with the date_output option');
 
 // required
-$v = new sfValidatorDate();
+$v = new \sfValidatorDate();
 foreach ([
     ['year' => '', 'month' => '', 'day' => ''],
     ['year' => null, 'month' => null, 'day' => null],
@@ -147,7 +147,7 @@ foreach ([
     try {
         $v->clean($input);
         $t->fail('->clean() throws an exception if the date is empty and required is true');
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass('->clean() throws an exception if the date is empty and required is true');
     }
 }
@@ -161,14 +161,14 @@ $t->is($v->clean('18 october 2005'), '2005-10-18', '->clean() can accept a max/m
 try {
     $v->clean('18 october 2004');
     $t->fail('->clean() throws an exception if the date is not within the range provided by the min/max options');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an exception if the date is not within the range provided by the min/max options');
 }
 
 try {
     $v->clean('18 october 2008');
     $t->fail('->clean() throws an exception if the date is not within the range provided by the min/max options');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an exception if the date is not within the range provided by the min/max options');
 }
 
@@ -182,7 +182,7 @@ $t->is($v->clean(['year' => 1906, 'month' => 2, 'day' => 13]), '1906-02-13', '->
 try {
     $v->clean('18 october 1804');
     $t->fail('->clean() throws an exception if the date is not within the range provided by the min/max options');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an exception if the date is not within the range provided by the min/max options');
     $t->is($e->getMessage(), 'The date must be after 31/12/1805 10:00:00.', '->clean() check exception message');
 }
@@ -190,19 +190,19 @@ try {
 try {
     $v->clean('18 october 2108');
     $t->fail('->clean() throws an exception if the date is not within the range provided by the min/max options');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an exception if the date is not within the range provided by the min/max options');
     $t->is($e->getMessage(), 'The date must be before 31/12/2107 10:50:00.', '->clean() check exception message');
 }
 
 // timezones
-$defaultTimezone = new DateTimeZone(date_default_timezone_get());
-$otherTimezone = new DateTimeZone('US/Pacific');
-if ($defaultTimezone->getOffset(new DateTime()) == $otherTimezone->getOffset(new DateTime())) {
-    $otherTimezone = new DateTimeZone('US/Eastern');
+$defaultTimezone = new \DateTimeZone(date_default_timezone_get());
+$otherTimezone = new \DateTimeZone('US/Pacific');
+if ($defaultTimezone->getOffset(new \DateTime()) == $otherTimezone->getOffset(new \DateTime())) {
+    $otherTimezone = new \DateTimeZone('US/Eastern');
 }
 
-$date = new DateTime('2000-01-01T00:00:00-00:00');
+$date = new \DateTime('2000-01-01T00:00:00-00:00');
 $date->setTimezone($otherTimezone);
 $v->setOption('min', null);
 $v->setOption('max', null);

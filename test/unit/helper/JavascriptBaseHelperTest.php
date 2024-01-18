@@ -14,7 +14,7 @@ require_once __DIR__.'/../../../lib/helper/TagHelper.php';
 
 require_once __DIR__.'/../../../lib/helper/JavascriptBaseHelper.php';
 
-$t = new lime_test(9, new lime_output_color());
+$t = new \lime_test(9, new \lime_output_color());
 
 // boolean_for_javascript()
 $t->diag('boolean_for_javascript()');

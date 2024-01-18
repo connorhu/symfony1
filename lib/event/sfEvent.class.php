@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id: sfEvent.class.php 8698 2008-04-30 16:35:28Z fabien $
  */
-class sfEvent implements ArrayAccess
+class sfEvent implements \ArrayAccess
 {
     protected $value;
     protected $processed = false;
@@ -132,7 +132,7 @@ class sfEvent implements ArrayAccess
     public function offsetGet($name)
     {
         if (!array_key_exists($name, $this->parameters)) {
-            throw new InvalidArgumentException(sprintf('The event "%s" has no "%s" parameter.', $this->name, $name));
+            throw new \InvalidArgumentException(sprintf('The event "%s" has no "%s" parameter.', $this->name, $name));
         }
 
         return $this->parameters[$name];

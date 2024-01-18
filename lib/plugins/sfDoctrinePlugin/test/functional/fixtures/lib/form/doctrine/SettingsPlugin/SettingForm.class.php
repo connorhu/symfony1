@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class SettingForm extends PluginSettingForm
+class SettingForm extends \PluginSettingForm
 {
     public function configure()
     {

@@ -7,10 +7,10 @@
  *
  * @version    SVN: $Id$
  */
-class BlogAuthorForm extends BaseBlogAuthorForm
+class BlogAuthorForm extends \BaseBlogAuthorForm
 {
     /**
-     * @see AuthorForm
+     * @see \AuthorForm
      */
     public function configure()
     {

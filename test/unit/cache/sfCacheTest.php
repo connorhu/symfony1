@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-class myCache extends sfCache
+class myCache extends \sfCache
 {
     public function get($key, $default = null)
     {
@@ -28,7 +28,7 @@ class myCache extends sfCache
     {
     }
 
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
     }
 
@@ -49,10 +49,10 @@ class fakeCache
 {
 }
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
 // ->initialize()
 $t->diag('->initialize()');
-$cache = new myCache();
+$cache = new \myCache();
 $cache->initialize(['foo' => 'bar']);
 $t->is($cache->getOption('foo'), 'bar', '->initialize() takes an array of options as its first argument');

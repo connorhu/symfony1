@@ -15,20 +15,20 @@
  *
  * @version    SVN: $Id$
  */
-class sfTestFunctionalTask extends sfTestBaseTask
+class sfTestFunctionalTask extends \sfTestBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('controller', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The controller name'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('controller', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'The controller name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
         ]);
 
         $this->namespace = 'test';
@@ -65,10 +65,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -78,8 +75,8 @@ EOF;
             $files = [];
 
             foreach ($arguments['controller'] as $controller) {
-                $finder = sfFinder::type('file')->follow_link()->name(basename($controller).'Test.php');
-                $files = array_merge($files, $finder->in(sfConfig::get('sf_test_dir').'/functional/'.$app.'/'.dirname($controller)));
+                $finder = \sfFinder::type('file')->follow_link()->name(basename($controller).'Test.php');
+                $files = array_merge($files, $finder->in(\sfConfig::get('sf_test_dir').'/functional/'.$app.'/'.dirname($controller)));
             }
 
             if ($allFiles = $this->filterTestFiles($files, $arguments, $options)) {
@@ -92,15 +89,15 @@ EOF;
         } else {
             require_once __DIR__.'/sfLimeHarness.class.php';
 
-            $h = new sfLimeHarness([
+            $h = new \sfLimeHarness([
                 'force_colors' => isset($options['color']) && $options['color'],
                 'verbose' => isset($options['trace']) && $options['trace'],
             ]);
             $h->addPlugins(array_map([$this->configuration, 'getPluginConfiguration'], $this->configuration->getPlugins()));
-            $h->base_dir = sfConfig::get('sf_test_dir').'/functional/'.$app;
+            $h->base_dir = \sfConfig::get('sf_test_dir').'/functional/'.$app;
 
             // filter and register functional tests
-            $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
+            $finder = \sfFinder::type('file')->follow_link()->name('*Test.php');
             $h->register($this->filterTestFiles($finder->in($h->base_dir), $arguments, $options));
 
             $ret = $h->run() ? 0 : 1;

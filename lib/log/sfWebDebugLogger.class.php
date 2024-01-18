@@ -15,15 +15,15 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugLogger extends sfVarLogger
+class sfWebDebugLogger extends \sfVarLogger
 {
-    /** @var sfContext */
+    /** @var \sfContext */
     protected $context;
 
     /** @var string */
     protected $webDebugClass;
 
-    /** @var sfWebDebug */
+    /** @var \sfWebDebug */
     protected $webDebug;
 
     /**
@@ -33,18 +33,18 @@ class sfWebDebugLogger extends sfVarLogger
      *
      *  * web_debug_class: The web debug class (sfWebDebug by default)
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      *
-     * @see sfVarLogger
+     * @see \sfVarLogger
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
-        $this->context = sfContext::getInstance();
+        $this->context = \sfContext::getInstance();
 
         $this->webDebugClass = isset($options['web_debug_class']) ? $options['web_debug_class'] : 'sfWebDebug';
 
-        if (sfConfig::get('sf_web_debug')) {
+        if (\sfConfig::get('sf_web_debug')) {
             $dispatcher->connect('context.load_factories', [$this, 'listenForLoadFactories']);
             $dispatcher->connect('response.filter_content', [$this, 'filterResponseContent']);
         }
@@ -79,22 +79,22 @@ class sfWebDebugLogger extends sfVarLogger
 
         switch ($errno) {
             case E_STRICT:
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['priority' => sfLogger::ERR, sprintf($message, 'Strict notice')]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['priority' => \sfLogger::ERR, sprintf($message, 'Strict notice')]));
 
                 break;
 
             case E_NOTICE:
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['priority' => sfLogger::NOTICE, sprintf($message, 'Notice')]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['priority' => \sfLogger::NOTICE, sprintf($message, 'Notice')]));
 
                 break;
 
             case E_WARNING:
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['priority' => sfLogger::WARNING, sprintf($message, 'Warning')]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['priority' => \sfLogger::WARNING, sprintf($message, 'Warning')]));
 
                 break;
 
             case E_RECOVERABLE_ERROR:
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['priority' => sfLogger::ERR, sprintf($message, 'Error')]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['priority' => \sfLogger::ERR, sprintf($message, 'Error')]));
 
                 break;
         }
@@ -105,9 +105,9 @@ class sfWebDebugLogger extends sfVarLogger
     /**
      * Listens for the context.load_factories event.
      */
-    public function listenForLoadFactories(sfEvent $event)
+    public function listenForLoadFactories(\sfEvent $event)
     {
-        $path = sprintf('%s/%s/images', $event->getSubject()->getRequest()->getRelativeUrlRoot(), sfConfig::get('sf_web_debug_web_dir'));
+        $path = sprintf('%s/%s/images', $event->getSubject()->getRequest()->getRelativeUrlRoot(), \sfConfig::get('sf_web_debug_web_dir'));
         $path = str_replace('//', '/', $path);
 
         $this->webDebug = new $this->webDebugClass($this->dispatcher, $this, [
@@ -119,23 +119,23 @@ class sfWebDebugLogger extends sfVarLogger
     /**
      * Listens to the response.filter_content event.
      *
-     * @param sfEvent $event   The sfEvent instance
-     * @param string  $content The response content
+     * @param \sfEvent $event   The sfEvent instance
+     * @param string   $content The response content
      *
      * @return string The filtered response content
      */
-    public function filterResponseContent(sfEvent $event, $content)
+    public function filterResponseContent(\sfEvent $event, $content)
     {
-        if (!sfConfig::get('sf_web_debug')) {
+        if (!\sfConfig::get('sf_web_debug')) {
             return $content;
         }
 
         // log timers information
         $messages = [];
-        foreach (sfTimerManager::getTimers() as $name => $timer) {
+        foreach (\sfTimerManager::getTimers() as $name => $timer) {
             $messages[] = sprintf('%s %.2f ms (%d)', $name, $timer->getElapsedTime() * 1000, $timer->getCalls());
         }
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', $messages));
+        $this->dispatcher->notify(new \sfEvent($this, 'application.log', $messages));
 
         // don't add debug toolbar:
         // * for XHR requests
@@ -144,7 +144,7 @@ class sfWebDebugLogger extends sfVarLogger
         // * if HTTP headers only
         $response = $event->getSubject();
 
-        /** @var sfWebRequest $request */
+        /** @var \sfWebRequest $request */
         $request = $this->context->getRequest();
         if (
             null === $this->webDebug
@@ -154,7 +154,7 @@ class sfWebDebugLogger extends sfVarLogger
             || $request->isXmlHttpRequest()
             || false === strpos($response->getContentType(), 'html')
             || '3' == substr($response->getStatusCode(), 0, 1)
-            || sfView::RENDER_CLIENT != $this->context->getController()->getRenderMode()
+            || \sfView::RENDER_CLIENT != $this->context->getController()->getRenderMode()
             || $response->isHeaderOnly()
         ) {
             return $content;

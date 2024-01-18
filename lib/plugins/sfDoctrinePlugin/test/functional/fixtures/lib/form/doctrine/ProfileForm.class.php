@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class ProfileForm extends BaseProfileForm
+class ProfileForm extends \BaseProfileForm
 {
     public function configure()
     {

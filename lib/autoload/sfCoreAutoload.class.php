@@ -404,12 +404,12 @@ class sfCoreAutoload
     /**
      * Retrieves the singleton instance of this class.
      *
-     * @return sfCoreAutoload a sfCoreAutoload implementation instance
+     * @return \sfCoreAutoload a sfCoreAutoload implementation instance
      */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            self::$instance = new sfCoreAutoload();
+            self::$instance = new \sfCoreAutoload();
         }
 
         return self::$instance;
@@ -418,7 +418,7 @@ class sfCoreAutoload
     /**
      * Register sfCoreAutoload in spl autoloader.
      *
-     * @throws sfException If unable to register SPL autoload function
+     * @throws \sfException If unable to register SPL autoload function
      */
     public static function register()
     {
@@ -428,7 +428,7 @@ class sfCoreAutoload
 
         ini_set('unserialize_callback_func', 'spl_autoload_call');
         if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
-            throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
+            throw new \sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
 
         self::$registered = true;
@@ -466,7 +466,7 @@ class sfCoreAutoload
      *
      * @param string $class The class name (case insensitive)
      *
-     * @return string|null An absolute path or null
+     * @return \string|null An absolute path or null
      */
     public function getClassPath($class)
     {
@@ -500,7 +500,7 @@ class sfCoreAutoload
 
         require_once $libDir.'/util/sfFinder.class.php';
 
-        $files = sfFinder::type('file')
+        $files = \sfFinder::type('file')
             ->prune('plugins')
             ->prune('vendor')
             ->prune('skeleton')

@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(136);
+$t = new \lime_test(136);
 
-class myLogger extends sfLogger
+class myLogger extends \sfLogger
 {
     public $log = '';
 
@@ -26,39 +26,39 @@ class notaLogger
 {
 }
 
-$dispatcher = new sfEventDispatcher();
-$logger = new myLogger($dispatcher, ['log_dir_name' => '/tmp']);
+$dispatcher = new \sfEventDispatcher();
+$logger = new \myLogger($dispatcher, ['log_dir_name' => '/tmp']);
 
 $options = $logger->getOptions();
 $t->is($options['log_dir_name'], '/tmp', '->getOptions() returns the options for the logger instance');
 
 // ->setLogLevel() ->getLogLevel()
 $t->diag('->setLogLevel() ->getLogLevel()');
-$t->is($logger->getLogLevel(), sfLogger::INFO, '->getLogLevel() gets the current log level');
-$logger->setLogLevel(sfLogger::WARNING);
-$t->is($logger->getLogLevel(), sfLogger::WARNING, '->setLogLevel() sets the log level');
+$t->is($logger->getLogLevel(), \sfLogger::INFO, '->getLogLevel() gets the current log level');
+$logger->setLogLevel(\sfLogger::WARNING);
+$t->is($logger->getLogLevel(), \sfLogger::WARNING, '->setLogLevel() sets the log level');
 $logger->setLogLevel('err');
-$t->is($logger->getLogLevel(), sfLogger::ERR, '->setLogLevel() accepts a class constant or a string as its argument');
+$t->is($logger->getLogLevel(), \sfLogger::ERR, '->setLogLevel() accepts a class constant or a string as its argument');
 
 // ->initialize()
 $t->diag('->initialize()');
-$logger->initialize($dispatcher, ['level' => sfLogger::ERR]);
-$t->is($logger->getLogLevel(), sfLogger::ERR, '->initialize() takes an array of options as its second argument');
+$logger->initialize($dispatcher, ['level' => \sfLogger::ERR]);
+$t->is($logger->getLogLevel(), \sfLogger::ERR, '->initialize() takes an array of options as its second argument');
 
 // ::getPriorityName()
 $t->diag('::getPriorityName()');
-$t->is(sfLogger::getPriorityName(sfLogger::INFO), 'info', '::getPriorityName() returns the name of a priority class constant');
+$t->is(\sfLogger::getPriorityName(\sfLogger::INFO), 'info', '::getPriorityName() returns the name of a priority class constant');
 
 try {
-    sfLogger::getPriorityName(100);
+    \sfLogger::getPriorityName(100);
     $t->fail('::getPriorityName() throws an sfException if the priority constant does not exist');
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass('::getPriorityName() throws an sfException if the priority constant does not exist');
 }
 
 // ->log()
 $t->diag('->log()');
-$logger->setLogLevel(sfLogger::DEBUG);
+$logger->setLogLevel(\sfLogger::DEBUG);
 $logger->log('message');
 $t->is($logger->log, 'message', '->log() logs a message');
 

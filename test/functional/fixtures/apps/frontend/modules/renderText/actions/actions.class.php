@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class renderTextActions extends sfActions
+class renderTextActions extends \sfActions
 {
     public function executeIndex()
     {

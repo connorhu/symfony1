@@ -19,16 +19,16 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineBuildModelTask extends sfDoctrineBaseTask
+class sfDoctrineBuildModelTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -51,10 +51,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -63,17 +60,17 @@ EOF;
         $config = $this->getCliConfig();
         $builderOptions = $this->configuration->getPluginConfiguration('sfDoctrinePlugin')->getModelBuilderOptions();
 
-        $stubFinder = sfFinder::type('file')->prune('base')->name('*'.$builderOptions['suffix']);
+        $stubFinder = \sfFinder::type('file')->prune('base')->name('*'.$builderOptions['suffix']);
         $before = $stubFinder->in($config['models_path']);
 
         $schema = $this->prepareSchemaFile($config['yaml_schema_path']);
 
-        $import = new Doctrine_Import_Schema();
+        $import = new \Doctrine_Import_Schema();
         $import->setOptions($builderOptions);
         $import->importSchema($schema, 'yml', $config['models_path']);
 
         // markup base classes with magic methods
-        foreach (sfYaml::load($schema) as $model => $definition) {
+        foreach (\sfYaml::load($schema) as $model => $definition) {
             $file = sprintf('%s%s/%s/Base%s%s', $config['models_path'], isset($definition['package']) ? '/'.substr($definition['package'], 0, strpos($definition['package'], '.')) : '', $builderOptions['baseClassesDirectory'], $model, $builderOptions['suffix']);
             $code = file_get_contents($file);
 
@@ -90,7 +87,7 @@ EOF;
                 $getters = [];
 
                 foreach ($properties as $name => $type) {
-                    $camelized = sfInflector::camelize($name);
+                    $camelized = \sfInflector::camelize($name);
                     $collection = 'Doctrine_Collection' == $type;
 
                     $getters[] = sprintf('@method %-'.$typePad.'s %s%-'.($namePad + 2).'s Returns the current record\'s "%s" %s', $type, 'get', $camelized.'()', $name, $collection ? 'collection' : 'value');
@@ -103,7 +100,7 @@ EOF;
             }
         }
 
-        $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
+        $properties = parse_ini_file(\sfConfig::get('sf_config_dir').'/properties.ini', true);
         $tokens = [
             '##PACKAGE##' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
             '##SUBPACKAGE##' => 'model',
@@ -117,8 +114,8 @@ EOF;
         $this->getFilesystem()->replaceTokens(array_diff($after, $before), '', '', $tokens);
 
         // cleanup base classes
-        $baseFinder = sfFinder::type('file')->name('Base*'.$builderOptions['suffix']);
-        $baseDirFinder = sfFinder::type('dir')->name('base');
+        $baseFinder = \sfFinder::type('file')->name('Base*'.$builderOptions['suffix']);
+        $baseDirFinder = \sfFinder::type('dir')->name('base');
         $this->getFilesystem()->replaceTokens($baseFinder->in($baseDirFinder->in($config['models_path'])), '', '', $tokens);
 
         $this->reloadAutoload();

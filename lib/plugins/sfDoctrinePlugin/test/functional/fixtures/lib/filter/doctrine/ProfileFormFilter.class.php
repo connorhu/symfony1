@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class ProfileFormFilter extends BaseProfileFormFilter
+class ProfileFormFilter extends \BaseProfileFormFilter
 {
     public function configure()
     {

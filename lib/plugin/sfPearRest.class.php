@@ -17,15 +17,12 @@ require_once 'PEAR/REST.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearRest extends PEAR_REST
+class sfPearRest extends \PEAR_REST
 {
     /**
      * @see PEAR_REST::downloadHttp()
      *
-     * @param mixed|null $lastmodified
-     * @param mixed      $url
-     * @param mixed      $accept
-     * @param mixed      $channel
+     * @param \mixed|null $lastmodified
      */
     public function downloadHttp($url, $lastmodified = null, $accept = false, $channel = false)
     {

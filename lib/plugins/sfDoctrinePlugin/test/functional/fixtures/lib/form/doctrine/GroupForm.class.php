@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class GroupForm extends BaseGroupForm
+class GroupForm extends \BaseGroupForm
 {
     public function configure()
     {

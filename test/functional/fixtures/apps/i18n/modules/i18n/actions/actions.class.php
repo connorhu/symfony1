@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class i18nActions extends sfActions
+class i18nActions extends \sfActions
 {
     public function executeIndex()
     {
@@ -29,17 +29,17 @@ class i18nActions extends sfActions
         $this->forward('i18n', 'index');
     }
 
-    public function executeI18nForm(sfWebRequest $request)
+    public function executeI18nForm(\sfWebRequest $request)
     {
-        $this->form = new I18nForm();
+        $this->form = new \I18nForm();
         if ($request->isMethod('post')) {
             $this->form->bind($request->getParameter('i18n'));
         }
     }
 
-    public function executeI18nCustomCatalogueForm(sfWebRequest $request)
+    public function executeI18nCustomCatalogueForm(\sfWebRequest $request)
     {
-        $this->form = new I18nCustomCatalogueForm();
+        $this->form = new \I18nCustomCatalogueForm();
         $this->setTemplate('i18nForm');
     }
 }

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfFileLogger extends sfLogger
+class sfFileLogger extends \sfLogger
 {
     protected $type = 'symfony';
     protected $format = '%time% %type% [%priority%] %message%%EOL%';
@@ -34,16 +34,16 @@ class sfFileLogger extends sfLogger
      * - dir_mode:    The mode to use when creating a directory (default to 0777)
      * - file_mode:   The mode to use when creating a file (default to 0666)
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      *
-     * @throws sfConfigurationException
-     * @throws sfFileException
+     * @throws \sfConfigurationException
+     * @throws \sfFileException
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         if (!isset($options['file'])) {
-            throw new sfConfigurationException('You must provide a "file" parameter for this logger.');
+            throw new \sfConfigurationException('You must provide a "file" parameter for this logger.');
         }
 
         if (isset($options['format'])) {
@@ -66,7 +66,7 @@ class sfFileLogger extends sfLogger
 
         $fileExists = file_exists($options['file']);
         if (!is_writable($dir) || ($fileExists && !is_writable($options['file']))) {
-            throw new sfFileException(sprintf('Unable to open the log file "%s" for writing.', $options['file']));
+            throw new \sfFileException(sprintf('Unable to open the log file "%s" for writing.', $options['file']));
         }
 
         $this->fp = fopen($options['file'], 'a');
@@ -88,8 +88,6 @@ class sfFileLogger extends sfLogger
     }
 
     /**
-     * @param mixed $format
-     *
      * @return false|string
      */
     public static function strftime($format)
@@ -129,7 +127,7 @@ class sfFileLogger extends sfLogger
      */
     protected function getPriority($priority)
     {
-        return sfLogger::getPriorityName($priority);
+        return \sfLogger::getPriorityName($priority);
     }
 
     /**
@@ -147,8 +145,6 @@ class sfFileLogger extends sfLogger
      * Private: because it should not be used outside of this scope
      *
      * A better solution is to use : IntlDateFormatter, but it will require to load a new php extension, which could break some setup.
-     *
-     * @param mixed $strftimeFormat
      *
      * @return array|string|string[]
      */

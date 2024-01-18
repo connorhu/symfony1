@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSQLiteCache extends sfCache
+class sfSQLiteCache extends \sfCache
 {
     protected $dbh;
     protected $sqlLiteVersion;
@@ -30,27 +30,25 @@ class sfSQLiteCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
-     *
-     * @param mixed $options
+     * @see \sfCache
      */
     public function initialize($options = [])
     {
         if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
-            throw new sfConfigurationException('sfSQLiteCache class needs "sqlite" or "pdo_sqlite" extension to be loaded.');
+            throw new \sfConfigurationException('sfSQLiteCache class needs "sqlite" or "pdo_sqlite" extension to be loaded.');
         }
 
         parent::initialize($options);
 
         if (!$this->getOption('database')) {
-            throw new sfInitializationException('You must pass a "database" option to initialize a sfSQLiteCache object.');
+            throw new \sfInitializationException('You must pass a "database" option to initialize a sfSQLiteCache object.');
         }
 
         $this->setDatabase($this->getOption('database'));
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
      * @inheritdo
      *
@@ -62,10 +60,9 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
-     * @param mixed      $key
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -79,9 +76,7 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -93,16 +88,14 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
-     * @param mixed      $key
-     * @param mixed      $data
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
         if ($this->getOption('automatic_cleaning_factor') > 0 && 1 == mt_rand(1, $this->getOption('automatic_cleaning_factor'))) {
-            $this->clean(sfCache::OLD);
+            $this->clean(\sfCache::OLD);
         }
 
         if ($this->isSqLite3()) {
@@ -113,9 +106,7 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -127,9 +118,7 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $pattern
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {
@@ -141,14 +130,12 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $mode
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
         if ($this->isSqLite3()) {
-            $res = $this->dbh->exec('DELETE FROM cache'.(sfCache::OLD == $mode ? sprintf(" WHERE timeout < '%s'", time()) : ''));
+            $res = $this->dbh->exec('DELETE FROM cache'.(\sfCache::OLD == $mode ? sprintf(" WHERE timeout < '%s'", time()) : ''));
 
             if ($res) {
                 return (bool) $this->dbh->changes();
@@ -157,13 +144,11 @@ class sfSQLiteCache extends sfCache
             return false;
         }
 
-        return (bool) $this->dbh->query('DELETE FROM cache'.(sfCache::OLD == $mode ? sprintf(" WHERE timeout < '%s'", time()) : ''))->numRows();
+        return (bool) $this->dbh->query('DELETE FROM cache'.(\sfCache::OLD == $mode ? sprintf(" WHERE timeout < '%s'", time()) : ''))->numRows();
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getTimeout($key)
     {
@@ -179,9 +164,7 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -210,9 +193,7 @@ class sfSQLiteCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $keys
+     * @see \sfCache
      */
     public function getMany($keys)
     {
@@ -242,7 +223,7 @@ class sfSQLiteCache extends sfCache
      *
      * @param string $database The database name where to store the cache
      *
-     * @throws sfCacheException
+     * @throws \sfCacheException
      */
     protected function setDatabase($database)
     {
@@ -266,13 +247,13 @@ class sfSQLiteCache extends sfCache
         }
 
         if ($this->isSqLite3()) {
-            $this->dbh = new SQLite3($this->database);
+            $this->dbh = new \SQLite3($this->database);
             if ('not an error' !== $errmsg = $this->dbh->lastErrorMsg()) {
-                throw new sfCacheException(sprintf('Unable to connect to SQLite database: %s.', $errmsg));
+                throw new \sfCacheException(sprintf('Unable to connect to SQLite database: %s.', $errmsg));
             }
         } else {
-            if (!$this->dbh = new SQLiteDatabase($this->database, 0644, $errmsg)) {
-                throw new sfCacheException(sprintf('Unable to connect to SQLite database: %s.', $errmsg));
+            if (!$this->dbh = new \SQLiteDatabase($this->database, 0644, $errmsg)) {
+                throw new \sfCacheException(sprintf('Unable to connect to SQLite database: %s.', $errmsg));
             }
         }
 
@@ -286,7 +267,7 @@ class sfSQLiteCache extends sfCache
     /**
      * Creates the database schema.
      *
-     * @throws sfCacheException
+     * @throws \sfCacheException
      */
     protected function createSchema()
     {
@@ -304,7 +285,7 @@ class sfSQLiteCache extends sfCache
             if (false === $this->dbh->query($statement)) {
                 $message = $this->isSqLite3() ? $this->dbh->lastErrorMsg() : sqlite_error_string($this->dbh->lastError());
 
-                throw new sfCacheException($message);
+                throw new \sfCacheException($message);
             }
         }
     }

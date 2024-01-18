@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Countable
+class sfFormFieldSchema extends \sfFormField implements \ArrayAccess, \Iterator, \Countable
 {
     protected $count = 0;
     protected $fieldNames = [];
@@ -24,13 +24,13 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
     /**
      * Constructor.
      *
-     * @param sfWidgetFormSchema $widget A sfWidget instance
-     * @param sfFormField        $parent The sfFormField parent instance (null for the root widget)
-     * @param string             $name   The field name
-     * @param string             $value  The field value
-     * @param sfValidatorError   $error  A sfValidatorError instance
+     * @param \sfWidgetFormSchema $widget A sfWidget instance
+     * @param \sfFormField        $parent The sfFormField parent instance (null for the root widget)
+     * @param string              $name   The field name
+     * @param string              $value  The field value
+     * @param \sfValidatorError   $error  A sfValidatorError instance
      */
-    public function __construct(sfWidgetFormSchema $widget, sfFormField $parent = null, $name, $value, sfValidatorError $error = null)
+    public function __construct(\sfWidgetFormSchema $widget, \sfFormField $parent = null, $name, $value, \sfValidatorError $error = null)
     {
         parent::__construct($widget, $parent, $name, $value, $error);
 
@@ -67,7 +67,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
         $fields = [];
 
         foreach ($this as $name => $field) {
-            if ($field instanceof sfFormFieldSchema && $recursive) {
+            if ($field instanceof \sfFormFieldSchema && $recursive) {
                 $fields = array_merge($fields, $field->getHiddenFields($recursive));
             } elseif ($field->isHidden()) {
                 $fields[] = $field;
@@ -95,24 +95,24 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @param string $name The offset of the value to get
      *
-     * @return sfFormField A form field instance
+     * @return \sfFormField A form field instance
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($name)
     {
         if (!isset($this->fields[$name])) {
             if (null === $widget = $this->widget[$name]) {
-                throw new InvalidArgumentException(sprintf('Widget "%s" does not exist.', $name));
+                throw new \InvalidArgumentException(sprintf('Widget "%s" does not exist.', $name));
             }
 
             $error = isset($this->error[$name]) ? $this->error[$name] : null;
 
-            if ($widget instanceof sfWidgetFormSchema) {
+            if ($widget instanceof \sfWidgetFormSchema) {
                 $class = 'sfFormFieldSchema';
 
-                if ($error && !$error instanceof sfValidatorErrorSchema) {
+                if ($error && !$error instanceof \sfValidatorErrorSchema) {
                     $current = $error;
-                    $error = new sfValidatorErrorSchema($error->getValidator());
+                    $error = new \sfValidatorErrorSchema($error->getValidator());
                     $error->addError($current);
                 }
             } else {
@@ -131,12 +131,12 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      * @param string $offset (ignored)
      * @param string $value  (ignored)
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        throw new LogicException('Cannot update form fields (read-only).');
+        throw new \LogicException('Cannot update form fields (read-only).');
     }
 
     /**
@@ -144,12 +144,12 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @param string $offset (ignored)
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        throw new LogicException('Cannot remove form fields (read-only).');
+        throw new \LogicException('Cannot remove form fields (read-only).');
     }
 
     /**

@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-class FormFormatterMock extends sfWidgetFormSchemaFormatter
+class FormFormatterMock extends \sfWidgetFormSchemaFormatter
 {
     public $translateSubjects = [];
 
@@ -26,7 +26,7 @@ class FormFormatterMock extends sfWidgetFormSchemaFormatter
     }
 }
 
-class WidgetFormStub extends sfWidget
+class WidgetFormStub extends \sfWidget
 {
     public function __construct()
     {
@@ -38,15 +38,15 @@ class WidgetFormStub extends sfWidget
     }
 }
 
-$t = new lime_test(2);
+$t = new \lime_test(2);
 
 // ->render()
 $t->diag('->render()');
 
-$ws = new sfWidgetFormSchema();
-$ws->addFormFormatter('stub', $formatter = new FormFormatterMock());
+$ws = new \sfWidgetFormSchema();
+$ws->addFormFormatter('stub', $formatter = new \FormFormatterMock());
 $ws->setFormFormatterName('stub');
-$w = new sfWidgetFormDateRange(['from_date' => new WidgetFormStub(), 'to_date' => new WidgetFormStub()]);
+$w = new \sfWidgetFormDateRange(['from_date' => new \WidgetFormStub(), 'to_date' => new \WidgetFormStub()]);
 $w->setParent($ws);
 $t->is($w->render('foo'), 'translation[from ##WidgetFormStub## to ##WidgetFormStub##]', '->render() remplaces %from_date% and %to_date%');
 $t->is($formatter->translateSubjects, ['from %from_date% to %to_date%'], '->render() translates the template option');

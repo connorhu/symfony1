@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class PermissionForm extends BasePermissionForm
+class PermissionForm extends \BasePermissionForm
 {
     public function configure()
     {

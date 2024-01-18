@@ -27,7 +27,7 @@ class sfYaml
     public static function setSpecVersion($version)
     {
         if (!in_array($version, ['1.1', '1.2'])) {
-            throw new InvalidArgumentException(sprintf('Version %s of the YAML specifications is not supported', $version));
+            throw new \InvalidArgumentException(sprintf('Version %s of the YAML specifications is not supported', $version));
         }
 
         self::$spec = $version;
@@ -55,12 +55,11 @@ class sfYaml
      *   print_r($array);
      *  </code>
      *
-     * @param string $input    Path of YAML file or string containing YAML
-     * @param mixed  $encoding
+     * @param string $input Path of YAML file or string containing YAML
      *
      * @return array The YAML converted to a PHP array
      *
-     * @throws InvalidArgumentException If the YAML is not valid
+     * @throws \InvalidArgumentException If the YAML is not valid
      */
     public static function load($input, $encoding = 'UTF-8')
     {
@@ -90,12 +89,12 @@ class sfYaml
             $mbConvertEncoding = true;
         }
 
-        $yaml = new sfYamlParser();
+        $yaml = new \sfYamlParser();
 
         try {
             $ret = $yaml->parse($input);
-        } catch (Exception $e) {
-            throw new InvalidArgumentException(sprintf('Unable to parse %s: %s', $file ? sprintf('file "%s"', $file) : 'string', $e->getMessage()));
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(sprintf('Unable to parse %s: %s', $file ? sprintf('file "%s"', $file) : 'string', $e->getMessage()));
         }
 
         if ($ret && $mbConvertEncoding) {
@@ -118,7 +117,7 @@ class sfYaml
      */
     public static function dump($array, $inline = 2)
     {
-        $yaml = new sfYamlDumper();
+        $yaml = new \sfYamlDumper();
 
         return $yaml->dump($array, $inline);
     }

@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(18);
+$t = new \lime_test(18);
 
 $source = <<<'EOF'
 <?php
@@ -110,24 +110,24 @@ EOF;
 
 // ->wrapMethod()
 $t->diag('->wrapMethod()');
-$m = new sfClassManipulator($source);
+$m = new \sfClassManipulator($source);
 $t->is(fix_linebreaks($m->wrapMethod('bar', '// code before', '// code after')), fix_linebreaks($source), '->wrapMethod() does nothing if the method does not exist.');
-$m = new sfClassManipulator($source);
+$m = new \sfClassManipulator($source);
 $t->is(fix_linebreaks($m->wrapMethod('foo', '// code before')), fix_linebreaks($sourceWithCodeBefore), '->wrapMethod() adds code before the beginning of a method.');
-$m = new sfClassManipulator($source);
+$m = new \sfClassManipulator($source);
 $t->is(fix_linebreaks($m->wrapMethod('foo', '', '// code after')), fix_linebreaks($sourceWithCodeAfter), '->wrapMethod() adds code after the end of a method.');
 $t->is(fix_linebreaks($m->wrapMethod('foo', '// code before')), fix_linebreaks($sourceWithCodeBeforeAndAfter), '->wrapMethod() adds code to the previously manipulated code.');
 
 // ->getCode()
 $t->diag('->getCode()');
-$m = new sfClassManipulator($source);
+$m = new \sfClassManipulator($source);
 $t->is(fix_linebreaks($m->getCode()), fix_linebreaks($source), '->getCode() returns the source code when no manipulations has been done');
 $m->wrapMethod('foo', '', '// code after');
 $t->is(fix_linebreaks($m->getCode()), fix_linebreaks($sourceWithCodeAfter), '->getCode() returns the modified code');
 
 // ->setFile() ->getFile()
 $t->diag('->setFile() ->getFile()');
-$m = new sfClassManipulator($source);
+$m = new \sfClassManipulator($source);
 $m->setFile('foo');
 $t->is($m->getFile(), 'foo', '->setFile() sets the name of the file associated with the source code');
 
@@ -135,12 +135,12 @@ $t->is($m->getFile(), 'foo', '->setFile() sets the name of the file associated w
 $t->diag('::fromFile()');
 $file = sys_get_temp_dir().'/sf_tmp.php';
 file_put_contents($file, $source);
-$m = sfClassManipulator::fromFile($file);
+$m = \sfClassManipulator::fromFile($file);
 $t->is($m->getFile(), $file, '::fromFile() sets the file internally');
 
 // ->save()
 $t->diag('->save()');
-$m = sfClassManipulator::fromFile($file);
+$m = \sfClassManipulator::fromFile($file);
 $m->wrapMethod('foo', '', '// code after');
 $m->save();
 $t->is(fix_linebreaks(file_get_contents($file)), fix_linebreaks($sourceWithCodeAfter), '->save() saves the modified code if a file is associated with the instance');
@@ -172,7 +172,7 @@ class MethodFilterer
         ], $line);
     }
 }
-$f = new MethodFilterer();
+$f = new \MethodFilterer();
 
 $sourceFiltered = <<<'EOF'
 <?php
@@ -209,7 +209,7 @@ $sourceFilteredLF = str_replace('
 // CRLF
 $t->diag('CRLF');
 
-$m = new sfClassManipulator($sourceCRLF);
+$m = new \sfClassManipulator($sourceCRLF);
 $f->lines = [];
 $m->filterMethod('foo', [$f, 'filter1']);
 $t->is($m->getCode(), $sourceCRLF, '->filterMethod() does not change the code if the filter does nothing');
@@ -228,7 +228,7 @@ $t->is($m->getCode(), $sourceFilteredCRLF, '->filterMethod() modifies the method
 // LF
 $t->diag('LF');
 
-$m = new sfClassManipulator($sourceLF);
+$m = new \sfClassManipulator($sourceLF);
 $f->lines = [];
 $m->filterMethod('foo', [$f, 'filter1']);
 $t->is($m->getCode(), $sourceLF, '->filterMethod() does not change the code if the filter does nothing');
@@ -248,7 +248,7 @@ $t->is($m->getCode(), $sourceFilteredLF, '->filterMethod() modifies the method')
 $t->diag('no EOL');
 
 $sourceFlat = '<?php class Foo { function foo() { if (true) { return; } } function baz() { if (true) { return; } } }';
-$m = new sfClassManipulator($sourceFlat);
+$m = new \sfClassManipulator($sourceFlat);
 $f->lines = [];
 $m->filterMethod('foo', [$f, 'filter1']);
 $t->is_deeply($f->lines, ['function foo() { if (true) { return; } }'], '->filterMethod() works when there are no line breaks');
@@ -258,7 +258,7 @@ $t->is($m->getCode(), $sourceFlat, '->filterMethod() works when there are no lin
 $t->diag('mixed EOL');
 
 $sourceMixed = "<?php\r\n\nclass Foo\r\n{\n  function foo()\r\n  {\n    if (true)\r\n    {\n      return;\r\n    }\n  }\r\n\n  function baz()\r\n  {\n    if (true)\r\n    {\n      return;\r\n    }\n  }\r\n}";
-$m = new sfClassManipulator($sourceMixed);
+$m = new \sfClassManipulator($sourceMixed);
 $f->lines = [];
 $m->filterMethod('foo', [$f, 'filter1']);
 $t->is_deeply($f->lines, [

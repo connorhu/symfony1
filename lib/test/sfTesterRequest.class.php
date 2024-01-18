@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterRequest extends sfTester
+class sfTesterRequest extends \sfTester
 {
     protected $request;
 

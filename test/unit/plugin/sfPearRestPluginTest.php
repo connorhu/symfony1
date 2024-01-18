@@ -12,7 +12,7 @@ error_reporting(error_reporting() & ~E_STRICT);
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(5);
+$t = new \lime_test(5);
 
 @include_once 'PEAR.php';
 if (!class_exists('PEAR')) {
@@ -42,8 +42,8 @@ $options = [
     'downloader_base_class' => 'sfPearDownloaderTest',
 ];
 
-$dispatcher = new sfEventDispatcher();
-$environment = new sfPearEnvironment($dispatcher, $options);
+$dispatcher = new \sfEventDispatcher();
+$environment = new \sfPearEnvironment($dispatcher, $options);
 $environment->registerChannel('pear.example.com', true);
 
 $rest = $environment->getRest();
@@ -64,5 +64,5 @@ $t->diag('->getPluginDownloadURL()');
 $t->is($rest->getPluginDownloadURL('sfTestPlugin', '1.1.3', 'stable'), 'http://pear.example.com/get/sfTestPlugin/sfTestPlugin-1.1.3.tgz', '->getPluginDownloadURL() returns a plugin URL');
 
 // teardown
-sfToolkit::clearDirectory($temp);
+\sfToolkit::clearDirectory($temp);
 rmdir($temp);

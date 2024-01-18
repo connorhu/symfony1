@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
+class sfDoctrineConnectionProfiler extends \Doctrine_Connection_Profiler
 {
     protected $dispatcher;
     protected $options = [];
@@ -22,7 +22,7 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
      *
      * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->options = array_merge([
@@ -45,7 +45,6 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
      * Sets an option value.
      *
      * @param string $name
-     * @param mixed  $value
      */
     public function setOption($name, $value)
     {
@@ -55,13 +54,13 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     /**
      * Logs time and a connection query on behalf of the connection.
      */
-    public function preQuery(Doctrine_Event $event)
+    public function preQuery(\Doctrine_Event $event)
     {
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($event->getInvoker(), 'application.log', [sprintf('query : %s - (%s)', $event->getQuery(), join(', ', self::fixParams($event->getParams())))]));
+            $this->dispatcher->notify(new \sfEvent($event->getInvoker(), 'application.log', [sprintf('query : %s - (%s)', $event->getQuery(), join(', ', self::fixParams($event->getParams())))]));
         }
 
-        sfTimerManager::getTimer('Database (Doctrine)');
+        \sfTimerManager::getTimer('Database (Doctrine)');
 
         $args = func_get_args();
         $this->__call(__FUNCTION__, $args);
@@ -70,9 +69,9 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     /**
      * Logs to the timer.
      */
-    public function postQuery(Doctrine_Event $event)
+    public function postQuery(\Doctrine_Event $event)
     {
-        sfTimerManager::getTimer('Database (Doctrine)', false)->addTime();
+        \sfTimerManager::getTimer('Database (Doctrine)', false)->addTime();
 
         $args = func_get_args();
         $this->__call(__FUNCTION__, $args);
@@ -85,13 +84,13 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     /**
      * Logs a connection exec on behalf of the connection.
      */
-    public function preExec(Doctrine_Event $event)
+    public function preExec(\Doctrine_Event $event)
     {
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($event->getInvoker(), 'application.log', [sprintf('exec : %s - (%s)', $event->getQuery(), join(', ', self::fixParams($event->getParams())))]));
+            $this->dispatcher->notify(new \sfEvent($event->getInvoker(), 'application.log', [sprintf('exec : %s - (%s)', $event->getQuery(), join(', ', self::fixParams($event->getParams())))]));
         }
 
-        sfTimerManager::getTimer('Database (Doctrine)');
+        \sfTimerManager::getTimer('Database (Doctrine)');
 
         $args = func_get_args();
         $this->__call(__FUNCTION__, $args);
@@ -100,9 +99,9 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     /**
      * Logs to the timer.
      */
-    public function postExec(Doctrine_Event $event)
+    public function postExec(\Doctrine_Event $event)
     {
-        sfTimerManager::getTimer('Database (Doctrine)', false)->addTime();
+        \sfTimerManager::getTimer('Database (Doctrine)', false)->addTime();
 
         $args = func_get_args();
         $this->__call(__FUNCTION__, $args);
@@ -115,13 +114,13 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     /**
      * Logs a statement execute on behalf of the statement.
      */
-    public function preStmtExecute(Doctrine_Event $event)
+    public function preStmtExecute(\Doctrine_Event $event)
     {
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($event->getInvoker(), 'application.log', [sprintf('execute : %s - (%s)', $event->getQuery(), join(', ', self::fixParams($event->getParams())))]));
+            $this->dispatcher->notify(new \sfEvent($event->getInvoker(), 'application.log', [sprintf('execute : %s - (%s)', $event->getQuery(), join(', ', self::fixParams($event->getParams())))]));
         }
 
-        sfTimerManager::getTimer('Database (Doctrine)');
+        \sfTimerManager::getTimer('Database (Doctrine)');
 
         $args = func_get_args();
         $this->__call(__FUNCTION__, $args);
@@ -130,9 +129,9 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     /**
      * Logs to the timer.
      */
-    public function postStmtExecute(Doctrine_Event $event)
+    public function postStmtExecute(\Doctrine_Event $event)
     {
-        sfTimerManager::getTimer('Database (Doctrine)', false)->addTime();
+        \sfTimerManager::getTimer('Database (Doctrine)', false)->addTime();
 
         $args = func_get_args();
         $this->__call(__FUNCTION__, $args);
@@ -151,7 +150,7 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
     {
         $events = [];
         foreach ($this as $event) {
-            if (in_array($event->getCode(), [Doctrine_Event::CONN_QUERY, Doctrine_Event::CONN_EXEC, Doctrine_Event::STMT_EXECUTE])) {
+            if (in_array($event->getCode(), [\Doctrine_Event::CONN_QUERY, \Doctrine_Event::CONN_EXEC, \Doctrine_Event::STMT_EXECUTE])) {
                 $events[] = $event;
             }
         }

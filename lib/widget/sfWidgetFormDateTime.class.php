@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormDateTime extends sfWidgetForm
+class sfWidgetFormDateTime extends \sfWidgetForm
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormDateTime extends sfWidgetForm
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -61,7 +61,7 @@ class sfWidgetFormDateTime extends sfWidgetForm
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -76,11 +76,11 @@ class sfWidgetFormDateTime extends sfWidgetForm
      *
      * @param array $attributes An array of attributes
      *
-     * @return sfWidgetForm A Widget representing the date
+     * @return \sfWidgetForm A Widget representing the date
      */
     protected function getDateWidget($attributes = [])
     {
-        return new sfWidgetFormDate($this->getOptionsFor('date'), $this->getAttributesFor('date', $attributes));
+        return new \sfWidgetFormDate($this->getOptionsFor('date'), $this->getAttributesFor('date', $attributes));
     }
 
     /**
@@ -88,11 +88,11 @@ class sfWidgetFormDateTime extends sfWidgetForm
      *
      * @param array $attributes An array of attributes
      *
-     * @return sfWidgetForm A Widget representing the time
+     * @return \sfWidgetForm A Widget representing the time
      */
     protected function getTimeWidget($attributes = [])
     {
-        return new sfWidgetFormTime($this->getOptionsFor('time'), $this->getAttributesFor('time', $attributes));
+        return new \sfWidgetFormTime($this->getOptionsFor('time'), $this->getAttributesFor('time', $attributes));
     }
 
     /**
@@ -102,13 +102,13 @@ class sfWidgetFormDateTime extends sfWidgetForm
      *
      * @return array An array of options
      *
-     * @throws InvalidArgumentException when option date|time type is not array
+     * @throws \InvalidArgumentException when option date|time type is not array
      */
     protected function getOptionsFor($type)
     {
         $options = $this->getOption($type);
         if (!is_array($options)) {
-            throw new InvalidArgumentException(sprintf('You must pass an array for the %s option.', $type));
+            throw new \InvalidArgumentException(sprintf('You must pass an array for the %s option.', $type));
         }
 
         // add id_format if it's not there already

@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class SettingFormFilter extends PluginSettingFormFilter
+class SettingFormFilter extends \PluginSettingFormFilter
 {
     public function configure()
     {

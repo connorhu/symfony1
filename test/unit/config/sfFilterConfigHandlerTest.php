@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
-$handler = new sfFilterConfigHandler();
+$handler = new \sfFilterConfigHandler();
 $handler->initialize();
 
 $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfFilterConfigHandler'.DIRECTORY_SEPARATOR;
@@ -26,7 +26,7 @@ $files = [
 try {
     $data = $handler->execute($files);
     $t->fail('filters.yml must have a "class" section for each filter entry');
-} catch (sfParseException $e) {
+} catch (\sfParseException $e) {
     $t->like($e->getMessage(), '/with missing class key/', 'filters.yml must have a "class" section for each filter entry');
 }
 
@@ -39,7 +39,7 @@ foreach (['execution', 'rendering'] as $key) {
     try {
         $data = $handler->execute($files);
         $t->fail(sprintf('filters.yml must have a filter of type "%s"', $key));
-    } catch (sfParseException $e) {
+    } catch (\sfParseException $e) {
         $t->like($e->getMessage(), sprintf('/must register a filter of type "%s"/', $key), sprintf('filters.yml must have a filter of type "%s"', $key));
     }
 }
@@ -54,7 +54,7 @@ $files = [
 try {
     $data = $handler->execute($files);
     $t->fail('filters.yml must keep all filters when inheriting from a master filters configuration file');
-} catch (sfConfigurationException $e) {
+} catch (\sfConfigurationException $e) {
     $t->like($e->getMessage(), '/but not present/', 'filters.yml must keep all filters when inheriting from a master filters configuration file');
 }
 
@@ -72,10 +72,10 @@ $files = [
     $dir.'condition.yml',
 ];
 
-sfConfig::set('default_test', true);
+\sfConfig::set('default_test', true);
 $t->like($handler->execute($files), '/defaultFilterClass/', 'you can add a "condition" key to the filter parameters');
 
-sfConfig::set('default_test', false);
+\sfConfig::set('default_test', false);
 $t->unlike($handler->execute($files), '/defaultFilterClass/', 'you can add a "condition" key to the filter parameters');
 
 // usual configuration

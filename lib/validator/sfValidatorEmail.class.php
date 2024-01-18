@@ -15,15 +15,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorEmail extends sfValidatorRegex
+class sfValidatorEmail extends \sfValidatorRegex
 {
     public const REGEX_EMAIL = '/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i';
 
     /**
-     * @see sfValidatorRegex
-     *
-     * @param mixed $options
-     * @param mixed $messages
+     * @see \sfValidatorRegex
      */
     protected function configure($options = [], $messages = [])
     {

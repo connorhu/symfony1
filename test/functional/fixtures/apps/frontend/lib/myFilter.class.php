@@ -1,6 +1,6 @@
 <?php
 
-class myFilter extends sfFilter
+class myFilter extends \sfFilter
 {
     public function execute($filterChain)
     {

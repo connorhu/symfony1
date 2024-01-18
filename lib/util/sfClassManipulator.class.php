@@ -45,7 +45,7 @@ class sfClassManipulator
      *
      * @param string $file A file name
      *
-     * @return sfClassManipulator A sfClassManipulator instance
+     * @return \sfClassManipulator A sfClassManipulator instance
      */
     public static function fromFile($file)
     {
@@ -65,7 +65,7 @@ class sfClassManipulator
     public function save()
     {
         if (!$this->file) {
-            throw new LogicException('Unable to save the code as no file has been provided.');
+            throw new \LogicException('Unable to save the code as no file has been provided.');
         }
 
         file_put_contents($this->file, $this->code);
@@ -95,7 +95,6 @@ class sfClassManipulator
      * Sets the file associated with this instance.
      *
      * @param string A file name
-     * @param mixed $file
      */
     public function setFile($file)
     {

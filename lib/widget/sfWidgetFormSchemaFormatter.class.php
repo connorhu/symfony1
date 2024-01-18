@@ -32,7 +32,7 @@ abstract class sfWidgetFormSchemaFormatter
     /**
      * Constructor.
      */
-    public function __construct(sfWidgetFormSchema $widgetSchema)
+    public function __construct(\sfWidgetFormSchema $widgetSchema)
     {
         $this->setWidgetSchema($widgetSchema);
     }
@@ -75,7 +75,7 @@ abstract class sfWidgetFormSchemaFormatter
 
         $catalogue = $this->getTranslationCatalogue();
 
-        if (self::$translationCallable instanceof sfCallable) {
+        if (self::$translationCallable instanceof \sfCallable) {
             return self::$translationCallable->call($subject, $parameters, $catalogue);
         }
 
@@ -93,14 +93,12 @@ abstract class sfWidgetFormSchemaFormatter
     /**
      * Sets a callable which aims to translate form labels, errors and help messages.
      *
-     * @param mixed $callable
-     *
-     * @throws InvalidArgumentException if an invalid php callable or sfCallable has been provided
+     * @throws \InvalidArgumentException if an invalid php callable or sfCallable has been provided
      */
     public static function setTranslationCallable($callable)
     {
-        if (!$callable instanceof sfCallable && !is_callable($callable)) {
-            throw new InvalidArgumentException('Provided i18n callable should be either an instance of sfCallable or a valid PHP callable');
+        if (!$callable instanceof \sfCallable && !is_callable($callable)) {
+            throw new \InvalidArgumentException('Provided i18n callable should be either an instance of sfCallable or a valid PHP callable');
         }
 
         self::$translationCallable = $callable;
@@ -193,12 +191,12 @@ abstract class sfWidgetFormSchemaFormatter
      *
      * @param string $catalogue
      *
-     * @throws InvalidArgumentException when the catalogue is not a string
+     * @throws \InvalidArgumentException when the catalogue is not a string
      */
     public function setTranslationCatalogue($catalogue)
     {
         if (!is_string($catalogue)) {
-            throw new InvalidArgumentException('Catalogue name must be a string');
+            throw new \InvalidArgumentException('Catalogue name must be a string');
         }
 
         $this->translationCatalogue = $catalogue;
@@ -277,9 +275,9 @@ abstract class sfWidgetFormSchemaFormatter
     /**
      * Sets the widget schema associated with this formatter instance.
      *
-     * @param sfWidgetFormSchema $widgetSchema A sfWidgetFormSchema instance
+     * @param \sfWidgetFormSchema $widgetSchema A sfWidgetFormSchema instance
      */
-    public function setWidgetSchema(sfWidgetFormSchema $widgetSchema)
+    public function setWidgetSchema(\sfWidgetFormSchema $widgetSchema)
     {
         $this->widgetSchema = $widgetSchema;
     }
@@ -294,10 +292,10 @@ abstract class sfWidgetFormSchemaFormatter
         $newErrors = [];
 
         foreach ($errors as $name => $error) {
-            if ($error instanceof ArrayAccess || is_array($error)) {
+            if ($error instanceof \ArrayAccess || is_array($error)) {
                 $newErrors = array_merge($newErrors, $this->unnestErrors($error, ($prefix ? $prefix.' > ' : '').$name));
             } else {
-                if ($error instanceof sfValidatorError) {
+                if ($error instanceof \sfValidatorError) {
                     $err = $this->translate($error->getMessageFormat(), $error->getArguments());
                 } else {
                     $err = $this->translate($error);

@@ -19,23 +19,23 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineDqlTask extends sfDoctrineBaseTask
+class sfDoctrineDqlTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('dql_query', sfCommandArgument::REQUIRED, 'The DQL query to execute', null),
-            new sfCommandArgument('parameter', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Query parameter'),
+            new \sfCommandArgument('dql_query', \sfCommandArgument::REQUIRED, 'The DQL query to execute', null),
+            new \sfCommandArgument('parameter', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'Query parameter'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('show-sql', null, sfCommandOption::PARAMETER_NONE, 'Show the sql that would be executed'),
-            new sfCommandOption('table', null, sfCommandOption::PARAMETER_NONE, 'Return results in table format'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('show-sql', null, \sfCommandOption::PARAMETER_NONE, 'Show the sql that would be executed'),
+            new \sfCommandOption('table', null, \sfCommandOption::PARAMETER_NONE, 'Return results in table format'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -59,18 +59,15 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
         $dql = $arguments['dql_query'];
 
-        $q = Doctrine_Query::create()
+        $q = \Doctrine_Query::create()
             ->parseDqlQuery($dql)
         ;
 
@@ -89,10 +86,10 @@ EOF;
 
                 $this->log([
                     sprintf('found %s results', number_format($count)),
-                    sfYaml::dump($results, 4),
+                    \sfYaml::dump($results, 4),
                 ]);
             } else {
-                $results = $q->execute($arguments['parameter'], Doctrine_Core::HYDRATE_SCALAR);
+                $results = $q->execute($arguments['parameter'], \Doctrine_Core::HYDRATE_SCALAR);
 
                 $headers = [];
 
@@ -152,7 +149,7 @@ EOF;
     /**
      * Renders the supplied value.
      *
-     * @param string|null $value
+     * @param \string|null $value
      *
      * @return string
      */

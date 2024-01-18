@@ -10,10 +10,10 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
 // __construct() ->__toString()
 $t->diag('__construct() ->__toString()');
 
-$ref = new sfServiceReference('foo');
+$ref = new \sfServiceReference('foo');
 $t->is((string) $ref, 'foo', '__construct() sets the id of the reference, which is used for the __toString() method');

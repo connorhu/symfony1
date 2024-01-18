@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfBasicSecurityUser extends sfUser implements sfSecurityUser
+class sfBasicSecurityUser extends \sfUser implements \sfSecurityUser
 {
     public const LAST_REQUEST_NAMESPACE = 'symfony/user/sfUser/lastRequest';
     public const AUTH_NAMESPACE = 'symfony/user/sfUser/authenticated';
@@ -59,7 +59,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
             foreach ($this->credentials as $key => $value) {
                 if ($credential == $value) {
                     if ($this->options['logging']) {
-                        $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Remove credential "%s"', $credential)]));
+                        $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Remove credential "%s"', $credential)]));
                     }
 
                     unset($this->credentials[$key]);
@@ -74,8 +74,6 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
     /**
      * Adds a credential.
-     *
-     * @param mixed $credential
      */
     public function addCredential($credential)
     {
@@ -97,7 +95,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
         $credentials = (is_array(func_get_arg(0))) ? func_get_arg(0) : func_get_args();
 
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Add credential(s) "%s"', implode(', ', $credentials))]));
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Add credential(s) "%s"', implode(', ', $credentials))]));
         }
 
         $added = false;
@@ -116,8 +114,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
     /**
      * Returns true if user has credential.
      *
-     * @param bool  $useAnd      specify the mode, either AND or OR
-     * @param mixed $credentials
+     * @param bool $useAnd specify the mode, either AND or OR
      *
      * @return bool
      *
@@ -174,7 +171,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
     public function setAuthenticated($authenticated)
     {
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('User is %sauthenticated', true === $authenticated ? '' : 'not ')]));
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('User is %sauthenticated', true === $authenticated ? '' : 'not ')]));
         }
 
         if ((bool) $authenticated !== $this->authenticated) {
@@ -185,7 +182,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
                 $this->clearCredentials();
             }
 
-            $this->dispatcher->notify(new sfEvent($this, 'user.change_authentication', ['authenticated' => $this->authenticated]));
+            $this->dispatcher->notify(new \sfEvent($this, 'user.change_authentication', ['authenticated' => $this->authenticated]));
 
             $this->storage->regenerate(true);
         }
@@ -217,13 +214,13 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
      *  * timeout: Timeout to automatically log out the user in seconds (1800 by default)
      *             Set to false to disable
      *
-     * @param sfEventDispatcher $dispatcher an sfEventDispatcher instance
-     * @param sfStorage         $storage    an sfStorage instance
-     * @param array             $options    an associative array of options
+     * @param \sfEventDispatcher $dispatcher an sfEventDispatcher instance
+     * @param \sfStorage         $storage    an sfStorage instance
+     * @param array              $options    an associative array of options
      *
-     * @see sfUser
+     * @see \sfUser
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, \sfStorage $storage, $options = [])
     {
         // initialize parent
         parent::initialize($dispatcher, $storage, $options);
@@ -245,7 +242,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
             $timeout = $this->options['timeout'];
             if (false !== $timeout && null !== $this->lastRequest && time() - $this->lastRequest >= $timeout) {
                 if ($this->options['logging']) {
-                    $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Automatic user logout due to timeout']));
+                    $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Automatic user logout due to timeout']));
                 }
 
                 $this->setTimedOut();

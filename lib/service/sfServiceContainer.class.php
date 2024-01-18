@@ -40,7 +40,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfServiceContainer implements sfServiceContainerInterface
+class sfServiceContainer implements \sfServiceContainerInterface
 {
     protected $serviceIds = [];
     protected $parameters = [];
@@ -106,11 +106,11 @@ class sfServiceContainer implements sfServiceContainerInterface
             return $this->parameters[strtolower($name)];
         }
 
-        if (sfConfig::has($name)) {
-            return sfConfig::get($name);
+        if (\sfConfig::has($name)) {
+            return \sfConfig::get($name);
         }
 
-        throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
+        throw new \InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
     }
 
     /**
@@ -181,7 +181,7 @@ class sfServiceContainer implements sfServiceContainerInterface
             return $this->{$method}();
         }
 
-        throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
+        throw new \InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
     }
 
     /**
@@ -192,7 +192,7 @@ class sfServiceContainer implements sfServiceContainerInterface
     public function getServiceIds()
     {
         $ids = [];
-        $r = new ReflectionClass($this);
+        $r = new \ReflectionClass($this);
         foreach ($r->getMethods() as $method) {
             if (preg_match('/^get(.+)Service$/', $name = $method->getName(), $match)) {
                 $ids[] = self::underscore($match[1]);

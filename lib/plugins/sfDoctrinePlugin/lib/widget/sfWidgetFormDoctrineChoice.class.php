@@ -17,13 +17,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
+class sfWidgetFormDoctrineChoice extends \sfWidgetFormChoice
 {
     /**
-     * @see sfWidget
-     *
-     * @param mixed $options
-     * @param mixed $attributes
+     * @see \sfWidget
      */
     public function __construct($options = [], $attributes = [])
     {
@@ -45,21 +42,21 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
         }
 
         if (null === $this->getOption('table_method')) {
-            $query = null === $this->getOption('query') ? Doctrine_Core::getTable($this->getOption('model'))->createQuery() : $this->getOption('query');
+            $query = null === $this->getOption('query') ? \Doctrine_Core::getTable($this->getOption('model'))->createQuery() : $this->getOption('query');
             if ($order = $this->getOption('order_by')) {
                 $query->addOrderBy($order[0].' '.$order[1]);
             }
             $objects = $query->execute();
         } else {
             $tableMethod = $this->getOption('table_method');
-            $results = Doctrine_Core::getTable($this->getOption('model'))->{$tableMethod}();
+            $results = \Doctrine_Core::getTable($this->getOption('model'))->{$tableMethod}();
 
-            if ($results instanceof Doctrine_Query) {
+            if ($results instanceof \Doctrine_Query) {
                 $objects = $results->execute();
-            } elseif ($results instanceof Doctrine_Collection) {
+            } elseif ($results instanceof \Doctrine_Collection) {
                 $objects = $results;
-            } elseif ($results instanceof Doctrine_Record) {
-                $objects = new Doctrine_Collection($this->getOption('model'));
+            } elseif ($results instanceof \Doctrine_Record) {
+                $objects = new \Doctrine_Collection($this->getOption('model'));
                 $objects[] = $results;
             } else {
                 $objects = [];
@@ -93,10 +90,7 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
      *  * multiple:     true if the select tag must allow multiple selections
      *  * table_method: A method to return either a query, collection or single object
      *
-     * @see sfWidgetFormSelect
-     *
-     * @param mixed $options
-     * @param mixed $attributes
+     * @see \sfWidgetFormSelect
      */
     protected function configure($options = [], $attributes = [])
     {

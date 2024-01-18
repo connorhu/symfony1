@@ -15,19 +15,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfTestUnitTask extends sfTestBaseTask
+class sfTestUnitTask extends \sfTestBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('name', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The test name'),
+            new \sfCommandArgument('name', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'The test name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
         ]);
 
         $this->namespace = 'test';
@@ -62,10 +62,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -73,8 +70,8 @@ EOF;
             $files = [];
 
             foreach ($arguments['name'] as $name) {
-                $finder = sfFinder::type('file')->follow_link()->name(basename($name).'Test.php');
-                $files = array_merge($files, $finder->in(sfConfig::get('sf_test_dir').'/unit/'.dirname($name)));
+                $finder = \sfFinder::type('file')->follow_link()->name(basename($name).'Test.php');
+                $files = array_merge($files, $finder->in(\sfConfig::get('sf_test_dir').'/unit/'.dirname($name)));
             }
 
             if ($allFiles = $this->filterTestFiles($files, $arguments, $options)) {
@@ -87,16 +84,16 @@ EOF;
         } else {
             require_once __DIR__.'/sfLimeHarness.class.php';
 
-            $h = new sfLimeHarness([
+            $h = new \sfLimeHarness([
                 'force_colors' => isset($options['color']) && $options['color'],
                 'verbose' => isset($options['trace']) && $options['trace'],
-                'test_path' => sfConfig::get('sf_cache_dir').'/lime',
+                'test_path' => \sfConfig::get('sf_cache_dir').'/lime',
             ]);
             $h->addPlugins(array_map([$this->configuration, 'getPluginConfiguration'], $this->configuration->getPlugins()));
-            $h->base_dir = sfConfig::get('sf_test_dir').'/unit';
+            $h->base_dir = \sfConfig::get('sf_test_dir').'/unit';
 
             // filter and register unit tests
-            $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
+            $finder = \sfFinder::type('file')->follow_link()->name('*Test.php');
             $h->register($this->filterTestFiles($finder->in($h->base_dir), $arguments, $options));
 
             $ret = $h->run() ? 0 : 1;

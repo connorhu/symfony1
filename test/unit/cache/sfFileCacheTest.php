@@ -12,10 +12,10 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once __DIR__.'/sfCacheDriverTests.class.php';
 
-$t = new lime_test(65);
+$t = new \lime_test(65);
 
 // setup
-sfConfig::set('sf_logging_enabled', false);
+\sfConfig::set('sf_logging_enabled', false);
 $temp = tempnam('/tmp/cache_dir', 'tmp');
 unlink($temp);
 mkdir($temp);
@@ -24,16 +24,16 @@ mkdir($temp);
 $t->diag('->initialize()');
 
 try {
-    $cache = new sfFileCache();
+    $cache = new \sfFileCache();
     $t->fail('->initialize() throws an sfInitializationException exception if you don\'t pass a "cache_dir" parameter');
-} catch (sfInitializationException $e) {
+} catch (\sfInitializationException $e) {
     $t->pass('->initialize() throws an sfInitializationException exception if you don\'t pass a "cache_dir" parameter');
 }
 
-$cache = new sfFileCache(['cache_dir' => $temp]);
+$cache = new \sfFileCache(['cache_dir' => $temp]);
 
-sfCacheDriverTests::launch($t, $cache);
+\sfCacheDriverTests::launch($t, $cache);
 
 // teardown
-sfToolkit::clearDirectory($temp);
+\sfToolkit::clearDirectory($temp);
 rmdir($temp);

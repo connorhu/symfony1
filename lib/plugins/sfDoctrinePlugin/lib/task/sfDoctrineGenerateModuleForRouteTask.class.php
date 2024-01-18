@@ -17,25 +17,25 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineGenerateModuleForRouteTask extends sfDoctrineBaseTask
+class sfDoctrineGenerateModuleForRouteTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('route', sfCommandArgument::REQUIRED, 'The route name'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('route', \sfCommandArgument::REQUIRED, 'The route name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('theme', null, sfCommandOption::PARAMETER_REQUIRED, 'The theme name', 'default'),
-            new sfCommandOption('non-verbose-templates', null, sfCommandOption::PARAMETER_NONE, 'Generate non verbose templates'),
-            new sfCommandOption('singular', null, sfCommandOption::PARAMETER_REQUIRED, 'The singular name', null),
-            new sfCommandOption('plural', null, sfCommandOption::PARAMETER_REQUIRED, 'The plural name', null),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
+            new \sfCommandOption('theme', null, \sfCommandOption::PARAMETER_REQUIRED, 'The theme name', 'default'),
+            new \sfCommandOption('non-verbose-templates', null, \sfCommandOption::PARAMETER_NONE, 'Generate non verbose templates'),
+            new \sfCommandOption('singular', null, \sfCommandOption::PARAMETER_REQUIRED, 'The singular name', null),
+            new \sfCommandOption('plural', null, \sfCommandOption::PARAMETER_REQUIRED, 'The plural name', null),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('actions-base-class', null, \sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -53,32 +53,29 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         // get configuration for the given route
-        $config = new sfRoutingConfigHandler();
+        $config = new \sfRoutingConfigHandler();
         $routes = $config->evaluate($this->configuration->getConfigPaths('config/routing.yml'));
 
         if (!isset($routes[$arguments['route']])) {
-            throw new sfCommandException(sprintf('The route "%s" does not exist.', $arguments['route']));
+            throw new \sfCommandException(sprintf('The route "%s" does not exist.', $arguments['route']));
         }
 
         $routeOptions = $routes[$arguments['route']]->getOptions();
 
-        if (!$routes[$arguments['route']] instanceof sfDoctrineRouteCollection) {
-            throw new sfCommandException(sprintf('The route "%s" is not a Doctrine collection route.', $arguments['route']));
+        if (!$routes[$arguments['route']] instanceof \sfDoctrineRouteCollection) {
+            throw new \sfCommandException(sprintf('The route "%s" is not a Doctrine collection route.', $arguments['route']));
         }
 
         $module = $routeOptions['module'];
         $model = $routeOptions['model'];
 
         // execute the doctrine:generate-module task
-        $task = new sfDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
+        $task = new \sfDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
         $task->setCommandApplication($this->commandApplication);
         $task->setConfiguration($this->configuration);
 

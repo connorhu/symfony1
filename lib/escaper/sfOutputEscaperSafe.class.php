@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfOutputEscaperSafe extends ArrayIterator
+class sfOutputEscaperSafe extends \ArrayIterator
 {
     protected $value;
 

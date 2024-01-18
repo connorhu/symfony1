@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfStopException extends sfException
+class sfStopException extends \sfException
 {
     /**
      * Stops the current action.

@@ -13,7 +13,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 ob_start();
 $plan = 16;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (!extension_loaded('mysql')) {
     $t->skip('Mysql extension must be loaded', $plan);
@@ -35,9 +35,9 @@ if (!isset($mysql_config)) {
 
 try {
     // Creating mysql database connection
-    $database = new sfMySQLDatabase($mysql_config);
+    $database = new \sfMySQLDatabase($mysql_config);
     $connection = $database->getResource();
-} catch (sfDatabaseException $e) {
+} catch (\sfDatabaseException $e) {
     $t->diag($e->getMessage());
     $t->skip('Unable to connect to MySQL database, skipping', $plan);
 
@@ -58,15 +58,15 @@ mysql_query("CREATE TABLE `session` (
 ini_set('session.use_cookies', 0);
 $session_id = '1';
 
-$storage = new sfMySQLSessionStorage(
+$storage = new \sfMySQLSessionStorage(
     [
         'db_table' => 'session',
         'session_id' => $session_id,
         'database' => $database]
 );
 
-$t->ok($storage instanceof sfStorage, 'sfMySQLSessionStorage is an instance of sfStorage');
-$t->ok($storage instanceof sfDatabaseSessionStorage, 'sfMySQLSessionStorage is an instance of sfDatabaseSessionStorage');
+$t->ok($storage instanceof \sfStorage, 'sfMySQLSessionStorage is an instance of sfStorage');
+$t->ok($storage instanceof \sfDatabaseSessionStorage, 'sfMySQLSessionStorage is an instance of sfDatabaseSessionStorage');
 
 // regenerate()
 $oldSessionData = 'foo:bar';
@@ -104,7 +104,7 @@ unset($thisSessData, $result);
 try {
     $retrieved_data = $storage->sessionRead($session_id);
     $t->pass('sessionRead() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionRead() does not throw an exception');
 }
 $t->is($retrieved_data, $newSessionData, 'sessionRead() reads session data');
@@ -115,7 +115,7 @@ $otherSessionData = 'foo:foo:foo';
 try {
     $write = $storage->sessionWrite($session_id, $otherSessionData);
     $t->pass('sessionWrite() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionWrite() does not throw an exception');
 }
 
@@ -126,7 +126,7 @@ $t->is($storage->sessionRead($session_id), $otherSessionData, 'sessionWrite() wr
 try {
     $storage->sessionDestroy($session_id);
     $t->pass('sessionDestroy() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionDestroy() does not throw an exception');
 }
 

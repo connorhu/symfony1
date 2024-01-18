@@ -23,10 +23,10 @@ class sfFilesystem
     /**
      * Constructor.
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param sfFormatter       $formatter  An sfFormatter instance
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param \sfFormatter       $formatter  An sfFormatter instance
      */
-    public function __construct(sfEventDispatcher $dispatcher = null, sfFormatter $formatter = null)
+    public function __construct(\sfEventDispatcher $dispatcher = null, \sfFormatter $formatter = null)
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = $formatter;
@@ -168,13 +168,13 @@ class sfFilesystem
      *
      * @return bool
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function rename($origin, $target)
     {
         // we check that target does not exist
         if (is_readable($target)) {
-            throw new sfException(sprintf('Cannot rename because the target "%s" already exist.', $target));
+            throw new \sfException(sprintf('Cannot rename because the target "%s" already exist.', $target));
         }
 
         $this->logSection('rename', $origin.' > '.$target);
@@ -192,7 +192,7 @@ class sfFilesystem
     public function symlink($originDir, $targetDir, $copyOnWindows = false)
     {
         if ('\\' == DIRECTORY_SEPARATOR && $copyOnWindows) {
-            $finder = sfFinder::type('any');
+            $finder = \sfFinder::type('any');
             $this->mirror($originDir, $targetDir, $finder);
 
             return;
@@ -232,12 +232,12 @@ class sfFilesystem
     /**
      * Mirrors a directory to another.
      *
-     * @param string   $originDir The origin directory
-     * @param string   $targetDir The target directory
-     * @param sfFinder $finder    An sfFinder instance
-     * @param array    $options   An array of options (see copy())
+     * @param string    $originDir The origin directory
+     * @param string    $targetDir The target directory
+     * @param \sfFinder $finder    An sfFinder instance
+     * @param array     $options   An array of options (see copy())
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function mirror($originDir, $targetDir, $finder, $options = [])
     {
@@ -249,7 +249,7 @@ class sfFilesystem
             } elseif (is_link($originDir.DIRECTORY_SEPARATOR.$file)) {
                 $this->symlink($originDir.DIRECTORY_SEPARATOR.$file, $targetDir.DIRECTORY_SEPARATOR.$file);
             } else {
-                throw new sfException(sprintf('Unable to guess "%s" file type.', $file));
+                throw new \sfException(sprintf('Unable to guess "%s" file type.', $file));
             }
         }
     }
@@ -274,7 +274,7 @@ class sfFilesystem
 
         $process = proc_open($cmd, $descriptorspec, $pipes);
         if (!is_resource($process)) {
-            throw new RuntimeException('Unable to execute the command.');
+            throw new \RuntimeException('Unable to execute the command.');
         }
 
         stream_set_blocking($pipes[1], false);
@@ -310,7 +310,7 @@ class sfFilesystem
         fclose($pipes[2]);
 
         if (($return = proc_close($process)) > 0) {
-            throw new RuntimeException('Problem executing command.', $return);
+            throw new \RuntimeException('Problem executing command.', $return);
         }
 
         return [$output, $err];
@@ -357,7 +357,7 @@ class sfFilesystem
 
         $message = $this->formatter ? $this->formatter->formatSection($section, $message, $size) : $section.' '.$message."\n";
 
-        $this->dispatcher->notify(new sfEvent($this, 'command.log', [$message]));
+        $this->dispatcher->notify(new \sfEvent($this, 'command.log', [$message]));
     }
 
     /**

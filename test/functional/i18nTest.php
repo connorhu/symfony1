@@ -13,7 +13,7 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-class myTestBrowser extends sfTestBrowser
+class myTestBrowser extends \sfTestBrowser
 {
     public function checkResponseForCulture($culture = 'fr')
     {
@@ -38,7 +38,7 @@ class myTestBrowser extends sfTestBrowser
     }
 }
 
-$b = new myTestBrowser();
+$b = new \myTestBrowser();
 
 // default culture (en)
 $b->

@@ -7,10 +7,10 @@
  *
  * @version    SVN: $Id$
  */
-class AuthorInheritanceConcreteForm extends BaseAuthorInheritanceConcreteForm
+class AuthorInheritanceConcreteForm extends \BaseAuthorInheritanceConcreteForm
 {
     /**
-     * @see AuthorForm
+     * @see \AuthorForm
      */
     public function configure()
     {

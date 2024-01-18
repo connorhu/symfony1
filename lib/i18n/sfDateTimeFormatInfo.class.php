@@ -97,7 +97,7 @@ class sfDateTimeFormatInfo
         $this->properties = get_class_methods($this);
 
         if (empty($data)) {
-            throw new sfException('Please provide the ICU data to initialize.');
+            throw new \sfException('Please provide the ICU data to initialize.');
         }
 
         $this->data = $data;
@@ -106,8 +106,6 @@ class sfDateTimeFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to retrieve the value.
-     *
-     * @param mixed $name
      */
     public function __get($name)
     {
@@ -116,15 +114,12 @@ class sfDateTimeFormatInfo
             return $this->{$getProperty}();
         }
 
-        throw new sfException(sprintf('Property %s does not exists.', $name));
+        throw new \sfException(sprintf('Property %s does not exists.', $name));
     }
 
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to set the value.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -132,21 +127,21 @@ class sfDateTimeFormatInfo
         if (in_array($setProperty, $this->properties)) {
             $this->{$setProperty}($value);
         } else {
-            throw new sfException(sprintf('Property %s can not be set.', $name));
+            throw new \sfException(sprintf('Property %s can not be set.', $name));
         }
     }
 
     /**
      * Gets the default sfDateTimeFormatInfo that is culture-independent (invariant).
      *
-     * @return sfDateTimeFormatInfo default sfDateTimeFormatInfo
+     * @return \sfDateTimeFormatInfo default sfDateTimeFormatInfo
      */
     public static function getInvariantInfo()
     {
         static $invariant;
 
         if (null === $invariant) {
-            $invariant = sfCultureInfo::getInvariantCulture()->DateTimeFormat;
+            $invariant = \sfCultureInfo::getInvariantCulture()->DateTimeFormat;
         }
 
         return $invariant;
@@ -155,21 +150,21 @@ class sfDateTimeFormatInfo
     /**
      * Returns the sfDateTimeFormatInfo associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the sfDateTimeFormat property
+     * @param \sfCultureInfo $culture the culture that gets the sfDateTimeFormat property
      *
-     * @return sfDateTimeFormatInfo sfDateTimeFormatInfo for the specified
-     *                              culture
+     * @return \sfDateTimeFormatInfo sfDateTimeFormatInfo for the specified
+     *                               culture
      */
     public static function getInstance($culture = null)
     {
-        if ($culture instanceof sfCultureInfo) {
+        if ($culture instanceof \sfCultureInfo) {
             return $culture->DateTimeFormat;
         }
         if (is_string($culture)) {
-            return sfCultureInfo::getInstance($culture)->DateTimeFormat;
+            return \sfCultureInfo::getInstance($culture)->DateTimeFormat;
         }
 
-        return sfCultureInfo::getInvariantCulture()->DateTimeFormat;
+        return \sfCultureInfo::getInvariantCulture()->DateTimeFormat;
     }
 
     /**
@@ -524,9 +519,6 @@ class sfDateTimeFormatInfo
     /**
      * Formats the date and time in a culture sensitive paterrn.
      * The default is "Date Time".
-     *
-     * @param mixed $date
-     * @param mixed $time
      *
      * @return string date and time formated
      */

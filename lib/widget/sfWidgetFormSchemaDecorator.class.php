@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
+class sfWidgetFormSchemaDecorator extends \sfWidgetFormSchema
 {
     protected $widget;
     protected $decorator = '';
@@ -23,12 +23,12 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     /**
      * Constructor.
      *
-     * @param sfWidgetFormSchema $widget    A sfWidgetFormSchema instance
-     * @param string             $decorator A decorator string
+     * @param \sfWidgetFormSchema $widget    A sfWidgetFormSchema instance
+     * @param string              $decorator A decorator string
      *
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
-    public function __construct(sfWidgetFormSchema $widget, $decorator)
+    public function __construct(\sfWidgetFormSchema $widget, $decorator)
     {
         $this->widget = $widget;
         $this->decorator = $decorator;
@@ -44,7 +44,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     /**
      * Returns the decorated widget.
      *
-     * @return sfWidget The decorated widget
+     * @return \sfWidget The decorated widget
      */
     public function getWidget()
     {
@@ -59,7 +59,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
      * @param array  $attributes An array of HTML attributes to be merged with the default HTML attributes
      * @param array  $errors     An array of errors for the field
      *
-     * @see sfWidget
+     * @see \sfWidget
      *
      * @return string
      */
@@ -69,11 +69,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
-     *
-     * @param mixed $name
+     * @see \sfWidgetFormSchema
      */
-    public function addFormFormatter($name, sfWidgetFormSchemaFormatter $formatter)
+    public function addFormFormatter($name, \sfWidgetFormSchemaFormatter $formatter)
     {
         $this->widget->addFormFormatter($name, $formatter);
 
@@ -81,7 +79,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getFormFormatters()
     {
@@ -89,9 +87,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
-     *
-     * @param mixed $name
+     * @see \sfWidgetFormSchema
      */
     public function setFormFormatterName($name)
     {
@@ -101,7 +97,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getFormFormatterName()
     {
@@ -109,7 +105,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getFormFormatter()
     {
@@ -117,9 +113,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
-     *
-     * @param mixed $format
+     * @see \sfWidgetFormSchema
      */
     public function setNameFormat($format)
     {
@@ -129,7 +123,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getNameFormat()
     {
@@ -137,7 +131,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function setLabels(array $labels)
     {
@@ -147,7 +141,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getLabels()
     {
@@ -155,10 +149,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      *
-     * @param mixed|null $value
-     * @param mixed      $name
+     * @param \mixed|null $value
      */
     public function setLabel($name, $value = null)
     {
@@ -172,9 +165,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      *
-     * @param mixed|null $name
+     * @param \mixed|null $name
      */
     public function getLabel($name = null)
     {
@@ -182,7 +175,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function setHelps(array $helps)
     {
@@ -192,7 +185,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getHelps()
     {
@@ -200,10 +193,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
-     *
-     * @param mixed $name
-     * @param mixed $help
+     * @see \sfWidgetFormSchema
      */
     public function setHelp($name, $help)
     {
@@ -213,9 +203,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
-     *
-     * @param mixed $name
+     * @see \sfWidgetFormSchema
      */
     public function getHelp($name)
     {
@@ -243,7 +231,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function needsMultipartForm()
     {
@@ -251,12 +239,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      *
-     * @param mixed|null $value
-     * @param mixed      $name
-     * @param mixed      $attributes
-     * @param mixed      $errors
+     * @param \mixed|null $value
      */
     public function renderField($name, $value = null, $attributes = [], $errors = [])
     {
@@ -264,9 +249,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchemaFormatter
-     *
-     * @param mixed $name
+     * @see \sfWidgetFormSchemaFormatter
      */
     public function generateLabel($name)
     {
@@ -274,9 +257,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchemaFormatter
-     *
-     * @param mixed $name
+     * @see \sfWidgetFormSchemaFormatter
      */
     public function generateLabelName($name)
     {
@@ -284,9 +265,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
-     *
-     * @param mixed $name
+     * @see \sfWidgetFormSchema
      */
     public function generateName($name)
     {
@@ -294,7 +273,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getParent()
     {
@@ -302,9 +281,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
-    public function setParent(sfWidgetFormSchema $parent = null)
+    public function setParent(\sfWidgetFormSchema $parent = null)
     {
         $this->widget->setParent($parent);
 
@@ -312,7 +291,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getFields()
     {
@@ -320,7 +299,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function getPositions()
     {
@@ -328,7 +307,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     public function setPositions(array $positions)
     {
@@ -338,11 +317,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      *
-     * @param mixed|null $pivot
-     * @param mixed      $field
-     * @param mixed      $action
+     * @param \mixed|null $pivot
      */
     public function moveField($field, $action, $pivot = null)
     {
@@ -350,7 +327,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     #[\ReturnTypeWillChange]
     public function offsetExists($name)
@@ -359,7 +336,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($name)
@@ -368,7 +345,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($name, $widget)
@@ -377,7 +354,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
     }
 
     /**
-     * @see sfWidgetFormSchema
+     * @see \sfWidgetFormSchema
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($name)

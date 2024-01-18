@@ -15,16 +15,15 @@
  *
  * @version    SVN: $Id$
  */
-class sfTestFunctional extends sfTestFunctionalBase
+class sfTestFunctional extends \sfTestFunctionalBase
 {
     /**
      * Initializes the browser tester instance.
      *
-     * @param sfBrowserBase $browser A sfBrowserBase instance
-     * @param lime_test     $lime    A lime instance
-     * @param mixed         $testers
+     * @param \sfBrowserBase $browser A sfBrowserBase instance
+     * @param \lime_test     $lime    A lime instance
      */
-    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = [])
+    public function __construct(\sfBrowserBase $browser, \lime_test $lime = null, $testers = [])
     {
         $testers = array_merge([
             'view_cache' => 'sfTesterViewCache',
@@ -41,7 +40,7 @@ class sfTestFunctional extends sfTestFunctionalBase
      * @param string $actionName The action name
      * @param mixed  $position   The position in the action stack (default to the last entry)
      *
-     * @return sfTestFunctional The current sfTestFunctional instance
+     * @return \sfTestFunctional The current sfTestFunctional instance
      */
     public function isForwardedTo($moduleName, $actionName, $position = 'last')
     {

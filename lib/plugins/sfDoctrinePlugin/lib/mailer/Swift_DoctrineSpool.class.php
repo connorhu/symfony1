@@ -22,7 +22,7 @@
  *
  * @version    SVN: $Id$
  */
-class Swift_DoctrineSpool extends Swift_ConfigurableSpool
+class Swift_DoctrineSpool extends \Swift_ConfigurableSpool
 {
     protected $model;
     protected $column;
@@ -34,9 +34,6 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
      * @param string The Doctrine model to use to store the messages (MailMessage by default)
      * @param string The column name to use for message storage (message by default)
      * @param string The method to call to retrieve the query to execute (optional)
-     * @param mixed $model
-     * @param mixed $column
-     * @param mixed $method
      */
     public function __construct($model = 'MailMessage', $column = 'message', $method = 'createQuery')
     {
@@ -72,14 +69,14 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
     /**
      * Stores a message in the queue.
      *
-     * @param Swift_Mime_Message $message The message to store
+     * @param \Swift_Mime_Message $message The message to store
      */
-    public function queueMessage(Swift_Mime_Message $message)
+    public function queueMessage(\Swift_Mime_Message $message)
     {
         $object = new $this->model();
 
-        if (!$object instanceof Doctrine_Record) {
-            throw new InvalidArgumentException('The mailer message object must be a Doctrine_Record object.');
+        if (!$object instanceof \Doctrine_Record) {
+            throw new \InvalidArgumentException('The mailer message object must be a Doctrine_Record object.');
         }
 
         $object->{$this->column} = serialize($message);
@@ -91,14 +88,14 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
     /**
      * Sends messages using the given transport instance.
      *
-     * @param Swift_Transport $transport         A transport instance
-     * @param string[]        &$failedRecipients An array of failures by-reference
+     * @param \Swift_Transport $transport         A transport instance
+     * @param string[]         &$failedRecipients An array of failures by-reference
      *
      * @return int The number of sent emails
      */
-    public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
+    public function flushQueue(\Swift_Transport $transport, &$failedRecipients = null)
     {
-        $table = Doctrine_Core::getTable($this->model);
+        $table = \Doctrine_Core::getTable($this->model);
         $objects = $table->{$this->method}()->limit($this->getMessageLimit())->execute();
 
         if (!$transport->isStarted()) {
@@ -114,7 +111,7 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
 
             try {
                 $count += $transport->send($message, $failedRecipients);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // TODO: What to do with errors?
             }
 

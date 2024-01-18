@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceLanguage extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -30,7 +30,7 @@ class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -43,7 +43,7 @@ class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
         // populate choices with all languages
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
 
-        $languages = sfCultureInfo::getInstance($culture)->getLanguages(isset($options['languages']) ? $options['languages'] : null);
+        $languages = \sfCultureInfo::getInstance($culture)->getLanguages(isset($options['languages']) ? $options['languages'] : null);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {

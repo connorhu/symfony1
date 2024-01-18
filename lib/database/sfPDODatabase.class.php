@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPDODatabase extends sfDatabase
+class sfPDODatabase extends \sfDatabase
 {
     /**
      * Magic method for calling PDO directly via sfPDODatabase.
@@ -41,7 +41,7 @@ class sfPDODatabase extends sfDatabase
     {
         if (!$dsn = $this->getParameter('dsn')) {
             // missing required dsn parameter
-            throw new sfDatabaseException('Database configuration is missing the "dsn" parameter.');
+            throw new \sfDatabaseException('Database configuration is missing the "dsn" parameter.');
         }
 
         try {
@@ -50,36 +50,36 @@ class sfPDODatabase extends sfDatabase
             $password = $this->getParameter('password');
             $persistent = $this->getParameter('persistent');
 
-            $options = $persistent ? [PDO::ATTR_PERSISTENT => true] : [];
+            $options = $persistent ? [\PDO::ATTR_PERSISTENT => true] : [];
 
             $this->connection = new $pdo_class($dsn, $username, $password, $options);
-        } catch (PDOException $e) {
-            throw new sfDatabaseException($e->getMessage());
+        } catch (\PDOException $e) {
+            throw new \sfDatabaseException($e->getMessage());
         }
 
         // lets generate exceptions instead of silent failures
-        if (sfConfig::get('sf_debug')) {
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if (\sfConfig::get('sf_debug')) {
+            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } else {
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
         }
 
         // compatability
         $compatability = $this->getParameter('compat');
         if ($compatability) {
-            $this->connection->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+            $this->connection->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_NATURAL);
         }
 
         // nulls
         $nulls = $this->getParameter('nulls');
         if ($nulls) {
-            $this->connection->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
+            $this->connection->setAttribute(\PDO::ATTR_ORACLE_NULLS, \PDO::NULL_EMPTY_STRING);
         }
 
         // auto commit
         $autocommit = $this->getParameter('autocommit');
         if ($autocommit) {
-            $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+            $this->connection->setAttribute(\PDO::ATTR_AUTOCOMMIT, true);
         }
 
         $this->resource = $this->connection;

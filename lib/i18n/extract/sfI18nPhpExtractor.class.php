@@ -13,7 +13,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nPhpExtractor implements sfI18nExtractorInterface
+class sfI18nPhpExtractor implements \sfI18nExtractorInterface
 {
     /**
      * Extract i18n strings for the given content.

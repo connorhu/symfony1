@@ -19,13 +19,13 @@ $_test_dir = realpath(__DIR__.'/..');
 require_once $_test_dir.'/../lib/vendor/lime/lime.php';
 
 require_once $_test_dir.'/../lib/config/sfConfig.class.php';
-sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
+\sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
 
 require_once __DIR__.'/../../lib/autoload/sfCoreAutoload.class.php';
-sfCoreAutoload::register();
+\sfCoreAutoload::register();
 
 require_once __DIR__.'/../../lib/util/sfToolkit.class.php';
-sfConfig::set('sf_test_cache_dir', sys_get_temp_dir().'/sf_test_project');
+\sfConfig::set('sf_test_cache_dir', sys_get_temp_dir().'/sf_test_project');
 
 // remove all test cache
 sf_unit_test_shutdown();
@@ -40,7 +40,7 @@ function sf_unit_test_shutdown()
 {
     $sf_root_dir = sys_get_temp_dir().'/sf_test_project';
     if (is_dir($sf_root_dir)) {
-        sfToolkit::clearDirectory($sf_root_dir);
+        \sfToolkit::clearDirectory($sf_root_dir);
         @rmdir($sf_root_dir);
     }
 
@@ -50,7 +50,7 @@ function sf_unit_test_shutdown()
     $files = array_merge(empty($sessions) ? [] : $sessions, empty($tmp_files) ? [] : $tmp_files);
     foreach ($files as $file) {
         if (is_dir($file)) {
-            sfToolkit::clearDirectory($file);
+            \sfToolkit::clearDirectory($file);
             @rmdir($file);
         } else {
             @unlink($file);

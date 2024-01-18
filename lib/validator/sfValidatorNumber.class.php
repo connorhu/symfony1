@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorNumber extends sfValidatorBase
+class sfValidatorNumber extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -33,7 +33,7 @@ class sfValidatorNumber extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -47,24 +47,22 @@ class sfValidatorNumber extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         if (!is_numeric($value)) {
-            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         $clean = (float) $value;
 
         if ($this->hasOption('max') && $clean > $this->getOption('max')) {
-            throw new sfValidatorError($this, 'max', ['value' => $value, 'max' => $this->getOption('max')]);
+            throw new \sfValidatorError($this, 'max', ['value' => $value, 'max' => $this->getOption('max')]);
         }
 
         if ($this->hasOption('min') && $clean < $this->getOption('min')) {
-            throw new sfValidatorError($this, 'min', ['value' => $value, 'min' => $this->getOption('min')]);
+            throw new \sfValidatorError($this, 'min', ['value' => $value, 'min' => $this->getOption('min')]);
         }
 
         return $clean;

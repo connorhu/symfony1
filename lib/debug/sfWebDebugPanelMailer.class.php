@@ -15,17 +15,17 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelMailer extends sfWebDebugPanel
+class sfWebDebugPanelMailer extends \sfWebDebugPanel
 {
-    /** @var sfMailer */
+    /** @var \sfMailer */
     protected $mailer;
 
     /**
      * Constructor.
      *
-     * @param sfWebDebug $webDebug The web debug toolbar instance
+     * @param \sfWebDebug $webDebug The web debug toolbar instance
      */
-    public function __construct(sfWebDebug $webDebug)
+    public function __construct(\sfWebDebug $webDebug)
     {
         parent::__construct($webDebug);
 
@@ -59,7 +59,7 @@ class sfWebDebugPanelMailer extends sfWebDebugPanel
         $html[] = '<h2>Configuration</h2>';
         $html[] = '<em>Delivery strategy</em>: '.$strategy;
 
-        if (sfMailer::SINGLE_ADDRESS == $strategy) {
+        if (\sfMailer::SINGLE_ADDRESS == $strategy) {
             $html[] = ' - <em>all emails are delivered to</em>: '.$this->mailer->getDeliveryAddress();
         }
 
@@ -75,12 +75,12 @@ class sfWebDebugPanelMailer extends sfWebDebugPanel
     /**
      * Listens for the mailer.configure event and captures a reference to the mailer.
      */
-    public function listenForMailerConfigure(sfEvent $event)
+    public function listenForMailerConfigure(\sfEvent $event)
     {
         $this->mailer = $event->getSubject();
     }
 
-    protected function renderMessageInformation(Swift_Message $message)
+    protected function renderMessageInformation(\Swift_Message $message)
     {
         static $i = 0;
 

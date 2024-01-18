@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(22);
+$t = new \lime_test(22);
 
-class myViewConfigHandler extends sfViewConfigHandler
+class myViewConfigHandler extends \sfViewConfigHandler
 {
     public function setConfiguration($config)
     {
@@ -25,7 +25,7 @@ class myViewConfigHandler extends sfViewConfigHandler
     }
 }
 
-$handler = new myViewConfigHandler();
+$handler = new \myViewConfigHandler();
 
 // addHtmlAsset() basic asset addition
 $t->diag('addHtmlAsset() basic asset addition');

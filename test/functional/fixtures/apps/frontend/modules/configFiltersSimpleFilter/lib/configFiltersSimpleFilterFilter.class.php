@@ -1,6 +1,6 @@
 <?php
 
-class configFiltersSimpleFilterFilter extends sfFilter
+class configFiltersSimpleFilterFilter extends \sfFilter
 {
     public function execute($filterChain)
     {

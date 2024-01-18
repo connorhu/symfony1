@@ -15,19 +15,19 @@
  *
  * @version     SVN: $Id$
  */
-class sfTestPluginTask extends sfTestBaseTask
+class sfTestPluginTask extends \sfTestBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('plugin', sfCommandArgument::REQUIRED, 'The plugin name'),
+            new \sfCommandArgument('plugin', \sfCommandArgument::REQUIRED, 'The plugin name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('only', null, sfCommandOption::PARAMETER_REQUIRED, 'Only run "unit" or "functional" tests'),
+            new \sfCommandOption('only', null, \sfCommandOption::PARAMETER_REQUIRED, 'Only run "unit" or "functional" tests'),
         ]);
 
         $this->namespace = 'test';
@@ -47,27 +47,24 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         if (false === $this->checkPluginExists($arguments['plugin'])) {
-            throw new sfCommandException(sprintf('The plugin "%s" does not exists', $arguments['plugin']));
+            throw new \sfCommandException(sprintf('The plugin "%s" does not exists', $arguments['plugin']));
         }
 
         if ($options['only'] && !in_array($options['only'], ['unit', 'functional'])) {
-            throw new sfCommandException(sprintf('The --only option must be either "unit" or "functional" ("%s" given)', $options['only']));
+            throw new \sfCommandException(sprintf('The --only option must be either "unit" or "functional" ("%s" given)', $options['only']));
         }
 
-        require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
+        require_once \sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
 
-        $h = new lime_harness(new lime_output_color());
-        $h->base_dir = sfConfig::get('sf_plugins_dir').'/'.$arguments['plugin'].'/test/'.$options['only'];
+        $h = new \lime_harness(new \lime_output_color());
+        $h->base_dir = \sfConfig::get('sf_plugins_dir').'/'.$arguments['plugin'].'/test/'.$options['only'];
 
-        $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
+        $finder = \sfFinder::type('file')->follow_link()->name('*Test.php');
         $h->register($finder->in($h->base_dir));
 
         $h->run();

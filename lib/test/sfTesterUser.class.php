@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterUser extends sfTester
+class sfTesterUser extends \sfTester
 {
     protected $user;
 
@@ -96,9 +96,8 @@ class sfTesterUser extends sfTester
     /**
      * Tests if the user has some credentials.
      *
-     * @param bool  $boolean     Whether to check if the user have some credentials or not
-     * @param bool  $useAnd      specify the mode, either AND or OR
-     * @param mixed $credentials
+     * @param bool $boolean Whether to check if the user have some credentials or not
+     * @param bool $useAnd  specify the mode, either AND or OR
      *
      * @return sfTester|sfTestFunctionalBase
      */

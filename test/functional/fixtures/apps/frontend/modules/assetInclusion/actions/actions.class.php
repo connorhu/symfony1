@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class assetInclusionActions extends sfActions
+class assetInclusionActions extends \sfActions
 {
     public function executeIndex()
     {

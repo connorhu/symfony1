@@ -17,21 +17,21 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginUpgradeTask extends sfPluginBaseTask
+class sfPluginUpgradeTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The plugin name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('stability', 's', sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
-            new sfCommandOption('release', 'r', sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
-            new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
+            new \sfCommandOption('stability', 's', \sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
+            new \sfCommandOption('release', 'r', \sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
+            new \sfCommandOption('channel', 'c', \sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
         ]);
 
         $this->namespace = 'plugin';
@@ -54,10 +54,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {

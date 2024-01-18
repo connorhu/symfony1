@@ -10,16 +10,16 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(109);
+$t = new \lime_test(109);
 
-class myRequest extends sfWebRequest
+class myRequest extends \sfWebRequest
 {
     public $languages;
     public $charsets;
     public $acceptableContentTypes;
     protected static $initialPathArrayKeys;
 
-    public function initialize(sfEventDispatcher $dispatcher, $parameters = [], $attributes = [], $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $parameters = [], $attributes = [], $options = [])
     {
         if (isset($options['content_custom_only_for_test'])) {
             $this->content = $options['content_custom_only_for_test'];
@@ -48,8 +48,8 @@ class myRequest extends sfWebRequest
     }
 }
 
-$dispatcher = new sfEventDispatcher();
-$request = new myRequest($dispatcher);
+$dispatcher = new \sfEventDispatcher();
+$request = new \myRequest($dispatcher);
 
 // ->getLanguages()
 $t->diag('->getLanguages()');
@@ -142,7 +142,7 @@ $t->is($request->getRequestFormat(), 'css', '->setRequestFormat() sets the reque
 // ->getFormat() ->setFormat()
 $t->diag('->getFormat() ->setFormat()');
 
-$customRequest = new myRequest($dispatcher, [], [], ['formats' => ['custom' => 'application/custom']]);
+$customRequest = new \myRequest($dispatcher, [], [], ['formats' => ['custom' => 'application/custom']]);
 $t->is($customRequest->getFormat('application/custom'), 'custom', '->getFormat() returns the format for the given mime type if when is set as initialisation option');
 
 $request->setFormat('js', 'application/x-javascript');
@@ -299,7 +299,7 @@ unset($_SERVER['HTTP_X_FORWARDED_FOR']);
 $t->diag('->getGetParameters() ->getGetParameter()');
 
 $_GET['get_param'] = 'value';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getGetParameters(), ['get_param' => 'value'], '->getGetParameters() returns GET parameters');
 $t->is($request->getGetParameter('get_param'), 'value', '->getGetParameter() returns GET parameter by name');
 unset($_GET['get_param']);
@@ -308,7 +308,7 @@ unset($_GET['get_param']);
 $t->diag('->getPostParameters() ->getPostParameter()');
 
 $_POST['post_param'] = 'value';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getPostParameters(), ['post_param' => 'value'], '->getPostParameters() returns POST parameters');
 $t->is($request->getPostParameter('post_param'), 'value', '->getPostParameter() returns POST parameter by name');
 unset($_POST['post_param']);
@@ -317,67 +317,67 @@ unset($_POST['post_param']);
 $t->diag('->getMethod()');
 
 $_SERVER['REQUEST_METHOD'] = 'none';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'GET', '->getMethod() returns GET by default');
 
 $_SERVER['REQUEST_METHOD'] = 'GET';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'GET', '->getMethod() returns GET if the method is GET');
 
 $_SERVER['REQUEST_METHOD'] = 'PUT';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'PUT', '->getMethod() returns PUT if the method is PUT');
 
 $_SERVER['REQUEST_METHOD'] = 'PUT';
 $_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-$request = new myRequest($dispatcher, [], [], ['content_custom_only_for_test' => 'first=value']);
+$request = new \myRequest($dispatcher, [], [], ['content_custom_only_for_test' => 'first=value']);
 $t->is($request->getPostParameter('first'), 'value', '->getMethod() set POST parameters from parsed content if content type is "application/x-www-form-urlencoded" and the method is PUT');
 unset($_POST['first'], $_SERVER['CONTENT_TYPE']);
 
 $_SERVER['REQUEST_METHOD'] = 'DELETE';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'DELETE', '->getMethod() returns DELETE if the method is DELETE');
 
 $_SERVER['REQUEST_METHOD'] = 'DELETE';
 $_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-$request = new myRequest($dispatcher, [], [], ['content_custom_only_for_test' => 'first=value']);
+$request = new \myRequest($dispatcher, [], [], ['content_custom_only_for_test' => 'first=value']);
 $t->is($request->getPostParameter('first'), 'value', '->getMethod() set POST parameters from parsed content if content type is "application/x-www-form-urlencoded" and the method is DELETE');
 unset($_POST['first'], $_SERVER['CONTENT_TYPE']);
 
 $_SERVER['REQUEST_METHOD'] = 'HEAD';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'HEAD', '->getMethod() returns DELETE if the method is HEAD');
 
 $_SERVER['REQUEST_METHOD'] = 'POST';
 $_POST['sf_method'] = 'PUT';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'PUT', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
 
 $_SERVER['REQUEST_METHOD'] = 'GET';
 $_POST['sf_method'] = 'PUT';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'GET', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
 
 $_SERVER['REQUEST_METHOD'] = 'POST';
 unset($_POST['sf_method']);
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'POST', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
 
 $_SERVER['REQUEST_METHOD'] = 'POST';
 $_GET['sf_method'] = 'PUT';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'PUT', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
 
 $_SERVER['REQUEST_METHOD'] = 'POST';
 unset($_GET['sf_method']);
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getMethod(), 'POST', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
 
 // ->isMethod()
 $t->diag('->isMethod()');
 
 $_SERVER['REQUEST_METHOD'] = 'POST';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->ok($request->isMethod('POST'), '->isMethod() returns true if the method is POST');
 
 // ->isXmlHttpRequest()
@@ -390,57 +390,57 @@ $t->ok($request->isXmlHttpRequest(), '->isXmlHttpRequest() returns true if the m
 $t->diag('->getCookie()');
 
 $_COOKIE['test'] = 'value';
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getCookie('test'), 'value', '->getCookie() returns value of cookie');
 
 // ->getScriptName()
 $t->diag('->getScriptName()');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['SCRIPT_NAME'] = '/frontend_test.php';
 $_SERVER['ORIG_SCRIPT_NAME'] = '/frontend_test2.php';
 $t->is($request->getScriptName(), '/frontend_test.php', '->getScriptName() returns the script name');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 unset($_SERVER['SCRIPT_NAME']);
 $_SERVER['ORIG_SCRIPT_NAME'] = '/frontend_test2.php';
 $t->is($request->getScriptName(), '/frontend_test2.php', '->getScriptName() returns the script name if SCRIPT_NAME not set it use ORIG_SCRIPT_NAME');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 unset($_SERVER['SCRIPT_NAME']);
 $t->is($request->getScriptName(), '', '->getScriptName() returns the script name if SCRIPT_NAME and ORIG_SCRIPT_NAME not set it return empty');
 
 // ->getPathInfo()
 $t->diag('->getPathInfo()');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $options = $request->getOptions();
 $t->is($options['path_info_key'], 'PATH_INFO', 'check if default path_info_key is PATH_INFO');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['PATH_INFO'] = '/test/klaus';
 $_SERVER['REQUEST_URI'] = '/test/klaus2';
 $t->is($request->getPathInfo(), '/test/klaus', '->getPathInfo() returns the url path value');
 
-$request = new myRequest($dispatcher, [], [], ['path_info_key' => 'SPECIAL']);
+$request = new \myRequest($dispatcher, [], [], ['path_info_key' => 'SPECIAL']);
 $_SERVER['SPECIAL'] = '/special';
 $t->is($request->getPathInfo(), '/special', '->getPathInfo() returns the url path value use path_info_key');
 $request->resetPathInfoArray();
 
 $request->resetPathInfoArray();
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['SCRIPT_NAME'] = '/frontend_test.php';
 $_SERVER['REQUEST_URI'] = '/frontend_test.php/test/klaus2';
 $_SERVER['QUERY_STRING'] = '';
 $t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['QUERY_STRING'] = 'test';
 $_SERVER['REQUEST_URI'] = '/frontend_test.php/test/klaus2?test';
 $t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI without query');
 
 $request->resetPathInfoArray();
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getPathInfo(), '/', '->getPathInfo() returns the url path value if it not exists use default /');
 
 // -setRelativeUrlRoot() ->getRelativeUrlRoot()
@@ -452,7 +452,7 @@ $t->is($request->getRelativeUrlRoot(), 'toto', '->getRelativeUrlRoot() return pr
 // ->addRequestParameters() ->getRequestParameters() ->fixParameters()
 $t->diag('->addRequestParameters() ->getRequestParameters() ->fixParameters()');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $t->is($request->getRequestParameters(), [], '->getRequestParameters() returns the request parameters default array');
 
 $request->addRequestParameters(['test' => 'test']);
@@ -472,7 +472,7 @@ $t->is($request->getUrlParameter('test'), 'test', '->getUrlParameter() returns U
 // ->checkCSRFProtection()
 $t->diag('->checkCSRFProtection()');
 
-class BaseForm extends sfForm
+class BaseForm extends \sfForm
 {
     public function getCSRFToken($secret = null)
     {
@@ -480,34 +480,34 @@ class BaseForm extends sfForm
     }
 }
 
-sfForm::enableCSRFProtection();
+\sfForm::enableCSRFProtection();
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 
 try {
     $request->checkCSRFProtection();
     $t->fail('->checkCSRFProtection() throws a validator error if CSRF protection fails');
-} catch (sfValidatorErrorSchema $error) {
+} catch (\sfValidatorErrorSchema $error) {
     $t->pass('->checkCSRFProtection() throws a validator error if CSRF protection fails');
 }
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $request->setParameter('_csrf_token', '==TOKEN==');
 
 try {
     $request->checkCSRFProtection();
     $t->pass('->checkCSRFProtection() checks token from BaseForm');
-} catch (sfValidatorErrorSchema $error) {
+} catch (\sfValidatorErrorSchema $error) {
     $t->fail('->checkCSRFProtection() checks token from BaseForm');
 }
 
 // ->getContentType()
 $t->diag('->getContentType()');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['CONTENT_TYPE'] = 'text/html';
 $t->is($request->getContentType(), 'text/html', '->getContentType() returns the content type');
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['CONTENT_TYPE'] = 'text/html; charset=UTF-8';
 $t->is($request->getContentType(), 'text/html', '->getContentType() strips the charset information by default');
 $t->is($request->getContentType(false), 'text/html; charset=UTF-8', '->getContentType() does not strip the charset information by defaultif you pass false as the first argument');
@@ -515,14 +515,14 @@ $t->is($request->getContentType(false), 'text/html; charset=UTF-8', '->getConten
 // ->getReferer()
 $t->diag('->getReferer()');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['HTTP_REFERER'] = 'http://domain';
 $t->is($request->getReferer(), 'http://domain', '->getContentType() returns the content type');
 
 // ->getHost()
 $t->diag('->getHost()');
 
-$request = new myRequest($dispatcher);
+$request = new \myRequest($dispatcher);
 $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example1.com, example2.com, example3.com';
 $t->is($request->getHost(), 'example3.com', '->getHost() returns the last forwarded host');
 unset($_SERVER['HTTP_X_FORWARDED_HOST']);

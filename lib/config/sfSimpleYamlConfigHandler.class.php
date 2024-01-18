@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSimpleYamlConfigHandler extends sfYamlConfigHandler
+class sfSimpleYamlConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -38,7 +38,7 @@ class sfSimpleYamlConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

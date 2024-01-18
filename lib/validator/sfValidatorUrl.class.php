@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorUrl extends sfValidatorRegex
+class sfValidatorUrl extends \sfValidatorRegex
 {
     public const REGEX_URL_FORMAT = '~^
       (%s)://                                 # protocol
@@ -46,13 +46,13 @@ class sfValidatorUrl extends sfValidatorRegex
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorRegex
+     * @see \sfValidatorRegex
      */
     protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 
         $this->addOption('protocols', ['http', 'https', 'ftp', 'ftps']);
-        $this->setOption('pattern', new sfCallable([$this, 'generateRegex']));
+        $this->setOption('pattern', new \sfCallable([$this, 'generateRegex']));
     }
 }

@@ -15,16 +15,16 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelTimer extends sfWebDebugPanel
+class sfWebDebugPanelTimer extends \sfWebDebugPanel
 {
     protected static $startTime;
 
     /**
      * Constructor.
      *
-     * @param sfWebDebug $webDebug The web debug toolbar instance
+     * @param \sfWebDebug $webDebug The web debug toolbar instance
      */
-    public function __construct(sfWebDebug $webDebug)
+    public function __construct(\sfWebDebug $webDebug)
     {
         parent::__construct($webDebug);
 
@@ -43,10 +43,10 @@ class sfWebDebugPanelTimer extends sfWebDebugPanel
 
     public function getPanelContent()
     {
-        if (sfTimerManager::getTimers()) {
+        if (\sfTimerManager::getTimers()) {
             $totalTime = $this->getTotalTime();
             $panel = '<table class="sfWebDebugLogs" style="width: 300px"><tr><th>type</th><th>calls</th><th>time (ms)</th><th>time (%)</th></tr>';
-            foreach (sfTimerManager::getTimers() as $name => $timer) {
+            foreach (\sfTimerManager::getTimers() as $name => $timer) {
                 $panel .= sprintf('<tr><td class="sfWebDebugLogType">%s</td><td class="sfWebDebugLogNumber" style="text-align: right">%d</td><td style="text-align: right">%.2f</td><td style="text-align: right">%d</td></tr>', $name, $timer->getCalls(), $timer->getElapsedTime() * 1000, $totalTime ? ($timer->getElapsedTime() * 1000 * 100 / $totalTime) : 'N/A');
             }
             $panel .= '</table>';
@@ -55,7 +55,7 @@ class sfWebDebugPanelTimer extends sfWebDebugPanel
         }
     }
 
-    public function filterLogs(sfEvent $event, $logs)
+    public function filterLogs(\sfEvent $event, $logs)
     {
         $newLogs = [];
         foreach ($logs as $log) {

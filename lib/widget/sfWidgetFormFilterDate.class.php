@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormFilterDate extends sfWidgetFormDateRange
+class sfWidgetFormFilterDate extends \sfWidgetFormDateRange
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormFilterDate extends sfWidgetFormDateRange
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -55,7 +55,7 @@ class sfWidgetFormFilterDate extends sfWidgetFormDateRange
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {

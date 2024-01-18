@@ -23,10 +23,10 @@ class sfCommandManager
     /** @var string[] */
     protected $errors = [];
 
-    /** @var sfCommandOptionSet */
+    /** @var \sfCommandOptionSet */
     protected $optionSet;
 
-    /** @var sfCommandArgumentSet */
+    /** @var \sfCommandArgumentSet */
     protected $argumentSet = [];
 
     /** @var array */
@@ -41,18 +41,18 @@ class sfCommandManager
     /**
      * Constructor.
      *
-     * @param sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
-     * @param sfCommandOptionSet   $optionSet   A setOptionSet object
+     * @param \sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
+     * @param \sfCommandOptionSet   $optionSet   A setOptionSet object
      */
-    public function __construct(sfCommandArgumentSet $argumentSet = null, sfCommandOptionSet $optionSet = null)
+    public function __construct(\sfCommandArgumentSet $argumentSet = null, \sfCommandOptionSet $optionSet = null)
     {
         if (null === $argumentSet) {
-            $argumentSet = new sfCommandArgumentSet();
+            $argumentSet = new \sfCommandArgumentSet();
         }
         $this->setArgumentSet($argumentSet);
 
         if (null === $optionSet) {
-            $optionSet = new sfCommandOptionSet();
+            $optionSet = new \sfCommandOptionSet();
         }
         $this->setOptionSet($optionSet);
     }
@@ -60,9 +60,9 @@ class sfCommandManager
     /**
      * Sets the argument set.
      *
-     * @param sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
+     * @param \sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
      */
-    public function setArgumentSet(sfCommandArgumentSet $argumentSet)
+    public function setArgumentSet(\sfCommandArgumentSet $argumentSet)
     {
         $this->argumentSet = $argumentSet;
     }
@@ -70,7 +70,7 @@ class sfCommandManager
     /**
      * Gets the argument set.
      *
-     * @return sfCommandArgumentSet A sfCommandArgumentSet object
+     * @return \sfCommandArgumentSet A sfCommandArgumentSet object
      */
     public function getArgumentSet()
     {
@@ -80,9 +80,9 @@ class sfCommandManager
     /**
      * Sets the option set.
      *
-     * @param sfCommandOptionSet $optionSet A sfCommandOptionSet object
+     * @param \sfCommandOptionSet $optionSet A sfCommandOptionSet object
      */
-    public function setOptionSet(sfCommandOptionSet $optionSet)
+    public function setOptionSet(\sfCommandOptionSet $optionSet)
     {
         $this->optionSet = $optionSet;
     }
@@ -90,7 +90,7 @@ class sfCommandManager
     /**
      * Gets the option set.
      *
-     * @return sfCommandOptionSet A sfCommandOptionSet object
+     * @return \sfCommandOptionSet A sfCommandOptionSet object
      */
     public function getOptionSet()
     {
@@ -203,12 +203,12 @@ class sfCommandManager
      *
      * @return mixed The argument value
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getArgumentValue($name)
     {
         if (!$this->argumentSet->hasArgument($name)) {
-            throw new sfCommandException(sprintf('The "%s" argument does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "%s" argument does not exist.', $name));
         }
 
         return $this->argumentValues[$name];
@@ -231,18 +231,18 @@ class sfCommandManager
      *
      * @return mixed The option value
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getOptionValue($name)
     {
         if (!$this->optionSet->hasOption($name)) {
-            throw new sfCommandException(sprintf('The "%s" option does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "%s" option does not exist.', $name));
         }
 
         return $this->optionValues[$name];
     }
 
-    public function setOption(sfCommandOption $option, $value)
+    public function setOption(\sfCommandOption $option, $value)
     {
         if ($option->isArray()) {
             $this->optionValues[$option->getName()][] = $value;

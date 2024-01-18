@@ -13,15 +13,15 @@
  *
  * @version    SVN: $Id$
  */
-class sfCommandLogger extends sfConsoleLogger
+class sfCommandLogger extends \sfConsoleLogger
 {
     /**
      * Initializes this logger.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $dispatcher->connect('command.log', [$this, 'listenToLogEvent']);
 
@@ -31,9 +31,9 @@ class sfCommandLogger extends sfConsoleLogger
     /**
      * Listens to command.log events.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
-    public function listenToLogEvent(sfEvent $event)
+    public function listenToLogEvent(\sfEvent $event)
     {
         $priority = isset($event['priority']) ? $event['priority'] : self::INFO;
 

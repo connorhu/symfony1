@@ -17,25 +17,25 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineGenerateAdminTask extends sfDoctrineBaseTask
+class sfDoctrineGenerateAdminTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('route_or_model', sfCommandArgument::REQUIRED, 'The route name or the model class'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('route_or_model', \sfCommandArgument::REQUIRED, 'The route name or the model class'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('module', null, sfCommandOption::PARAMETER_REQUIRED, 'The module name', null),
-            new sfCommandOption('theme', null, sfCommandOption::PARAMETER_REQUIRED, 'The theme name', 'admin'),
-            new sfCommandOption('singular', null, sfCommandOption::PARAMETER_REQUIRED, 'The singular name', null),
-            new sfCommandOption('plural', null, sfCommandOption::PARAMETER_REQUIRED, 'The plural name', null),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
+            new \sfCommandOption('module', null, \sfCommandOption::PARAMETER_REQUIRED, 'The module name', null),
+            new \sfCommandOption('theme', null, \sfCommandOption::PARAMETER_REQUIRED, 'The theme name', 'admin'),
+            new \sfCommandOption('singular', null, \sfCommandOption::PARAMETER_REQUIRED, 'The singular name', null),
+            new \sfCommandOption('plural', null, \sfCommandOption::PARAMETER_REQUIRED, 'The plural name', null),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('actions-base-class', null, \sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -71,10 +71,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -88,12 +85,12 @@ EOF;
 
         // is it a model class name
         if (!class_exists($arguments['route_or_model'])) {
-            throw new sfCommandException(sprintf('The route "%s" does not exist and there is no "%s" class.', $arguments['route_or_model'], $arguments['route_or_model']));
+            throw new \sfCommandException(sprintf('The route "%s" does not exist and there is no "%s" class.', $arguments['route_or_model'], $arguments['route_or_model']));
         }
 
-        $r = new ReflectionClass($arguments['route_or_model']);
+        $r = new \ReflectionClass($arguments['route_or_model']);
         if (!$r->isSubclassOf('Doctrine_Record')) {
-            throw new sfCommandException(sprintf('"%s" is not a Doctrine class.', $arguments['route_or_model']));
+            throw new \sfCommandException(sprintf('"%s" is not a Doctrine class.', $arguments['route_or_model']));
         }
 
         // create a route
@@ -107,13 +104,13 @@ EOF;
             }
         }
 
-        $routing = sfConfig::get('sf_app_config_dir').'/routing.yml';
+        $routing = \sfConfig::get('sf_app_config_dir').'/routing.yml';
         $content = file_get_contents($routing);
-        $routesArray = sfYaml::load($content);
+        $routesArray = \sfYaml::load($content);
 
         if (!isset($routesArray[$name])) {
-            $databaseManager = new sfDatabaseManager($this->configuration);
-            $primaryKey = Doctrine_Core::getTable($model)->getIdentifier();
+            $databaseManager = new \sfDatabaseManager($this->configuration);
+            $primaryKey = \Doctrine_Core::getTable($model)->getIdentifier();
             $module = $options['module'] ? $options['module'] : $name;
             $content = sprintf(<<<'EOF'
 %s:
@@ -132,7 +129,7 @@ EOF
             $this->logSection('file+', $routing);
 
             if (false === file_put_contents($routing, $content)) {
-                throw new sfCommandException(sprintf('Unable to write to file, %s.', $routing));
+                throw new \sfCommandException(sprintf('Unable to write to file, %s.', $routing));
             }
         }
 
@@ -146,15 +143,15 @@ EOF
     {
         $routeOptions = $arguments['route']->getOptions();
 
-        if (!$arguments['route'] instanceof sfDoctrineRouteCollection) {
-            throw new sfCommandException(sprintf('The route "%s" is not a Doctrine collection route.', $arguments['route_name']));
+        if (!$arguments['route'] instanceof \sfDoctrineRouteCollection) {
+            throw new \sfCommandException(sprintf('The route "%s" is not a Doctrine collection route.', $arguments['route_name']));
         }
 
         $module = $routeOptions['module'];
         $model = $routeOptions['model'];
 
         // execute the doctrine:generate-module task
-        $task = new sfDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
+        $task = new \sfDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
         $task->setCommandApplication($this->commandApplication);
         $task->setConfiguration($this->configuration);
 
@@ -174,7 +171,7 @@ EOF
 
     protected function getRouteFromName($name)
     {
-        $config = new sfRoutingConfigHandler();
+        $config = new \sfRoutingConfigHandler();
         $routes = $config->evaluate($this->configuration->getConfigPaths('config/routing.yml'));
 
         if (isset($routes[$name])) {
@@ -195,7 +192,7 @@ EOF
      */
     protected function checkRoute($route, $model, $module)
     {
-        if ($route instanceof sfDoctrineRouteCollection) {
+        if ($route instanceof \sfDoctrineRouteCollection) {
             $options = $route->getOptions();
 
             return $model == $options['model'] && $module == $options['module'];

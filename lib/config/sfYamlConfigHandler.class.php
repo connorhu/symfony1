@@ -16,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfYamlConfigHandler extends sfConfigHandler
+abstract class sfYamlConfigHandler extends \sfConfigHandler
 {
     /** @var array */
     protected $yamlConfig;
@@ -40,7 +40,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
                 }
             }
 
-            $config = sfToolkit::arrayDeepMerge($config, $values);
+            $config = \sfToolkit::arrayDeepMerge($config, $values);
         }
 
         return $config;
@@ -53,22 +53,22 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
      *
      * @return array|string A parsed .yml configuration
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public static function parseYaml($configFile)
     {
         if (!is_readable($configFile)) {
             // can't read the configuration
-            throw new sfConfigurationException(sprintf('Configuration file "%s" does not exist or is not readable.', $configFile));
+            throw new \sfConfigurationException(sprintf('Configuration file "%s" does not exist or is not readable.', $configFile));
         }
 
         // parse our config
-        $config = sfYaml::load($configFile, sfConfig::get('sf_charset', 'UTF-8'));
+        $config = \sfYaml::load($configFile, \sfConfig::get('sf_charset', 'UTF-8'));
 
         if (false === $config) {
             // configuration couldn't be parsed
-            throw new sfParseException(sprintf('Configuration file "%s" could not be parsed', $configFile));
+            throw new \sfParseException(sprintf('Configuration file "%s" could not be parsed', $configFile));
         }
 
         return null === $config ? [] : $config;
@@ -76,7 +76,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
 
     public static function flattenConfiguration($config)
     {
-        $config['all'] = sfToolkit::arrayDeepMerge(
+        $config['all'] = \sfToolkit::arrayDeepMerge(
             isset($config['default']) && is_array($config['default']) ? $config['default'] : [],
             isset($config['all']) && is_array($config['all']) ? $config['all'] : []
         );
@@ -95,10 +95,10 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
      */
     public static function flattenConfigurationWithEnvironment($config)
     {
-        return sfToolkit::arrayDeepMerge(
+        return \sfToolkit::arrayDeepMerge(
             isset($config['default']) && is_array($config['default']) ? $config['default'] : [],
             isset($config['all']) && is_array($config['all']) ? $config['all'] : [],
-            isset($config[sfConfig::get('sf_environment')]) && is_array($config[sfConfig::get('sf_environment')]) ? $config[sfConfig::get('sf_environment')] : []
+            isset($config[\sfConfig::get('sf_environment')]) && is_array($config[\sfConfig::get('sf_environment')]) ? $config[\sfConfig::get('sf_environment')] : []
         );
     }
 

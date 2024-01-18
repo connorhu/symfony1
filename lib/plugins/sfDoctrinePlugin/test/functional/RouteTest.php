@@ -25,7 +25,7 @@ $tests = [
     '/doctrine/route/test10/1/test' => '/Doctrine_Collection/',
 ];
 
-$b = new sfTestBrowser();
+$b = new \sfTestBrowser();
 foreach ($tests as $url => $check) {
     $b->
       get($url)->
@@ -35,7 +35,7 @@ foreach ($tests as $url => $check) {
       end();
 }
 
-$article = Doctrine_Core::getTable('Article')->find(1);
+$article = \Doctrine_Core::getTable('Article')->find(1);
 
 $routes = [
     'doctrine_route_test5' => [

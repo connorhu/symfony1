@@ -15,12 +15,10 @@
  *
  * @version    SVN: $Id: sfNoRouting.class.php 20566 2009-07-29 07:04:01Z fabien $
  */
-class sfNoRouting extends sfRouting
+class sfNoRouting extends \sfRouting
 {
     /**
-     * @see sfRouting
-     *
-     * @param mixed $with_route_name
+     * @see \sfRouting
      */
     public function getCurrentInternalUri($with_route_name = false)
     {
@@ -36,11 +34,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
-     *
-     * @param mixed $name
-     * @param mixed $params
-     * @param mixed $absolute
+     * @see \sfRouting
      */
     public function generate($name, $params = [], $absolute = false)
     {
@@ -58,9 +52,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
-     *
-     * @param mixed $url
+     * @see \sfRouting
      */
     public function parse($url)
     {
@@ -68,7 +60,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function getRoutes()
     {
@@ -76,9 +68,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
-     *
-     * @param mixed $name
+     * @see \sfRouting
      */
     public function getRoute($name)
     {
@@ -86,9 +76,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
-     *
-     * @param mixed $routes
+     * @see \sfRouting
      */
     public function setRoutes($routes)
     {
@@ -96,7 +84,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function hasRoutes()
     {
@@ -104,7 +92,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function clearRoutes()
     {

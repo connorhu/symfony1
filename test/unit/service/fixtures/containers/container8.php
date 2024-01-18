@@ -1,6 +1,6 @@
 <?php
 
-$container = new sfServiceContainerBuilder();
+$container = new \sfServiceContainerBuilder();
 $container->setParameters([
     'FOO' => 'bar',
     'bar' => 'foo is %foo bar',

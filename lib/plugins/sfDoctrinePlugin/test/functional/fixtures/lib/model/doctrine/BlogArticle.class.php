@@ -9,6 +9,6 @@
  *
  * @version    SVN: $Id$
  */
-class BlogArticle extends BaseBlogArticle
+class BlogArticle extends \BaseBlogArticle
 {
 }

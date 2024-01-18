@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(28);
+$t = new \lime_test(28);
 
 $t->comment('A. Equal numbers');
 $t->is(1, 1);

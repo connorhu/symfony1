@@ -13,12 +13,12 @@ $fixtures = 'fixtures/fixtures.yml';
 
 require_once dirname(__FILE__).'/../bootstrap/functional.php';
 
-$t = new lime_test(22);
+$t = new \lime_test(22);
 
-$authors = Doctrine_Core::getTable('Author')->findAll();
+$authors = \Doctrine_Core::getTable('Author')->findAll();
 $t->is(count($authors), 2);
 
-$author = new Author();
+$author = new \Author();
 
 // Accessor overriding
 $author->setName('Jonathan H. Wage');
@@ -32,10 +32,10 @@ $t->is($author->getName(), $author->name);
 $t->is($author->getId(), 1);
 
 // Make sure we still have only 2 authors
-$authors = Doctrine_Core::getTable('Author')->findAll();
+$authors = \Doctrine_Core::getTable('Author')->findAll();
 $t->is(count($authors), 2);
 
-$article = new Article();
+$article = new \Article();
 $article->title = 'test';
 
 // __toString() automatic column finder
@@ -49,7 +49,7 @@ $t->is($article->getAuthorID(), $article->author_id);
 $t->is($article->getauthor_id(), $article->author_id);
 
 // Camel case columns
-$camelCase = new CamelCase();
+$camelCase = new \CamelCase();
 $camelCase->testCamelCase = 'camel';
 $camelCase->setTestCamelCase('camel');
 
@@ -74,11 +74,11 @@ $t->is($dateTime, null);
 try {
     $article->getDateTimeObject('author_id');
     $t->fail();
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass();
 }
 
-$article->setDateTimeObject('created_at', new DateTime('1985-09-01'));
+$article->setDateTimeObject('created_at', new \DateTime('1985-09-01'));
 $t->is($article->getDateTimeObject('created_at')->format('m/d/Y'), '09/01/1985');
 
 $article->setDateTimeObject('created_at', null);

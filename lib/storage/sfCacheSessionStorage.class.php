@@ -8,24 +8,24 @@
  *
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
  */
-class sfCacheSessionStorage extends sfStorage
+class sfCacheSessionStorage extends \sfStorage
 {
     /** @var string */
     protected $id;
 
-    /** @var sfContext */
+    /** @var \sfContext */
     protected $context;
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
-    /** @var sfWebRequest */
+    /** @var \sfWebRequest */
     protected $request;
 
-    /** @var sfWebResponse */
+    /** @var \sfWebResponse */
     protected $response;
 
-    /** @var sfCache|null */
+    /** @var \sfCache|null */
     protected $cache;
 
     /** @var array */
@@ -71,10 +71,10 @@ class sfCacheSessionStorage extends sfStorage
         if (isset($this->options['cache']) && $this->options['cache']['class']) {
             $this->cache = new $this->options['cache']['class'](is_array($this->options['cache']['param']) ? $this->options['cache']['param'] : []);
         } else {
-            throw new InvalidArgumentException('sfCacheSessionStorage requires cache option.');
+            throw new \InvalidArgumentException('sfCacheSessionStorage requires cache option.');
         }
 
-        $this->context = sfContext::getInstance();
+        $this->context = \sfContext::getInstance();
 
         $this->dispatcher = $this->context->getEventDispatcher();
         $this->request = $this->context->getRequest();
@@ -105,8 +105,8 @@ class sfCacheSessionStorage extends sfStorage
             // generate new id based on random # / ip / user agent / secret
             $this->id = md5(mt_rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
 
-            if (sfConfig::get('sf_logging_enabled')) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['New session created']));
+            if (\sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['New session created']));
             }
 
             // only send cookie when id is issued
@@ -140,8 +140,8 @@ class sfCacheSessionStorage extends sfStorage
                 }
             }
 
-            if (sfConfig::get('sf_logging_enabled')) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Restored previous session']));
+            if (\sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Restored previous session']));
             }
         }
         session_id($this->id);
@@ -255,8 +255,8 @@ class sfCacheSessionStorage extends sfStorage
         // destroy data and regenerate id
         $this->regenerate(true);
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', ['new session created due to expiraton']));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['new session created due to expiraton']));
         }
     }
 
@@ -270,8 +270,8 @@ class sfCacheSessionStorage extends sfStorage
         // only update cache if session has changed
         if (true === $this->dataChanged) {
             $this->cache->set($this->id, serialize($this->data));
-            if (sfConfig::get('sf_logging_enabled')) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Storing session to cache']));
+            if (\sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Storing session to cache']));
             }
         }
     }

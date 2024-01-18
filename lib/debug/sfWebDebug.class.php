@@ -30,11 +30,11 @@ class sfWebDebug
      *  * image_root_path:    The image root path
      *  * request_parameters: The current request parameters
      *
-     * @param sfEventDispatcher $dispatcher The event dispatcher
-     * @param sfVarLogger       $logger     The logger
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher The event dispatcher
+     * @param \sfVarLogger       $logger     The logger
+     * @param array              $options    An array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfVarLogger $logger, array $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, \sfVarLogger $logger, array $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
@@ -50,7 +50,7 @@ class sfWebDebug
 
         $this->configure();
 
-        $this->dispatcher->notify(new sfEvent($this, 'debug.web.load_panels'));
+        $this->dispatcher->notify(new \sfEvent($this, 'debug.web.load_panels'));
     }
 
     /**
@@ -58,27 +58,27 @@ class sfWebDebug
      */
     public function configure()
     {
-        $this->setPanel('symfony_version', new sfWebDebugPanelSymfonyVersion($this));
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_cache')) {
-            $this->setPanel('cache', new sfWebDebugPanelCache($this));
+        $this->setPanel('symfony_version', new \sfWebDebugPanelSymfonyVersion($this));
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_cache')) {
+            $this->setPanel('cache', new \sfWebDebugPanelCache($this));
         }
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->setPanel('config', new sfWebDebugPanelConfig($this));
-            $this->setPanel('view', new sfWebDebugPanelView($this));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->setPanel('config', new \sfWebDebugPanelConfig($this));
+            $this->setPanel('view', new \sfWebDebugPanelView($this));
         }
-        $this->setPanel('logs', new sfWebDebugPanelLogs($this));
-        $this->setPanel('memory', new sfWebDebugPanelMemory($this));
-        if (sfConfig::get('sf_debug')) {
-            $this->setPanel('time', new sfWebDebugPanelTimer($this));
+        $this->setPanel('logs', new \sfWebDebugPanelLogs($this));
+        $this->setPanel('memory', new \sfWebDebugPanelMemory($this));
+        if (\sfConfig::get('sf_debug')) {
+            $this->setPanel('time', new \sfWebDebugPanelTimer($this));
         }
 
-        $this->setPanel('mailer', new sfWebDebugPanelMailer($this));
+        $this->setPanel('mailer', new \sfWebDebugPanelMailer($this));
     }
 
     /**
      * Gets the logger.
      *
-     * @return sfVarLogger The logger instance
+     * @return \sfVarLogger The logger instance
      */
     public function getLogger()
     {
@@ -88,7 +88,7 @@ class sfWebDebug
     /**
      * Gets the event dispatcher.
      *
-     * @return sfEventDispatcher The event dispatcher
+     * @return \sfEventDispatcher The event dispatcher
      */
     public function getEventDispatcher()
     {
@@ -108,10 +108,10 @@ class sfWebDebug
     /**
      * Sets a panel by name.
      *
-     * @param string          $name  The panel name
-     * @param sfWebDebugPanel $panel The panel
+     * @param string           $name  The panel name
+     * @param \sfWebDebugPanel $panel The panel
      */
-    public function setPanel($name, sfWebDebugPanel $panel)
+    public function setPanel($name, \sfWebDebugPanel $panel)
     {
         $this->panels[$name] = $panel;
     }
@@ -129,8 +129,8 @@ class sfWebDebug
     /**
      * Gets an option value by name.
      *
-     * @param string     $name    The option name
-     * @param mixed|null $default
+     * @param string      $name    The option name
+     * @param \mixed|null $default
      *
      * @return mixed The option value
      */
@@ -236,10 +236,10 @@ class sfWebDebug
      */
     public function getPriority($value)
     {
-        if ($value >= sfLogger::INFO) {
+        if ($value >= \sfLogger::INFO) {
             return 'info';
         }
-        if ($value >= sfLogger::WARNING) {
+        if ($value >= \sfLogger::WARNING) {
             return 'warning';
         }
 

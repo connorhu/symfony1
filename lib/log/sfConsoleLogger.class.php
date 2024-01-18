@@ -15,15 +15,15 @@
  *
  * @version    SVN: $Id$
  */
-class sfConsoleLogger extends sfStreamLogger
+class sfConsoleLogger extends \sfStreamLogger
 {
     /**
-     * @see sfStreamLogger
+     * @see \sfStreamLogger
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $options['stream'] = defined('STDOUT') ? STDOUT : fopen('php://stdout', 'w');
 

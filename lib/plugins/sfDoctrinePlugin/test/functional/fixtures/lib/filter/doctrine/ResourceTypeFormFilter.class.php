@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class ResourceTypeFormFilter extends BaseResourceTypeFormFilter
+class ResourceTypeFormFilter extends \BaseResourceTypeFormFilter
 {
     public function configure()
     {

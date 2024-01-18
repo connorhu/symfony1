@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorI18nChoiceTimezone extends sfValidatorChoice
+class sfValidatorI18nChoiceTimezone extends \sfValidatorChoice
 {
     /**
      * Configures the current validator.
@@ -25,12 +25,12 @@ class sfValidatorI18nChoiceTimezone extends sfValidatorChoice
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorChoice
+     * @see \sfValidatorChoice
      */
     protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 
-        $this->setOption('choices', array_keys(sfCultureInfo::getInstance()->getTimeZones()));
+        $this->setOption('choices', array_keys(\sfCultureInfo::getInstance()->getTimeZones()));
     }
 }

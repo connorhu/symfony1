@@ -35,14 +35,14 @@ class sfCommandArgument
      * @param string $help    A help text
      * @param mixed  $default The default value (for self::OPTIONAL mode only)
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function __construct($name, $mode = null, $help = '', $default = null)
     {
         if (null === $mode) {
             $mode = self::OPTIONAL;
         } elseif (is_string($mode) || $mode > 7) {
-            throw new sfCommandException(sprintf('Argument mode "%s" is not valid.', $mode));
+            throw new \sfCommandException(sprintf('Argument mode "%s" is not valid.', $mode));
         }
 
         $this->name = $name;
@@ -87,19 +87,19 @@ class sfCommandArgument
      *
      * @param mixed $default The default value
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function setDefault($default = null)
     {
         if (self::REQUIRED === $this->mode && null !== $default) {
-            throw new sfCommandException('Cannot set a default value except for sfCommandParameter::OPTIONAL mode.');
+            throw new \sfCommandException('Cannot set a default value except for sfCommandParameter::OPTIONAL mode.');
         }
 
         if ($this->isArray()) {
             if (null === $default) {
                 $default = [];
             } elseif (!is_array($default)) {
-                throw new sfCommandException('A default value for an array argument must be an array.');
+                throw new \sfCommandException('A default value for an array argument must be an array.');
             }
         }
 

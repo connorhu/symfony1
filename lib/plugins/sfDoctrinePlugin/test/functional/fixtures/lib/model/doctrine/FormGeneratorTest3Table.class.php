@@ -1,5 +1,5 @@
 <?php
 
-class FormGeneratorTest3Table extends Doctrine_Table
+class FormGeneratorTest3Table extends \Doctrine_Table
 {
 }

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelConfig extends sfWebDebugPanel
+class sfWebDebugPanelConfig extends \sfWebDebugPanel
 {
     public function getTitle()
     {
@@ -30,11 +30,11 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
     public function getPanelContent()
     {
         $config = [
-            'debug' => sfConfig::get('sf_debug') ? 'on' : 'off',
+            'debug' => \sfConfig::get('sf_debug') ? 'on' : 'off',
             'xdebug' => extension_loaded('xdebug') ? 'on' : 'off',
-            'logging' => sfConfig::get('sf_logging_enabled') ? 'on' : 'off',
-            'cache' => sfConfig::get('sf_cache') ? 'on' : 'off',
-            'compression' => sfConfig::get('sf_compressed') ? 'on' : 'off',
+            'logging' => \sfConfig::get('sf_logging_enabled') ? 'on' : 'off',
+            'cache' => \sfConfig::get('sf_cache') ? 'on' : 'off',
+            'compression' => \sfConfig::get('sf_compressed') ? 'on' : 'off',
             'tokenizer' => function_exists('token_get_all') ? 'on' : 'off',
             'eaccelerator' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable') ? 'on' : 'off',
             'apc' => extension_loaded('apc') && ini_get('apc.enabled') ? 'on' : 'off',
@@ -47,14 +47,14 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
         }
         $html .= '</ul>';
 
-        $context = sfContext::getInstance();
-        $html .= $this->formatArrayAsHtml('request', sfDebug::requestAsArray($context->getRequest()));
-        $html .= $this->formatArrayAsHtml('response', sfDebug::responseAsArray($context->getResponse()));
-        $html .= $this->formatArrayAsHtml('user', sfDebug::userAsArray($context->getUser()));
-        $html .= $this->formatArrayAsHtml('settings', sfDebug::settingsAsArray());
-        $html .= $this->formatArrayAsHtml('globals', sfDebug::globalsAsArray());
-        $html .= $this->formatArrayAsHtml('php', sfDebug::phpInfoAsArray());
-        $html .= $this->formatArrayAsHtml('symfony', sfDebug::symfonyInfoAsArray());
+        $context = \sfContext::getInstance();
+        $html .= $this->formatArrayAsHtml('request', \sfDebug::requestAsArray($context->getRequest()));
+        $html .= $this->formatArrayAsHtml('response', \sfDebug::responseAsArray($context->getResponse()));
+        $html .= $this->formatArrayAsHtml('user', \sfDebug::userAsArray($context->getUser()));
+        $html .= $this->formatArrayAsHtml('settings', \sfDebug::settingsAsArray());
+        $html .= $this->formatArrayAsHtml('globals', \sfDebug::globalsAsArray());
+        $html .= $this->formatArrayAsHtml('php', \sfDebug::phpInfoAsArray());
+        $html .= $this->formatArrayAsHtml('symfony', \sfDebug::symfonyInfoAsArray());
 
         return $html;
     }
@@ -73,7 +73,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
 
         return '
     <h2>'.$id.' '.$this->getToggler('sfWebDebug'.$id).'</h2>
-    <div id="sfWebDebug'.$id.'" style="display: none"><pre>'.htmlspecialchars(sfYaml::dump(sfDebug::removeObjects($values)), ENT_QUOTES, sfConfig::get('sf_charset')).'</pre></div>
+    <div id="sfWebDebug'.$id.'" style="display: none"><pre>'.htmlspecialchars(\sfYaml::dump(\sfDebug::removeObjects($values)), ENT_QUOTES, \sfConfig::get('sf_charset')).'</pre></div>
     ';
     }
 }

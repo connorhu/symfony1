@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebResponse extends sfResponse
+class sfWebResponse extends \sfResponse
 {
     public const FIRST = 'first';
     public const MIDDLE = '';
@@ -82,7 +82,7 @@ class sfWebResponse extends sfResponse
     ];
 
     /**
-     * @see sfResponse
+     * @see \sfResponse
      *
      * @return array
      */
@@ -92,7 +92,7 @@ class sfWebResponse extends sfResponse
     }
 
     /**
-     * @see sfResponse
+     * @see \sfResponse
      *
      * @param array $data
      */
@@ -111,14 +111,14 @@ class sfWebResponse extends sfResponse
      *  * send_http_headers: Whether to send HTTP headers or not (true by default)
      *  * http_protocol:     The HTTP protocol to use for the response (HTTP/1.0 by default)
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param array              $options    An array of options
      *
      * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfResponse
      *
-     * @see sfResponse
+     * @see \sfResponse
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         parent::initialize($dispatcher, $options);
 
@@ -181,7 +181,7 @@ class sfWebResponse extends sfResponse
             } else {
                 $expire = strtotime($expire);
                 if (false === $expire || -1 == $expire) {
-                    throw new sfException('Your expire parameter is not valid.');
+                    throw new \sfException('Your expire parameter is not valid.');
                 }
             }
         }
@@ -341,7 +341,7 @@ class sfWebResponse extends sfResponse
         }
 
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send status "%s"', $status)]));
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Send status "%s"', $status)]));
         }
 
         // headers
@@ -352,7 +352,7 @@ class sfWebResponse extends sfResponse
             header($name.': '.$value);
 
             if ('' != $value && $this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send header "%s: %s"', $name, $value)]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Send header "%s: %s"', $name, $value)]));
             }
         }
 
@@ -363,7 +363,7 @@ class sfWebResponse extends sfResponse
             setrawcookie($cookie['name'], $cookie['value'], $expire, $cookie['path'], $domain, $cookie['secure'], $cookie['httpOnly']);
 
             if ($this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send cookie "%s": "%s"', $cookie['name'], $cookie['value'])]));
+                $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Send cookie "%s": "%s"', $cookie['name'], $cookie['value'])]));
             }
         }
         // prevent resending the headers
@@ -389,7 +389,7 @@ class sfWebResponse extends sfResponse
         $this->sendContent();
 
         if (function_exists('fastcgi_finish_request')) {
-            $this->dispatcher->notify(new sfEvent($this, 'response.fastcgi_finish_request'));
+            $this->dispatcher->notify(new \sfEvent($this, 'response.fastcgi_finish_request'));
             fastcgi_finish_request();
         }
     }
@@ -416,7 +416,7 @@ class sfWebResponse extends sfResponse
             return gmdate('D M j H:i:s', $timestamp);
         }
 
-        throw new InvalidArgumentException('The second getDate() method parameter must be one of: rfc1123, rfc1036 or asctime.');
+        throw new \InvalidArgumentException('The second getDate() method parameter must be one of: rfc1123, rfc1036 or asctime.');
     }
 
     /**
@@ -786,9 +786,9 @@ class sfWebResponse extends sfResponse
     /**
      * Copies all properties from a given sfWebResponse object to the current one.
      *
-     * @param sfWebResponse $response An sfWebResponse instance
+     * @param \sfWebResponse $response An sfWebResponse instance
      */
-    public function copyProperties(sfWebResponse $response)
+    public function copyProperties(\sfWebResponse $response)
     {
         $this->options = $response->getOptions();
         $this->headers = $response->getHttpHeaders();
@@ -806,9 +806,9 @@ class sfWebResponse extends sfResponse
     /**
      * Merges all properties from a given sfWebResponse object to the current one.
      *
-     * @param sfWebResponse $response An sfWebResponse instance
+     * @param \sfWebResponse $response An sfWebResponse instance
      */
-    public function merge(sfWebResponse $response)
+    public function merge(\sfWebResponse $response)
     {
         foreach ($this->getPositions() as $position) {
             $this->javascripts[$position] = array_merge($this->getJavascripts($position), $response->getJavascripts($position));
@@ -819,7 +819,7 @@ class sfWebResponse extends sfResponse
     }
 
     /**
-     * @see sfResponse
+     * @see \sfResponse
      */
     public function serialize()
     {
@@ -827,9 +827,7 @@ class sfWebResponse extends sfResponse
     }
 
     /**
-     * @see sfResponse
-     *
-     * @param mixed $serialized
+     * @see \sfResponse
      */
     public function unserialize($serialized)
     {
@@ -853,12 +851,12 @@ class sfWebResponse extends sfResponse
      *
      * @param string $position
      *
-     * @throws InvalidArgumentException if the position is not available
+     * @throws \InvalidArgumentException if the position is not available
      */
     protected function validatePosition($position)
     {
         if (!in_array($position, $this->positions, true)) {
-            throw new InvalidArgumentException(sprintf('The position "%s" does not exist (available positions: %s).', $position, implode(', ', $this->positions)));
+            throw new \InvalidArgumentException(sprintf('The position "%s" does not exist (available positions: %s).', $position, implode(', ', $this->positions)));
         }
     }
 

@@ -13,7 +13,7 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-class sfAuthTestBrowser extends sfTestBrowser
+class sfAuthTestBrowser extends \sfTestBrowser
 {
     public function checkNonAuth()
     {
@@ -48,7 +48,7 @@ class sfAuthTestBrowser extends sfTestBrowser
     }
 }
 
-$b = new sfAuthTestBrowser();
+$b = new \sfAuthTestBrowser();
 
 // default main page
 $b->

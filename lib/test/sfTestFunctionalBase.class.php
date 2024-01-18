@@ -29,16 +29,15 @@ abstract class sfTestFunctionalBase
     /**
      * Initializes the browser tester instance.
      *
-     * @param sfBrowserBase $browser A sfBrowserBase instance
-     * @param lime_test     $lime    A lime instance
-     * @param mixed         $testers
+     * @param \sfBrowserBase $browser A sfBrowserBase instance
+     * @param \lime_test     $lime    A lime instance
      */
-    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = [])
+    public function __construct(\sfBrowserBase $browser, \lime_test $lime = null, $testers = [])
     {
         $this->browser = $browser;
 
         if (null === self::$test) {
-            self::$test = null !== $lime ? $lime : new lime_test();
+            self::$test = null !== $lime ? $lime : new \lime_test();
         }
 
         $this->setTesters(array_merge([
@@ -68,16 +67,16 @@ abstract class sfTestFunctionalBase
      * Returns the tester associated with the given name.
      *
      * @param string $name The tester name
-     * @param sfTester A sfTester instance
+     * @param \sfTester A sfTester instance
      */
     public function with($name)
     {
         if (!isset($this->testers[$name])) {
-            throw new InvalidArgumentException(sprintf('The "%s" tester does not exist.', $name));
+            throw new \InvalidArgumentException(sprintf('The "%s" tester does not exist.', $name));
         }
 
         if ($this->blockTester) {
-            throw new LogicException(sprintf('You cannot nest tester blocks.'));
+            throw new \LogicException(sprintf('You cannot nest tester blocks.'));
         }
 
         $this->currentTester = $this->testers[$name];
@@ -89,12 +88,12 @@ abstract class sfTestFunctionalBase
     /**
      * Begins a block of test for the current tester.
      *
-     * @return sfTester The current sfTester instance
+     * @return \sfTester The current sfTester instance
      */
     public function begin()
     {
         if (!$this->currentTester) {
-            throw new LogicException(sprintf('You must call with() before beginning a tester block.'));
+            throw new \LogicException(sprintf('You must call with() before beginning a tester block.'));
         }
 
         return $this->blockTester = $this->currentTester;
@@ -103,12 +102,12 @@ abstract class sfTestFunctionalBase
     /**
      * End a block of test for the current tester.
      *
-     * @return sfTestFunctionalBase
+     * @return \sfTestFunctionalBase
      */
     public function end()
     {
         if (null === $this->blockTester) {
-            throw new LogicException(sprintf('There is no current tester block to end.'));
+            throw new \LogicException(sprintf('There is no current tester block to end.'));
         }
 
         $this->blockTester = null;
@@ -140,8 +139,8 @@ abstract class sfTestFunctionalBase
             $tester = new $tester($this, self::$test);
         }
 
-        if (!$tester instanceof sfTester) {
-            throw new InvalidArgumentException(sprintf('The tester "%s" is not of class sfTester.', $name));
+        if (!$tester instanceof \sfTester) {
+            throw new \InvalidArgumentException(sprintf('The tester "%s" is not of class sfTester.', $name));
         }
 
         $this->testers[$name] = $tester;
@@ -158,7 +157,7 @@ abstract class sfTestFunctionalBase
     /**
      * Retrieves the lime_test instance.
      *
-     * @return lime_test The lime_test instance
+     * @return \lime_test The lime_test instance
      */
     public function test()
     {
@@ -172,7 +171,7 @@ abstract class sfTestFunctionalBase
      * @param array  $parameters  The Request parameters
      * @param bool   $changeStack Change the browser history stack?
      *
-     * @return sfTestFunctionalBase
+     * @return \sfTestFunctionalBase
      */
     public function get($uri, $parameters = [], $changeStack = true)
     {
@@ -187,7 +186,7 @@ abstract class sfTestFunctionalBase
      * @param string $url    Url
      * @param string $code   The expected return status code
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function getAndCheck($module, $action, $url = null, $code = 200)
     {
@@ -207,7 +206,7 @@ abstract class sfTestFunctionalBase
      * @param array  $parameters  The Request parameters
      * @param bool   $changeStack Change the browser history stack?
      *
-     * @return sfTestFunctionalBase
+     * @return \sfTestFunctionalBase
      */
     public function post($uri, $parameters = [], $changeStack = true)
     {
@@ -222,7 +221,7 @@ abstract class sfTestFunctionalBase
      * @param array  $parameters  Additional parameters
      * @param bool   $changeStack If set to false ActionStack is not changed
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function call($uri, $method = 'get', $parameters = [], $changeStack = true)
     {
@@ -246,7 +245,7 @@ abstract class sfTestFunctionalBase
      *
      * @param string $name The checkbox or radiobutton id, name or text
      *
-     * @return sfTestFunctionalBase
+     * @return \sfTestFunctionalBase
      */
     public function deselect($name)
     {
@@ -260,7 +259,7 @@ abstract class sfTestFunctionalBase
      *
      * @param string $name The checkbox or radiobutton id, name or text
      *
-     * @return sfTestFunctionalBase
+     * @return \sfTestFunctionalBase
      */
     public function select($name)
     {
@@ -276,16 +275,16 @@ abstract class sfTestFunctionalBase
      * @param array  $arguments The arguments to pass to the link
      * @param array  $options   An array of options
      *
-     * @return sfTestFunctionalBase
+     * @return \sfTestFunctionalBase
      */
     public function click($name, $arguments = [], $options = [])
     {
-        if ($name instanceof DOMElement) {
+        if ($name instanceof \DOMElement) {
             list($uri, $method, $parameters) = $this->doClickElement($name, $arguments, $options);
         } else {
             try {
                 list($uri, $method, $parameters) = $this->doClick($name, $arguments, $options);
-            } catch (InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 list($uri, $method, $parameters) = $this->doClickCssSelector($name, $arguments, $options);
             }
         }
@@ -296,7 +295,7 @@ abstract class sfTestFunctionalBase
     /**
      * Simulates the browser back button.
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function back()
     {
@@ -310,7 +309,7 @@ abstract class sfTestFunctionalBase
     /**
      * Simulates the browser forward button.
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function forward()
     {
@@ -326,7 +325,7 @@ abstract class sfTestFunctionalBase
      *
      * @param string $message A message
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function info($message)
     {
@@ -341,7 +340,7 @@ abstract class sfTestFunctionalBase
      * @param string $uri  Uniform resource identifier
      * @param string $text Text in the response
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function check($uri, $text = null)
     {
@@ -360,7 +359,7 @@ abstract class sfTestFunctionalBase
      * @param string $class   Class name
      * @param string $message Message name
      *
-     * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
+     * @return \sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
     public function throwsException($class = null, $message = null)
     {
@@ -423,25 +422,25 @@ abstract class sfTestFunctionalBase
             case E_WARNING:
                 $msg = sprintf($msg, 'warning');
 
-                throw new RuntimeException($msg);
+                throw new \RuntimeException($msg);
                 break;
 
             case E_NOTICE:
                 $msg = sprintf($msg, 'notice');
 
-                throw new RuntimeException($msg);
+                throw new \RuntimeException($msg);
                 break;
 
             case E_STRICT:
                 $msg = sprintf($msg, 'strict');
 
-                throw new RuntimeException($msg);
+                throw new \RuntimeException($msg);
                 break;
 
             case E_RECOVERABLE_ERROR:
                 $msg = sprintf($msg, 'catchable');
 
-                throw new RuntimeException($msg);
+                throw new \RuntimeException($msg);
                 break;
         }
 

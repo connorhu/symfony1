@@ -15,13 +15,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfNoCache extends sfCache
+class sfNoCache extends \sfCache
 {
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
-     * @param mixed      $key
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -29,9 +28,7 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -39,11 +36,9 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
-     * @param mixed      $key
-     * @param mixed      $data
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -51,9 +46,7 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -61,9 +54,7 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $pattern
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {
@@ -71,9 +62,7 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $mode
+     * @see \sfCache
      */
     public function clean($mode = self::ALL)
     {
@@ -81,9 +70,7 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -91,9 +78,7 @@ class sfNoCache extends sfCache
     }
 
     /**
-     * @see sfCache
-     *
-     * @param mixed $key
+     * @see \sfCache
      */
     public function getTimeout($key)
     {

@@ -18,10 +18,6 @@
  * @author     Fabian Lange <fabian.lange@symfony-project.com>
  *
  * @version    SVN: $Id$
- *
- * @param mixed $name
- * @param mixed $function
- * @param mixed $html_options
  */
 
 // Provides a set basic of helpers for calling JavaScript functions.
@@ -55,10 +51,6 @@ function link_to_function($name, $function, $html_options = [])
  *
  * Examples:
  *   <?php echo button_to_function('Greeting', "alert('Hello world!')") ?>
- *
- * @param mixed $name
- * @param mixed $function
- * @param mixed $html_options
  */
 function button_to_function($name, $function, $html_options = [])
 {
@@ -79,7 +71,7 @@ function button_to_function($name, $function, $html_options = [])
  *   => <script type="text/javascript">alert('All is good')</script>
  *   <?php javascript_tag() ?>alert('All is good')<?php end_javascript_tag() ?>.
  *
- * @param mixed|null $content
+ * @param \mixed|null $content
  */
 function javascript_tag($content = null)
 {
@@ -106,7 +98,7 @@ function javascript_cdata_section($content)
  */
 function if_javascript()
 {
-    if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
+    if (!\sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
         ob_start();
     }
 }
@@ -117,7 +109,7 @@ function if_javascript()
  */
 function end_if_javascript()
 {
-    if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
+    if (!\sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
         $content = ob_get_clean();
         echo javascript_tag("document.write('".esc_js_no_entities($content)."');");
     }
@@ -127,8 +119,7 @@ function end_if_javascript()
  * converts the given PHP array or string to the corresponding javascript array or string.
  * javascript strings need to be single quoted.
  *
- * @param option (typically from option array)
- * @param mixed $option
+ * @param \option (typically from option array)
  *
  * @return string javascript string or array equivalent
  */
@@ -148,7 +139,6 @@ function array_or_string_for_javascript($option)
  * converts the the PHP options array into a javscript array.
  *
  * @param array
- * @param mixed $options
  *
  * @return string javascript arry equivalent
  */
@@ -171,7 +161,6 @@ function options_for_javascript($options)
  * booleans need to be true or false (php would print 1 or nothing).
  *
  * @param bool (typically from option array)
- * @param mixed $bool
  *
  * @return string javascript boolean equivalent
  */

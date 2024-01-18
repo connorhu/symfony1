@@ -27,9 +27,9 @@ class sfActionStackEntry
     /**
      * Class constructor.
      *
-     * @param string   $moduleName     A module name
-     * @param string   $actionName     An action name
-     * @param sfAction $actionInstance An sfAction implementation instance
+     * @param string    $moduleName     A module name
+     * @param string    $actionName     An action name
+     * @param \sfAction $actionInstance An sfAction implementation instance
      */
     public function __construct($moduleName, $actionName, $actionInstance)
     {
@@ -51,7 +51,7 @@ class sfActionStackEntry
     /**
      * Retrieves this entry's action instance.
      *
-     * @return sfAction An sfAction implementation instance
+     * @return \sfAction An sfAction implementation instance
      */
     public function getActionInstance()
     {

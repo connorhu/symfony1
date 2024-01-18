@@ -15,13 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nFindTask extends sfBaseTask
+class sfI18nFindTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     public function execute($arguments = [], $options = [])
     {
@@ -29,21 +26,21 @@ class sfI18nFindTask extends sfBaseTask
 
         // Look in templates
         $dirs = [];
-        $moduleNames = sfFinder::type('dir')->maxdepth(0)->relative()->in(sfConfig::get('sf_app_module_dir'));
+        $moduleNames = \sfFinder::type('dir')->maxdepth(0)->relative()->in(\sfConfig::get('sf_app_module_dir'));
         foreach ($moduleNames as $moduleName) {
-            $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
+            $dirs[] = \sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
         }
-        $dirs[] = sfConfig::get('sf_app_dir').'/templates';
+        $dirs[] = \sfConfig::get('sf_app_dir').'/templates';
 
         $strings = [];
         foreach ($dirs as $dir) {
-            $templates = sfFinder::type('file')->name('*.php')->in($dir);
+            $templates = \sfFinder::type('file')->name('*.php')->in($dir);
             foreach ($templates as $template) {
                 if (!isset($strings[$template])) {
                     $strings[$template] = [];
                 }
 
-                $dom = new DOMDocument('1.0', sfConfig::get('sf_charset', 'UTF-8'));
+                $dom = new \DOMDocument('1.0', \sfConfig::get('sf_charset', 'UTF-8'));
                 $content = file_get_contents($template);
 
                 // remove doctype
@@ -85,7 +82,7 @@ class sfI18nFindTask extends sfBaseTask
                 continue;
             }
 
-            $this->logSection('i18n', sprintf('strings in "%s"', str_replace(sfConfig::get('sf_root_dir'), '', $template)), 1000);
+            $this->logSection('i18n', sprintf('strings in "%s"', str_replace(\sfConfig::get('sf_root_dir'), '', $template)), 1000);
             foreach ($messages as $message) {
                 $this->log("  {$message}\n");
             }
@@ -93,16 +90,16 @@ class sfI18nFindTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
         ]);
 
         $this->namespace = 'i18n';

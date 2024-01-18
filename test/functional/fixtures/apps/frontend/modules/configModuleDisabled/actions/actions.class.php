@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class configModuleDisabledActions extends sfActions
+class configModuleDisabledActions extends \sfActions
 {
     public function executeIndex()
     {

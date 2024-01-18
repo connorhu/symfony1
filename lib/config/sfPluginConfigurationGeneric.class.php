@@ -15,10 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfPluginConfigurationGeneric extends sfPluginConfiguration
+class sfPluginConfigurationGeneric extends \sfPluginConfiguration
 {
     /**
-     * @see sfPluginConfiguration
+     * @see \sfPluginConfiguration
      */
     public function initialize()
     {

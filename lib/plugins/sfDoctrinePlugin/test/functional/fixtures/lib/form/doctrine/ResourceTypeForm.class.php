@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class ResourceTypeForm extends BaseResourceTypeForm
+class ResourceTypeForm extends \BaseResourceTypeForm
 {
     public function configure()
     {

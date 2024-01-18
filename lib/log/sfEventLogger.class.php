@@ -6,9 +6,9 @@
  *
  * @author     Jérôme Tamarelle <jtamarelle@groupe-exp.com>
  */
-class sfEventLogger extends sfLogger
+class sfEventLogger extends \sfLogger
 {
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->options = $options;
@@ -25,6 +25,6 @@ class sfEventLogger extends sfLogger
 
     protected function doLog($message, $priority)
     {
-        $this->dispatcher->notify(new sfEvent($this, $this->options['event_name'], [$message, 'priority' => $priority]));
+        $this->dispatcher->notify(new \sfEvent($this, $this->options['event_name'], [$message, 'priority' => $priority]));
     }
 }

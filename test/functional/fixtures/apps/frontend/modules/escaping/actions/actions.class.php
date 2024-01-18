@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class escapingActions extends sfActions
+class escapingActions extends \sfActions
 {
     public function preExecute()
     {
@@ -18,11 +18,11 @@ class escapingActions extends sfActions
 
     public function executeOn()
     {
-        sfConfig::set('sf_escaping_strategy', true);
+        \sfConfig::set('sf_escaping_strategy', true);
     }
 
     public function executeOff()
     {
-        sfConfig::set('sf_escaping_strategy', false);
+        \sfConfig::set('sf_escaping_strategy', false);
     }
 }

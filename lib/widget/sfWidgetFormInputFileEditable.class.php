@@ -16,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
+class sfWidgetFormInputFileEditable extends \sfWidgetFormInputFile
 {
     /**
      * Renders the widget.
@@ -28,7 +28,7 @@ class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -76,7 +76,7 @@ class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInputFile
+     * @see \sfWidgetFormInputFile
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -79,12 +79,12 @@ class sfNumberFormatInfo
      *
      * @see getInstance()
      */
-    public function __construct($data = [], $type = sfNumberFormatInfo::DECIMAL)
+    public function __construct($data = [], $type = \sfNumberFormatInfo::DECIMAL)
     {
         $this->properties = get_class_methods($this);
 
         if (empty($data)) {
-            throw new sfException('Please provide the ICU data to initialize.');
+            throw new \sfException('Please provide the ICU data to initialize.');
         }
 
         $this->data = $data;
@@ -95,8 +95,6 @@ class sfNumberFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to retrieve the value.
-     *
-     * @param mixed $name
      */
     public function __get($name)
     {
@@ -105,15 +103,12 @@ class sfNumberFormatInfo
             return $this->{$getProperty}();
         }
 
-        throw new sfException(sprintf('Property %s does not exists.', $name));
+        throw new \sfException(sprintf('Property %s does not exists.', $name));
     }
 
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to set the value.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -121,7 +116,7 @@ class sfNumberFormatInfo
         if (in_array($setProperty, $this->properties)) {
             $this->{$setProperty}($value);
         } else {
-            throw new sfException(sprintf('Property %s can not be set.', $name));
+            throw new \sfException(sprintf('Property %s can not be set.', $name));
         }
     }
 
@@ -132,7 +127,7 @@ class sfNumberFormatInfo
      *
      * @param int $type pattern type
      */
-    public function setPattern($type = sfNumberFormatInfo::DECIMAL)
+    public function setPattern($type = \sfNumberFormatInfo::DECIMAL)
     {
         if (is_int($type)) {
             $this->pattern = $this->parsePattern($this->data['NumberPatterns'][$type]);
@@ -153,15 +148,13 @@ class sfNumberFormatInfo
     /**
      * Gets the default sfNumberFormatInfo that is culture-independent (invariant).
      *
-     * @param mixed $type
-     *
-     * @return sfNumberFormatInfo default sfNumberFormatInfo
+     * @return \sfNumberFormatInfo default sfNumberFormatInfo
      */
-    public static function getInvariantInfo($type = sfNumberFormatInfo::DECIMAL)
+    public static function getInvariantInfo($type = \sfNumberFormatInfo::DECIMAL)
     {
         static $invariant;
         if (null === $invariant) {
-            $culture = sfCultureInfo::getInvariantCulture();
+            $culture = \sfCultureInfo::getInvariantCulture();
             $invariant = $culture->NumberFormat;
             $invariant->setPattern($type);
         }
@@ -172,34 +165,34 @@ class sfNumberFormatInfo
     /**
      * Returns the sfNumberFormatInfo associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the sfNumberFormat property
-     * @param int           $type    the number formatting type, it should be
-     *                               sfNumberFormatInfo::DECIMAL, sfNumberFormatInfo::CURRENCY,
-     *                               sfNumberFormatInfo::PERCENTAGE, or sfNumberFormatInfo::SCIENTIFIC
+     * @param \sfCultureInfo $culture the culture that gets the sfNumberFormat property
+     * @param int            $type    the number formatting type, it should be
+     *                                sfNumberFormatInfo::DECIMAL, sfNumberFormatInfo::CURRENCY,
+     *                                sfNumberFormatInfo::PERCENTAGE, or sfNumberFormatInfo::SCIENTIFIC
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      *
      * @see getCurrencyInstance();
      * @see getPercentageInstance();
      * @see getScientificInstance();
      */
-    public static function getInstance($culture = null, $type = sfNumberFormatInfo::DECIMAL)
+    public static function getInstance($culture = null, $type = \sfNumberFormatInfo::DECIMAL)
     {
-        if ($culture instanceof sfCultureInfo) {
+        if ($culture instanceof \sfCultureInfo) {
             $formatInfo = $culture->getNumberFormat();
             $formatInfo->setPattern($type);
 
             return $formatInfo;
         }
         if (is_string($culture)) {
-            $sfCultureInfo = sfCultureInfo::getInstance($culture);
+            $sfCultureInfo = \sfCultureInfo::getInstance($culture);
             $formatInfo = $sfCultureInfo->getNumberFormat();
             $formatInfo->setPattern($type);
 
             return $formatInfo;
         }
 
-        $sfCultureInfo = sfCultureInfo::getInstance();
+        $sfCultureInfo = \sfCultureInfo::getInstance();
         $formatInfo = $sfCultureInfo->getNumberFormat();
         $formatInfo->setPattern($type);
 
@@ -209,9 +202,9 @@ class sfNumberFormatInfo
     /**
      * Returns the currency format info associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the NumberFormat property
+     * @param \sfCultureInfo $culture the culture that gets the NumberFormat property
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      */
     public static function getCurrencyInstance($culture = null)
     {
@@ -221,9 +214,9 @@ class sfNumberFormatInfo
     /**
      * Returns the percentage format info associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the NumberFormat property
+     * @param \sfCultureInfo $culture the culture that gets the NumberFormat property
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      */
     public static function getPercentageInstance($culture = null)
     {
@@ -233,9 +226,9 @@ class sfNumberFormatInfo
     /**
      * Returns the scientific format info associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the NumberFormat property
+     * @param \sfCultureInfo $culture the culture that gets the NumberFormat property
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      */
     public static function getScientificInstance($culture = null)
     {
@@ -358,7 +351,7 @@ class sfNumberFormatInfo
      * The negative pattern is composed of a prefix, and postfix.
      * This function returns <b>array(prefix, postfix)</b>.
      *
-     * @return arary negative pattern
+     * @return \arary negative pattern
      */
     public function getNegativePattern()
     {
@@ -373,7 +366,7 @@ class sfNumberFormatInfo
      * The negative pattern is composed of a prefix, and postfix in the form
      * <b>array(prefix, postfix)</b>.
      *
-     * @param arary $pattern negative pattern
+     * @param \arary $pattern negative pattern
      */
     public function setNegativePattern($pattern)
     {
@@ -386,7 +379,7 @@ class sfNumberFormatInfo
      * The positive pattern is composed of a prefix, and postfix.
      * This function returns <b>array(prefix, postfix)</b>.
      *
-     * @return arary positive pattern
+     * @return \arary positive pattern
      */
     public function getPositivePattern()
     {
@@ -401,7 +394,7 @@ class sfNumberFormatInfo
      * The positive pattern is composed of a prefix, and postfix in the form
      * <b>array(prefix, postfix)</b>.
      *
-     * @param arary $pattern positive pattern
+     * @param \arary $pattern positive pattern
      */
     public function setPositivePattern($pattern)
     {
@@ -411,8 +404,6 @@ class sfNumberFormatInfo
 
     /**
      * Gets the string to use as the currency symbol.
-     *
-     * @param mixed $currency
      *
      * @return string $currency currency symbol
      */

@@ -10,11 +10,11 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
 // ->initialize()
 $t->diag('->initialize()');
-$cache = new sfNoCache();
+$cache = new \sfNoCache();
 
 // ->get() ->set() ->has() ->remove() ->removePattern() ->clean() ->getLastModified() ->getTimeout()
 $t->diag('->get() ->set() ->has() ->remove() ->removePattern() ->clean() ->getLastModified() ->getTimeout()');

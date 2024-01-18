@@ -11,7 +11,7 @@
 require_once __DIR__.'/../../bootstrap/unit.php';
 
 $plan = 64;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (extension_loaded('apc')) {
     $cacheClass = 'sfAPCCache';
@@ -30,7 +30,7 @@ if (extension_loaded('apc')) {
 
 try {
     new $cacheClass();
-} catch (sfInitializationException $e) {
+} catch (\sfInitializationException $e) {
     $t->skip($e->getMessage(), $plan);
 
     return;
@@ -45,7 +45,7 @@ if (!ini_get('apc.enable_cli')) {
 require_once __DIR__.'/sfCacheDriverTests.class.php';
 
 // setup
-sfConfig::set('sf_logging_enabled', false);
+\sfConfig::set('sf_logging_enabled', false);
 
 // ->initialize()
 $t->diag('->initialize()');
@@ -56,4 +56,4 @@ $cache->initialize();
 // see https://github.com/krakjoe/apcu/issues/391
 ini_set('apc.use_request_time', 0);
 
-sfCacheDriverTests::launch($t, $cache);
+\sfCacheDriverTests::launch($t, $cache);

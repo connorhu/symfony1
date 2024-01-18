@@ -17,23 +17,23 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginPublishAssetsTask extends sfPluginBaseTask
+class sfPluginPublishAssetsTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('plugins', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Publish this plugin\'s assets'),
+            new \sfCommandArgument('plugins', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'Publish this plugin\'s assets'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
+            new \sfCommandOption('core-only', '', \sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('relative', '', sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
+            new \sfCommandOption('relative', '', \sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
         ]);
 
         $this->namespace = 'plugin';
@@ -56,21 +56,18 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         $enabledPlugins = $this->configuration->getPlugins();
 
         if ($diff = array_diff($arguments['plugins'], $enabledPlugins)) {
-            throw new InvalidArgumentException('Plugin(s) not found: '.implode(', ', $diff));
+            throw new \InvalidArgumentException('Plugin(s) not found: '.implode(', ', $diff));
         }
 
         if ($options['core-only']) {
-            $corePlugins = sfFinder::type('dir')->relative()->maxdepth(0)->in($this->configuration->getSymfonyLibDir().'/plugins');
+            $corePlugins = \sfFinder::type('dir')->relative()->maxdepth(0)->in($this->configuration->getSymfonyLibDir().'/plugins');
             $arguments['plugins'] = array_unique(array_merge($arguments['plugins'], array_intersect($enabledPlugins, $corePlugins)));
         } elseif (!count($arguments['plugins'])) {
             $arguments['plugins'] = $enabledPlugins;
@@ -87,9 +84,8 @@ EOF;
     /**
      * Installs web content for a plugin.
      *
-     * @param string $plugin   The plugin name
-     * @param string $dir      The plugin directory
-     * @param mixed  $relative
+     * @param string $plugin The plugin name
+     * @param string $dir    The plugin directory
      */
     protected function installPluginAssets($plugin, $dir, $relative)
     {
@@ -97,9 +93,9 @@ EOF;
 
         if (is_dir($webDir)) {
             if ($relative) {
-                $this->getFilesystem()->relativeSymlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+                $this->getFilesystem()->relativeSymlink($webDir, \sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
             } else {
-                $this->getFilesystem()->symlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+                $this->getFilesystem()->symlink($webDir, \sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
             }
         }
     }

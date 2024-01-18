@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
 class Foo
 {
@@ -21,7 +21,7 @@ class Foo
 }
 
 // simulate Doctrine route
-class ObjectRoute extends sfObjectRoute
+class ObjectRoute extends \sfObjectRoute
 {
     protected function doConvertObjectToArray($object)
     {
@@ -38,5 +38,5 @@ class ObjectRoute extends sfObjectRoute
 
 // ->generate()
 $t->diag('->generate()');
-$route = new ObjectRoute('/:id', [], [], ['model' => 'Foo', 'type' => 'object']);
-$t->is($route->generate(['sf_subject' => new Foo()]), '/1', '->generate() generates a URL with the given parameters');
+$route = new \ObjectRoute('/:id', [], [], ['model' => 'Foo', 'type' => 'object']);
+$t->is($route->generate(['sf_subject' => new \Foo()]), '/1', '->generate() generates a URL with the given parameters');

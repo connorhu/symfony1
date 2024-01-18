@@ -15,18 +15,18 @@
  *
  * @version    SVN: $Id$
  */
-class sfSymfonyTestTask extends sfTask
+class sfSymfonyTestTask extends \sfTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('update-autoloader', 'u', sfCommandOption::PARAMETER_NONE, 'Update the sfCoreAutoload class'),
-            new sfCommandOption('only-failed', 'f', sfCommandOption::PARAMETER_NONE, 'Only run tests that failed last time'),
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
-            new sfCommandOption('rebuild-all', null, sfCommandOption::PARAMETER_NONE, 'Rebuild all generated fixture files'),
+            new \sfCommandOption('update-autoloader', 'u', \sfCommandOption::PARAMETER_NONE, 'Update the sfCoreAutoload class'),
+            new \sfCommandOption('only-failed', 'f', \sfCommandOption::PARAMETER_NONE, 'Only run tests that failed last time'),
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
+            new \sfCommandOption('rebuild-all', null, \sfCommandOption::PARAMETER_NONE, 'Rebuild all generated fixture files'),
         ]);
 
         $this->namespace = 'symfony';
@@ -41,10 +41,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -63,7 +60,7 @@ EOF;
         // update sfCoreAutoload
         if ($options['update-autoloader']) {
             require_once __DIR__.'/../../autoload/sfCoreAutoload.class.php';
-            sfCoreAutoload::make();
+            \sfCoreAutoload::make();
         }
 
         $status = false;
@@ -74,14 +71,14 @@ EOF;
             }
         }
 
-        $h = new lime_symfony(['force_colors' => $options['color'], 'verbose' => $options['trace']]);
+        $h = new \lime_symfony(['force_colors' => $options['color'], 'verbose' => $options['trace']]);
         $h->base_dir = realpath(__DIR__.'/../../../test');
 
         // remove generated files
         if ($options['rebuild-all']) {
-            $finder = sfFinder::type('dir')->name(['base', 'om', 'map']);
+            $finder = \sfFinder::type('dir')->name(['base', 'om', 'map']);
             foreach ($finder->in(glob($h->base_dir.'/../lib/plugins/*/test/functional/fixtures/lib')) as $dir) {
-                sfToolkit::clearDirectory($dir);
+                \sfToolkit::clearDirectory($dir);
             }
         }
 
@@ -90,7 +87,7 @@ EOF;
                 $h->register($file);
             }
         } else {
-            $h->register(sfFinder::type('file')->prune('fixtures')->name('*Test.php')->in(array_merge(
+            $h->register(\sfFinder::type('file')->prune('fixtures')->name('*Test.php')->in(array_merge(
                 // unit tests
                 [$h->base_dir.'/unit'],
                 glob($h->base_dir.'/../lib/plugins/*/test/unit'),

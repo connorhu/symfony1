@@ -21,7 +21,7 @@
  */
 class sfDatabaseManager
 {
-    /** @var sfProjectConfiguration */
+    /** @var \sfProjectConfiguration */
     protected $configuration;
     protected $databases = [];
 
@@ -32,7 +32,7 @@ class sfDatabaseManager
      *
      * @param array $options
      */
-    public function __construct(sfProjectConfiguration $configuration, $options = [])
+    public function __construct(\sfProjectConfiguration $configuration, $options = [])
     {
         $this->initialize($configuration);
 
@@ -44,11 +44,11 @@ class sfDatabaseManager
     /**
      * Initializes this sfDatabaseManager object.
      *
-     * @param sfProjectConfiguration $configuration A sfProjectConfiguration instance
+     * @param \sfProjectConfiguration $configuration A sfProjectConfiguration instance
      *
      * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabaseManager object
      */
-    public function initialize(sfProjectConfiguration $configuration)
+    public function initialize(\sfProjectConfiguration $configuration)
     {
         $this->configuration = $configuration;
 
@@ -60,10 +60,10 @@ class sfDatabaseManager
      */
     public function loadConfiguration()
     {
-        if ($this->configuration instanceof sfApplicationConfiguration) {
+        if ($this->configuration instanceof \sfApplicationConfiguration) {
             $databases = include $this->configuration->getConfigCache()->checkConfig('config/databases.yml');
         } else {
-            $configHandler = new sfDatabaseConfigHandler();
+            $configHandler = new \sfDatabaseConfigHandler();
             $databases = $configHandler->evaluate([$this->configuration->getRootDir().'/config/databases.yml']);
         }
 
@@ -75,10 +75,10 @@ class sfDatabaseManager
     /**
      * Sets a database connection.
      *
-     * @param string     $name     The database name
-     * @param sfDatabase $database A sfDatabase instance
+     * @param string      $name     The database name
+     * @param \sfDatabase $database A sfDatabase instance
      */
-    public function setDatabase($name, sfDatabase $database)
+    public function setDatabase($name, \sfDatabase $database)
     {
         $this->databases[$name] = $database;
     }
@@ -99,7 +99,7 @@ class sfDatabaseManager
         }
 
         // nonexistent database name
-        throw new sfDatabaseException(sprintf('Database "%s" does not exist.', $name));
+        throw new \sfDatabaseException(sprintf('Database "%s" does not exist.', $name));
     }
 
     /**

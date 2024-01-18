@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfWebController extends sfController
+abstract class sfWebController extends \sfController
 {
     /**
      * Generates an URL from an array of parameters.
@@ -78,7 +78,7 @@ abstract class sfWebController extends sfController
      *
      * @return array An array of parameters
      *
-     * @throws sfParseException
+     * @throws \sfParseException
      */
     public function convertUrlStringToParameters($url)
     {
@@ -116,7 +116,7 @@ abstract class sfWebController extends sfController
         } elseif (!$queryString) {
             $route = $givenUrl;
         } else {
-            throw new InvalidArgumentException(sprintf('An internal URI must contain a module and an action (module/action) ("%s" given).', $givenUrl));
+            throw new \InvalidArgumentException(sprintf('An internal URI must contain a module and an action (module/action) ("%s" given).', $givenUrl));
         }
 
         // split the query string
@@ -135,7 +135,7 @@ abstract class sfWebController extends sfController
 
             // check that all string is matched
             if (!$matched) {
-                throw new sfParseException(sprintf('Unable to parse query string "%s".', $queryString));
+                throw new \sfParseException(sprintf('Unable to parse query string "%s".', $queryString));
             }
         }
 
@@ -150,24 +150,24 @@ abstract class sfWebController extends sfController
      *                                 browsers that do not support HTTP headers
      * @param int          $statusCode The status code
      *
-     * @throws InvalidArgumentException If the url argument is null or an empty string
+     * @throws \InvalidArgumentException If the url argument is null or an empty string
      */
     public function redirect($url, $delay = 0, $statusCode = 302)
     {
         if (empty($url)) {
-            throw new InvalidArgumentException('Cannot redirect to an empty URL.');
+            throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
         }
 
         $url = $this->genUrl($url, true);
         // see #8083
         $url = str_replace('&amp;', '&', $url);
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Redirect to "%s"', $url)]));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Redirect to "%s"', $url)]));
         }
 
         // redirect
-        /** @var sfWebResponse $response */
+        /** @var \sfWebResponse $response */
         $response = $this->context->getResponse();
         $response->clearHttpHeaders();
         $response->setStatusCode($statusCode);
@@ -178,7 +178,7 @@ abstract class sfWebController extends sfController
             $response->setHttpHeader('Location', $url);
         }
 
-        $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlspecialchars($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
+        $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlspecialchars($url, ENT_QUOTES, \sfConfig::get('sf_charset'))));
         $response->send();
     }
 }

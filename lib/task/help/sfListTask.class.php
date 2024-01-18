@@ -15,19 +15,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfListTask extends sfCommandApplicationTask
+class sfListTask extends \sfCommandApplicationTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('namespace', sfCommandArgument::OPTIONAL, 'The namespace name'),
+            new \sfCommandArgument('namespace', \sfCommandArgument::OPTIONAL, 'The namespace name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
         ]);
 
         $this->briefDescription = 'Lists tasks';
@@ -48,10 +48,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -117,7 +114,7 @@ EOF;
 
     protected function outputAsXml($namespace, $tasks)
     {
-        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $dom->appendChild($symfonyXML = $dom->createElement('symfony'));
 
@@ -146,7 +143,7 @@ EOF;
                 $taskXML->appendChild($dom->createTextNode($task->getName()));
             }
 
-            $taskXML = new DOMDocument('1.0', 'UTF-8');
+            $taskXML = new \DOMDocument('1.0', 'UTF-8');
             $taskXML->formatOutput = true;
             $taskXML->loadXML($task->asXml());
             $node = $taskXML->getElementsByTagName('task')->item(0);

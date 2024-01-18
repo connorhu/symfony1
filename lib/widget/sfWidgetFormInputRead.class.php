@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputRead extends sfWidgetFormInput
+class sfWidgetFormInputRead extends \sfWidgetFormInput
 {
     /**
      * Render the current widget.
@@ -27,7 +27,7 @@ class sfWidgetFormInputRead extends sfWidgetFormInput
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -56,7 +56,7 @@ class sfWidgetFormInputRead extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -20,7 +20,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfParameterHolder implements Serializable
+class sfParameterHolder implements \Serializable
 {
     protected $parameters = [];
 

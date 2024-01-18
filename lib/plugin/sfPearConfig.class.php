@@ -17,7 +17,7 @@ require_once 'PEAR/Config.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearConfig extends PEAR_Config
+class sfPearConfig extends \PEAR_Config
 {
     public function &getREST($version, $options = [])
     {

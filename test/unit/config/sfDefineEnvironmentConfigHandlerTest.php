@@ -10,12 +10,12 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-sfConfig::set('sf_symfony_lib_dir', realpath(__DIR__.'/../../../lib'));
+\sfConfig::set('sf_symfony_lib_dir', realpath(__DIR__.'/../../../lib'));
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
 // prefix
-$handler = new sfDefineEnvironmentConfigHandler();
+$handler = new \sfDefineEnvironmentConfigHandler();
 $handler->initialize(['prefix' => 'sf_']);
 
 $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfDefineEnvironmentConfigHandler'.DIRECTORY_SEPARATOR;
@@ -25,7 +25,7 @@ $files = [
     $dir.'prefix_all.yml',
 ];
 
-sfConfig::set('sf_environment', 'prod');
+\sfConfig::set('sf_environment', 'prod');
 
 $data = $handler->execute($files);
 $data = preg_replace('#date\: \d+/\d+/\d+ \d+\:\d+\:\d+#', '', $data);

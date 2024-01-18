@@ -10,11 +10,11 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(4);
+$t = new \lime_test(4);
 
-$v = new sfValidatorDateTime();
+$v = new \sfValidatorDateTime();
 
-$t->ok($v instanceof sfValidatorDate, 'sfValidatorDateTime extends sfValidatorDate');
+$t->ok($v instanceof \sfValidatorDate, 'sfValidatorDateTime extends sfValidatorDate');
 
 // with_time option
 $t->diag('with_time option');

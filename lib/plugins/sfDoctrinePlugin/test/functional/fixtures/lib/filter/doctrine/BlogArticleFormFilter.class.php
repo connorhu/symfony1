@@ -7,10 +7,10 @@
  *
  * @version    SVN: $Id$
  */
-class BlogArticleFormFilter extends BaseBlogArticleFormFilter
+class BlogArticleFormFilter extends \BaseBlogArticleFormFilter
 {
     /**
-     * @see ArticleFormFilter
+     * @see \ArticleFormFilter
      */
     public function configure()
     {

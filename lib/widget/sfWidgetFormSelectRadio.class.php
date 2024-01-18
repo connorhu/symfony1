@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
+class sfWidgetFormSelectRadio extends \sfWidgetFormChoiceBase
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -76,7 +76,7 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoiceBase
+     * @see \sfWidgetFormChoiceBase
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class configSecurityIsSecureActionActions extends sfActions
+class configSecurityIsSecureActionActions extends \sfActions
 {
     public function executeIndex()
     {

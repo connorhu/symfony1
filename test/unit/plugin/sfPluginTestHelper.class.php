@@ -16,7 +16,7 @@ class sfPluginTestHelper
         }
 
         if (!file_exists(__DIR__.'/fixtures/'.$dir.'/'.$file)) {
-            throw new sfException(sprintf('Unable to find fixture for %s (%s)', $url, $file));
+            throw new \sfException(sprintf('Unable to find fixture for %s (%s)', $url, $file));
         }
 
         copy(__DIR__.'/fixtures/'.$dir.'/'.$file, $dest);

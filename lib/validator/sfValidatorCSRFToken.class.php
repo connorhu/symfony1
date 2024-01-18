@@ -15,13 +15,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorCSRFToken extends sfValidatorBase
+class sfValidatorCSRFToken extends \sfValidatorBase
 {
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $options
-     * @param mixed $messages
+     * @see \sfValidatorBase
      */
     protected function configure($options = [], $messages = [])
     {
@@ -33,14 +30,12 @@ class sfValidatorCSRFToken extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         if ($value != $this->getOption('token')) {
-            throw new sfValidatorError($this, 'csrf_attack');
+            throw new \sfValidatorError($this, 'csrf_attack');
         }
 
         return $value;

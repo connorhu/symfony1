@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class FormGeneratorTestForm extends BaseFormGeneratorTestForm
+class FormGeneratorTestForm extends \BaseFormGeneratorTestForm
 {
     public function configure()
     {

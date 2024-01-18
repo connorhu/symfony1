@@ -17,19 +17,19 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineBuildFiltersTask extends sfDoctrineBaseTask
+class sfDoctrineBuildFiltersTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
-            new sfCommandOption('filter-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
-            new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfDoctrineFormFilterGenerator'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('model-dir-name', null, \sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
+            new \sfCommandOption('filter-dir-name', null, \sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
+            new \sfCommandOption('generator-class', null, \sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfDoctrineFormFilterGenerator'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -50,22 +50,19 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         $this->logSection('doctrine', 'generating filter form classes');
-        $databaseManager = new sfDatabaseManager($this->configuration);
-        $generatorManager = new sfGeneratorManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
+        $generatorManager = new \sfGeneratorManager($this->configuration);
         $generatorManager->generate($options['generator-class'], [
             'model_dir_name' => $options['model-dir-name'],
             'filter_dir_name' => $options['filter-dir-name'],
         ]);
 
-        $properties = parse_ini_file(sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'properties.ini', true);
+        $properties = parse_ini_file(\sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'properties.ini', true);
 
         $constants = [
             'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
@@ -73,8 +70,8 @@ EOF;
         ];
 
         // customize php and yml files
-        $finder = sfFinder::type('file')->name('*.php');
-        $this->getFilesystem()->replaceTokens($finder->in(sfConfig::get('sf_lib_dir').'/filter/'), '##', '##', $constants);
+        $finder = \sfFinder::type('file')->name('*.php');
+        $this->getFilesystem()->replaceTokens($finder->in(\sfConfig::get('sf_lib_dir').'/filter/'), '##', '##', $constants);
 
         $this->reloadAutoload();
     }

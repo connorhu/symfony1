@@ -11,7 +11,7 @@
 require_once __DIR__.'/../../bootstrap/unit.php';
 
 $plan = 10;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
     $t->skip('SQLite needed to run these tests', $plan);
@@ -47,9 +47,9 @@ $t->diag('->save()');
 $t->is($source->save(), false, '->save() returns false if no message is saved');
 $source->append('New message');
 $t->is($source->save(), true, '->save() returns true if some messages are saved');
-$source = sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
+$source = \sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 $source->setCulture('fr_FR');
-$format = new sfMessageFormat($source);
+$format = new \sfMessageFormat($source);
 $t->is($format->format('New message'), 'New message', '->save() saves new messages');
 
 // test new culture
@@ -57,9 +57,9 @@ $source->setCulture('it');
 $source->append('New message (it)');
 $source->save();
 
-$source = sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
+$source = \sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 $source->setCulture('it');
-$format = new sfMessageFormat($source);
+$format = new \sfMessageFormat($source);
 $t->is($format->format('New message (it)'), 'New message (it)', '->save() saves new messages');
 
 $source->setCulture('fr_FR');
@@ -67,18 +67,18 @@ $source->setCulture('fr_FR');
 // ->update()
 $t->diag('->update()');
 $t->is($source->update('New message', 'Nouveau message', 'Comments'), true, '->update() returns true if the message has been updated');
-$source = sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
+$source = \sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 $source->setCulture('fr_FR');
-$format = new sfMessageFormat($source);
+$format = new \sfMessageFormat($source);
 $t->is($format->format('New message'), 'Nouveau message', '->update() updates a message translation');
 
 // ->delete()
 $t->diag('->delete()');
 $t->is($source->delete('Non existant message'), false, '->delete() returns false if the message has not been deleted');
 $t->is($source->delete('New message'), true, '->delete() returns true if the message has been deleted');
-$source = sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
+$source = \sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 $source->setCulture('fr_FR');
-$format = new sfMessageFormat($source);
+$format = new \sfMessageFormat($source);
 $t->is($format->format('New message'), 'New message', '->delete() deletes a message');
 
 function init_fixtures($temp)
@@ -93,7 +93,7 @@ function init_fixtures($temp)
     ];
 
     if (version_compare(PHP_VERSION, '5.3', '>')) {
-        $db = new SQLite3($temp);
+        $db = new \SQLite3($temp);
 
         foreach ($queries as $query) {
             $db->exec($query);
@@ -110,5 +110,5 @@ function init_fixtures($temp)
         sqlite_close($db);
     }
 
-    return sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
+    return \sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 }

@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(11);
+$t = new \lime_test(11);
 
-$v = new sfValidatorEmail();
+$v = new \sfValidatorEmail();
 
 // ->clean()
 $t->diag('->clean()');
@@ -34,7 +34,7 @@ foreach ([
         $v->clean($nonUrl);
         $t->fail('->clean() throws an sfValidatorError if the value is not a valid email');
         $t->skip('', 1);
-    } catch (sfValidatorError $e) {
+    } catch (\sfValidatorError $e) {
         $t->pass('->clean() throws an sfValidatorError if the value is not a valid email');
         $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
     }

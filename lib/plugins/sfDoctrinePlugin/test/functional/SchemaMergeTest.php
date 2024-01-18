@@ -12,9 +12,9 @@ $app = 'frontend';
 
 require_once dirname(__FILE__).'/../bootstrap/functional.php';
 
-$t = new lime_test(3);
+$t = new \lime_test(3);
 
-$table = Doctrine_Core::getTable('Setting');
+$table = \Doctrine_Core::getTable('Setting');
 
 // columns
 $t->diag('columns');

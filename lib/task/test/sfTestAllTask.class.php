@@ -15,17 +15,17 @@
  *
  * @version    SVN: $Id$
  */
-class sfTestAllTask extends sfTestBaseTask
+class sfTestAllTask extends \sfTestBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('only-failed', 'f', sfCommandOption::PARAMETER_NONE, 'Only run tests that failed last time'),
-            new sfCommandOption('full-output', 'o', sfCommandOption::PARAMETER_NONE, 'Display full path for the test'),
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
+            new \sfCommandOption('only-failed', 'f', \sfCommandOption::PARAMETER_NONE, 'Only run tests that failed last time'),
+            new \sfCommandOption('full-output', 'o', \sfCommandOption::PARAMETER_NONE, 'Display full path for the test'),
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
         ]);
 
         $this->namespace = 'test';
@@ -71,25 +71,22 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         require_once __DIR__.'/sfLimeHarness.class.php';
 
-        $h = new sfLimeHarness([
+        $h = new \sfLimeHarness([
             'force_colors' => isset($options['color']) && $options['color'],
             'verbose' => isset($options['trace']) && $options['trace'],
         ]);
         $h->full_output = $options['full-output'] ? true : false;
         $h->addPlugins(array_map([$this->configuration, 'getPluginConfiguration'], $this->configuration->getPlugins()));
-        $h->base_dir = sfConfig::get('sf_test_dir');
+        $h->base_dir = \sfConfig::get('sf_test_dir');
 
         $status = false;
-        $statusFile = sfConfig::get('sf_cache_dir').'/.test_all_status';
+        $statusFile = \sfConfig::get('sf_cache_dir').'/.test_all_status';
         if ($options['only-failed']) {
             if (file_exists($statusFile)) {
                 $status = unserialize(file_get_contents($statusFile));
@@ -102,7 +99,7 @@ EOF;
             }
         } else {
             // filter and register all tests
-            $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
+            $finder = \sfFinder::type('file')->follow_link()->name('*Test.php');
             $h->register($this->filterTestFiles($finder->in($h->base_dir), $arguments, $options));
         }
 

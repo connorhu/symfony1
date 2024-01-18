@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfFormObject extends BaseForm
+abstract class sfFormObject extends \BaseForm
 {
     protected $isNew = true;
     protected $object;
@@ -93,8 +93,8 @@ abstract class sfFormObject extends BaseForm
      *
      * @return mixed The current saved object
      *
-     * @throws Exception
-     * @throws sfValidatorErrorSchema
+     * @throws \Exception
+     * @throws \sfValidatorErrorSchema
      *
      * @see doSave()
      */
@@ -114,7 +114,7 @@ abstract class sfFormObject extends BaseForm
             $this->doSave($con);
 
             $con->commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $con->rollBack();
 
             throw $e;
@@ -180,7 +180,7 @@ abstract class sfFormObject extends BaseForm
                 continue;
             }
 
-            if ($form instanceof sfFormObject) {
+            if ($form instanceof \sfFormObject) {
                 $form->updateObject($values[$name]);
             } else {
                 $this->updateObjectEmbeddedForms($values[$name], $form->getEmbeddedForms());
@@ -205,7 +205,7 @@ abstract class sfFormObject extends BaseForm
         }
 
         foreach ($forms as $form) {
-            if ($form instanceof sfFormObject) {
+            if ($form instanceof \sfFormObject) {
                 $form->saveObject($con);
             } else {
                 $this->saveObjectEmbeddedForms($con, $form->getEmbeddedForms());
@@ -226,7 +226,7 @@ abstract class sfFormObject extends BaseForm
      *
      * @return string An HTML representation of the opening form tag
      *
-     * @see sfForm
+     * @see \sfForm
      */
     public function renderFormTag($url, array $attributes = [])
     {

@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new \lime_test(7);
 
-class myConfigHandler extends sfYamlConfigHandler
+class myConfigHandler extends \sfYamlConfigHandler
 {
     public $yamlConfig;
 
@@ -41,7 +41,7 @@ class myConfigHandler extends sfYamlConfigHandler
     }
 }
 
-$config = new myConfigHandler();
+$config = new \myConfigHandler();
 $config->initialize();
 
 // ->parseYamls()

@@ -26,7 +26,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPostgreSQLDatabase extends sfDatabase
+class sfPostgreSQLDatabase extends \sfDatabase
 {
     /**
      * Connects to the database.
@@ -57,7 +57,7 @@ class sfPostgreSQLDatabase extends sfDatabase
         // make sure the connection went through
         if (false === $this->connection) {
             // the connection's foobar'd
-            throw new sfDatabaseException('Failed to create a PostgreSQLDatabase connection.');
+            throw new \sfDatabaseException('Failed to create a PostgreSQLDatabase connection.');
         }
 
         // since we're not an abstraction layer, we copy the connection

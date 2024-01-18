@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfRoute implements Serializable
+class sfRoute implements \Serializable
 {
     protected $isBound = false;
     protected $context;
@@ -229,7 +229,7 @@ class sfRoute implements Serializable
 
         // all params must be given
         if ($diff = array_diff_key($this->variables, $tparams)) {
-            throw new InvalidArgumentException(sprintf('The "%s" route has some missing mandatory parameters (%s).', $this->pattern, implode(', ', $diff)));
+            throw new \InvalidArgumentException(sprintf('The "%s" route has some missing mandatory parameters (%s).', $this->pattern, implode(', ', $diff)));
         }
 
         if ($this->options['generate_shortest_url'] || $this->customToken) {
@@ -584,7 +584,7 @@ class sfRoute implements Serializable
                 $this->customToken = true;
             } else {
                 // parsing problem
-                throw new InvalidArgumentException(sprintf('Unable to parse "%s" route near "%s".', $this->pattern, $buffer));
+                throw new \InvalidArgumentException(sprintf('Unable to parse "%s" route near "%s".', $this->pattern, $buffer));
             }
         }
 

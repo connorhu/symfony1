@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class notfoundActions extends sfActions
+class notfoundActions extends \sfActions
 {
     public function executeIndex()
     {

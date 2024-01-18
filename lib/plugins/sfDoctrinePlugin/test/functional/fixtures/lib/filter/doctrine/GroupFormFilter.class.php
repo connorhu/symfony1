@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class GroupFormFilter extends BaseGroupFormFilter
+class GroupFormFilter extends \BaseGroupFormFilter
 {
     public function configure()
     {

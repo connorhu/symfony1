@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class FormGeneratorTest2FormFilter extends BaseFormGeneratorTest2FormFilter
+class FormGeneratorTest2FormFilter extends \BaseFormGeneratorTest2FormFilter
 {
     public function configure()
     {

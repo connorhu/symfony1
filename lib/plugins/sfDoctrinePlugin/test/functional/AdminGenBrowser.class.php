@@ -1,6 +1,6 @@
 <?php
 
-class AdminGenBrowser extends sfTestBrowser
+class AdminGenBrowser extends \sfTestBrowser
 {
     protected $_modules = ['Article' => 'articles',
         'Author' => 'authors',
@@ -179,7 +179,7 @@ class AdminGenBrowser extends sfTestBrowser
 
         $this->click('Save', $userInfo);
 
-        $user = Doctrine_Core::getTable('User')->findOneByUsername($userInfo['user']['username']);
+        $user = \Doctrine_Core::getTable('User')->findOneByUsername($userInfo['user']['username']);
         $userInfo['user']['Profile']['user_id'] = $user->id;
 
         $this->
@@ -209,7 +209,7 @@ class AdminGenBrowser extends sfTestBrowser
     protected function _runAdminGenModuleSanityCheck($model, $module)
     {
         $this->info('Running admin gen sanity check for module "'.$module.'"');
-        $record = Doctrine_Core::getTable($model)
+        $record = \Doctrine_Core::getTable($model)
             ->createQuery('a')
             ->fetchOne()
         ;
@@ -231,7 +231,7 @@ class AdminGenBrowser extends sfTestBrowser
     protected function _generateAdminGenModule($model, $module)
     {
         $this->info('Generating admin gen module "'.$module.'"');
-        $task = new sfDoctrineGenerateAdminTask($this->getContext()->getEventDispatcher(), new sfFormatter());
+        $task = new \sfDoctrineGenerateAdminTask($this->getContext()->getEventDispatcher(), new \sfFormatter());
         $task->run(['application' => 'backend', 'route_or_model' => $model]);
     }
 
@@ -248,13 +248,13 @@ class AdminGenBrowser extends sfTestBrowser
 
     protected function _cleanupAdminGenModules()
     {
-        $fs = new sfFilesystem($this->getContext()->getEventDispatcher(), new sfFormatter());
+        $fs = new \sfFilesystem($this->getContext()->getEventDispatcher(), new \sfFormatter());
         foreach ($this->_modules as $module) {
             $this->info('Removing admin gen module "'.$module.'"');
-            $fs->execute('rm -rf '.sfConfig::get('sf_app_module_dir').'/'.$module);
+            $fs->execute('rm -rf '.\sfConfig::get('sf_app_module_dir').'/'.$module);
         }
-        $fs->execute('rm -rf '.sfConfig::get('sf_test_dir').'/functional/backend');
-        $fs->execute('rm -rf '.sfConfig::get('sf_data_dir').'/*.sqlite');
+        $fs->execute('rm -rf '.\sfConfig::get('sf_test_dir').'/functional/backend');
+        $fs->execute('rm -rf '.\sfConfig::get('sf_data_dir').'/*.sqlite');
     }
 
     protected function _getQueryExecutionEvents()
@@ -264,7 +264,7 @@ class AdminGenBrowser extends sfTestBrowser
         $databaseManager = $this->browser->getContext()->getDatabaseManager();
         foreach ($databaseManager->getNames() as $name) {
             $database = $databaseManager->getDatabase($name);
-            if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler()) {
+            if ($database instanceof \sfDoctrineDatabase && $profiler = $database->getProfiler()) {
                 foreach ($profiler->getQueryExecutionEvents() as $event) {
                     $events[$event->getSequence()] = $event;
                 }

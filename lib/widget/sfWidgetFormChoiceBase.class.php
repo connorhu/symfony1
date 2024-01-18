@@ -15,18 +15,18 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfWidgetFormChoiceBase extends sfWidgetForm
+abstract class sfWidgetFormChoiceBase extends \sfWidgetForm
 {
     /**
      * Clones this object.
      */
     public function __clone()
     {
-        if ($this->getOption('choices') instanceof sfCallable) {
+        if ($this->getOption('choices') instanceof \sfCallable) {
             $callable = $this->getOption('choices')->getCallable();
             if (is_array($callable) && $callable[0] instanceof self) {
                 $callable[0] = $this;
-                $this->setOption('choices', new sfCallable($callable));
+                $this->setOption('choices', new \sfCallable($callable));
             }
         }
     }
@@ -40,7 +40,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
     {
         $choices = $this->getOption('choices');
 
-        if ($choices instanceof sfCallable) {
+        if ($choices instanceof \sfCallable) {
             $choices = $choices->call();
         }
 
@@ -70,7 +70,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {

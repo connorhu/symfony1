@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelMemory extends sfWebDebugPanel
+class sfWebDebugPanelMemory extends \sfWebDebugPanel
 {
     public function getTitle()
     {

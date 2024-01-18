@@ -17,19 +17,14 @@
  *
  * @version    SVN: $Id$
  */
-class sfRequestRoute extends sfRoute
+class sfRequestRoute extends \sfRoute
 {
     /**
      * Constructor.
      *
      * Applies a default sf_method requirements of GET or HEAD.
      *
-     * @see sfRoute
-     *
-     * @param mixed $pattern
-     * @param mixed $defaults
-     * @param mixed $requirements
-     * @param mixed $options
+     * @see \sfRoute
      */
     public function __construct($pattern, $defaults = [], $requirements = [], $options = [])
     {

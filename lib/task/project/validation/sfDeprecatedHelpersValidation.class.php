@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDeprecatedHelpersValidation extends sfValidation
+class sfDeprecatedHelpersValidation extends \sfValidation
 {
     public function getHeader()
     {
@@ -57,14 +57,14 @@ class sfDeprecatedHelpersValidation extends sfValidation
         ];
 
         $found = [];
-        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in([
-            sfConfig::get('sf_apps_dir'),
-            sfConfig::get('sf_lib_dir'),
-            sfConfig::get('sf_test_dir'),
-            sfConfig::get('sf_plugins_dir'),
+        $files = \sfFinder::type('file')->name('*.php')->prune('vendor')->in([
+            \sfConfig::get('sf_apps_dir'),
+            \sfConfig::get('sf_lib_dir'),
+            \sfConfig::get('sf_test_dir'),
+            \sfConfig::get('sf_plugins_dir'),
         ]);
         foreach ($files as $file) {
-            $content = sfToolkit::stripComments(file_get_contents($file));
+            $content = \sfToolkit::stripComments(file_get_contents($file));
 
             $matches = [];
             foreach ($helpers as $helper) {

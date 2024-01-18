@@ -10,56 +10,56 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(75);
+$t = new \lime_test(75);
 
 // __construct()
 $t->diag('__construct()');
 
 try {
-    $c = new sfNumberFormatInfo();
+    $c = new \sfNumberFormatInfo();
     $t->fail('__construct() takes a mandatory ICU array as its first argument');
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass('__construct() takes a mandatory ICU array as its first argument');
 }
 
 // ::getInstance()
 $t->diag('::getInstance()');
-$t->isa_ok(sfNumberFormatInfo::getInstance(), 'sfNumberFormatInfo', '::getInstance() returns an sfNumberFormatInfo instance');
-$c = sfCultureInfo::getInstance();
-$t->is(sfNumberFormatInfo::getInstance($c), $c->getNumberFormat(), '::getInstance() can take a sfCultureInfo instance as its first argument');
-$t->isa_ok(sfNumberFormatInfo::getInstance('fr'), 'sfNumberFormatInfo', '::getInstance() can take a culture as its first argument');
-$n = sfNumberFormatInfo::getInstance();
-$n->setPattern(sfNumberFormatInfo::PERCENTAGE);
-$t->is(sfNumberFormatInfo::getInstance(null, sfNumberFormatInfo::PERCENTAGE)->getPattern(), $n->getPattern(), '::getInstance() can take a formatting type as its second argument');
+$t->isa_ok(\sfNumberFormatInfo::getInstance(), 'sfNumberFormatInfo', '::getInstance() returns an sfNumberFormatInfo instance');
+$c = \sfCultureInfo::getInstance();
+$t->is(\sfNumberFormatInfo::getInstance($c), $c->getNumberFormat(), '::getInstance() can take a sfCultureInfo instance as its first argument');
+$t->isa_ok(\sfNumberFormatInfo::getInstance('fr'), 'sfNumberFormatInfo', '::getInstance() can take a culture as its first argument');
+$n = \sfNumberFormatInfo::getInstance();
+$n->setPattern(\sfNumberFormatInfo::PERCENTAGE);
+$t->is(\sfNumberFormatInfo::getInstance(null, \sfNumberFormatInfo::PERCENTAGE)->getPattern(), $n->getPattern(), '::getInstance() can take a formatting type as its second argument');
 
 // ->getPattern() ->setPattern()
 $t->diag('->getPattern() ->setPattern()');
-$n = sfNumberFormatInfo::getInstance();
-$n1 = sfNumberFormatInfo::getInstance();
-$n->setPattern(sfNumberFormatInfo::CURRENCY);
+$n = \sfNumberFormatInfo::getInstance();
+$n1 = \sfNumberFormatInfo::getInstance();
+$n->setPattern(\sfNumberFormatInfo::CURRENCY);
 $pattern = $n->getPattern();
-$n1->setPattern(sfNumberFormatInfo::PERCENTAGE);
+$n1->setPattern(\sfNumberFormatInfo::PERCENTAGE);
 $pattern1 = $n1->getPattern();
 $t->isnt($pattern, $pattern1, '->getPattern() ->setPattern() changes the current pattern');
 
-$n = sfNumberFormatInfo::getInstance();
-$n1 = sfNumberFormatInfo::getInstance();
-$n->Pattern = sfNumberFormatInfo::CURRENCY;
-$n1->setPattern(sfNumberFormatInfo::CURRENCY);
+$n = \sfNumberFormatInfo::getInstance();
+$n1 = \sfNumberFormatInfo::getInstance();
+$n->Pattern = \sfNumberFormatInfo::CURRENCY;
+$n1->setPattern(\sfNumberFormatInfo::CURRENCY);
 $t->is($n->getPattern(), $n1->getPattern(), '->setPattern() is equivalent to ->Pattern = ');
 $t->is($n->getPattern(), $n->Pattern, '->getPattern() is equivalent to ->Pattern');
 
 // ::getCurrencyInstance()
 $t->diag('::getCurrencyInstance()');
-$t->is(sfNumberFormatInfo::getCurrencyInstance()->getPattern(), sfNumberFormatInfo::getInstance(null, sfNumberFormatInfo::CURRENCY)->getPattern(), '::getCurrencyInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::CURRENCY');
+$t->is(\sfNumberFormatInfo::getCurrencyInstance()->getPattern(), \sfNumberFormatInfo::getInstance(null, \sfNumberFormatInfo::CURRENCY)->getPattern(), '::getCurrencyInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::CURRENCY');
 
 // ::getPercentageInstance()
 $t->diag('::getPercentageInstance()');
-$t->is(sfNumberFormatInfo::getPercentageInstance()->getPattern(), sfNumberFormatInfo::getInstance(null, sfNumberFormatInfo::PERCENTAGE)->getPattern(), '::getPercentageInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::PERCENTAGE');
+$t->is(\sfNumberFormatInfo::getPercentageInstance()->getPattern(), \sfNumberFormatInfo::getInstance(null, \sfNumberFormatInfo::PERCENTAGE)->getPattern(), '::getPercentageInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::PERCENTAGE');
 
 // ::getScientificInstance()
 $t->diag('::getScientificInstance()');
-$t->is(sfNumberFormatInfo::getScientificInstance()->getPattern(), sfNumberFormatInfo::getInstance(null, sfNumberFormatInfo::SCIENTIFIC)->getPattern(), '::getScientificInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::SCIENTIFIC');
+$t->is(\sfNumberFormatInfo::getScientificInstance()->getPattern(), \sfNumberFormatInfo::getInstance(null, \sfNumberFormatInfo::SCIENTIFIC)->getPattern(), '::getScientificInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::SCIENTIFIC');
 
 $tests = [
     'fr' => [
@@ -91,7 +91,7 @@ $tests = [
 ];
 
 foreach ($tests as $culture => $fixtures) {
-    $n = sfNumberFormatInfo::getInstance($culture);
+    $n = \sfNumberFormatInfo::getInstance($culture);
 
     foreach ($fixtures as $method => $result) {
         $getter = 'get'.$method;
@@ -106,7 +106,7 @@ foreach ([
     'NegativeSign', 'PositiveSign', 'NaNSymbol', 'PercentSymbol', 'PerMilleSymbol',
 ] as $method) {
     $t->diag(sprintf('->get%s() ->set%s()', $method, $method));
-    $n = sfNumberFormatInfo::getInstance();
+    $n = \sfNumberFormatInfo::getInstance();
     $setter = 'set'.$method;
     $getter = 'get'.$method;
     $n->{$setter}('foo');
@@ -118,7 +118,7 @@ foreach ([
 
 foreach (['GroupSizes', 'NegativePattern', 'PositivePattern'] as $method) {
     $t->diag(sprintf('->get%s() ->set%s()', $method, $method));
-    $n = sfNumberFormatInfo::getInstance();
+    $n = \sfNumberFormatInfo::getInstance();
     $setter = 'set'.$method;
     $getter = 'get'.$method;
     $n->{$setter}(['foo', 'foo']);

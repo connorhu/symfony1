@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceCountry extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -30,7 +30,7 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -43,7 +43,7 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
         // populate choices with all countries
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
 
-        $countries = sfCultureInfo::getInstance($culture)->getCountries(isset($options['countries']) ? $options['countries'] : null);
+        $countries = \sfCultureInfo::getInstance($culture)->getCountries(isset($options['countries']) ? $options['countries'] : null);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {

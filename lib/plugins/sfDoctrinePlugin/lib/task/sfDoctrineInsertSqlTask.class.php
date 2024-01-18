@@ -19,16 +19,16 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineInsertSqlTask extends sfDoctrineBaseTask
+class sfDoctrineInsertSqlTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -46,20 +46,17 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
         $this->logSection('doctrine', 'creating tables');
 
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
 
-        Doctrine_Core::loadModels($config['models_path'], Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
-        Doctrine_Core::createTablesFromArray(Doctrine_Core::getLoadedModels());
+        \Doctrine_Core::loadModels($config['models_path'], \Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
+        \Doctrine_Core::createTablesFromArray(\Doctrine_Core::getLoadedModels());
 
         $this->logSection('doctrine', 'created tables successfully');
     }

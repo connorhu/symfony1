@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class AttachmentFormFilter extends BaseAttachmentFormFilter
+class AttachmentFormFilter extends \BaseAttachmentFormFilter
 {
     public function configure()
     {

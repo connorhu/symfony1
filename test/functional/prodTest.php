@@ -14,7 +14,7 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-$b = new sfTestBrowser();
+$b = new \sfTestBrowser();
 
 // default main page (without cache)
 $b->

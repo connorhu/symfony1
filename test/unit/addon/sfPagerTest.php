@@ -10,8 +10,8 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(2);
-class myPager extends sfPager
+$t = new \lime_test(2);
+class myPager extends \sfPager
 {
     public function init()
     {
@@ -29,7 +29,7 @@ class myPager extends sfPager
     }
 }
 
-$pager = new myPager('fooClass');
+$pager = new \myPager('fooClass');
 
 // #8021
 // ->rewind()

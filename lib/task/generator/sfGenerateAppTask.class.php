@@ -17,20 +17,20 @@ require_once __DIR__.'/sfGeneratorBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfGenerateAppTask extends sfGeneratorBaseTask
+class sfGenerateAppTask extends \sfGeneratorBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('app', sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('app', \sfCommandArgument::REQUIRED, 'The application name'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('escaping-strategy', null, sfCommandOption::PARAMETER_REQUIRED, 'Output escaping strategy', true),
-            new sfCommandOption('csrf-secret', null, sfCommandOption::PARAMETER_REQUIRED, 'Secret to use for CSRF protection', true),
+            new \sfCommandOption('escaping-strategy', null, \sfCommandOption::PARAMETER_REQUIRED, 'Output escaping strategy', true),
+            new \sfCommandOption('csrf-secret', null, \sfCommandOption::PARAMETER_REQUIRED, 'Secret to use for CSRF protection', true),
         ]);
 
         $this->namespace = 'generate';
@@ -75,10 +75,7 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
@@ -86,28 +83,28 @@ EOF;
 
         // Validate the application name
         if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $app)) {
-            throw new sfCommandException(sprintf('The application name "%s" is invalid.', $app));
+            throw new \sfCommandException(sprintf('The application name "%s" is invalid.', $app));
         }
 
-        $appDir = sfConfig::get('sf_apps_dir').'/'.$app;
+        $appDir = \sfConfig::get('sf_apps_dir').'/'.$app;
 
         if (is_dir($appDir)) {
-            throw new sfCommandException(sprintf('The application "%s" already exists.', $appDir));
+            throw new \sfCommandException(sprintf('The application "%s" already exists.', $appDir));
         }
 
-        if (is_readable(sfConfig::get('sf_data_dir').'/skeleton/app')) {
-            $skeletonDir = sfConfig::get('sf_data_dir').'/skeleton/app';
+        if (is_readable(\sfConfig::get('sf_data_dir').'/skeleton/app')) {
+            $skeletonDir = \sfConfig::get('sf_data_dir').'/skeleton/app';
         } else {
             $skeletonDir = __DIR__.'/skeleton/app';
         }
 
         // Create basic application structure
-        $finder = sfFinder::type('any')->discard('.sf');
+        $finder = \sfFinder::type('any')->discard('.sf');
         $this->getFilesystem()->mirror($skeletonDir.'/app', $appDir, $finder);
 
         // Create $app.php or index.php if it is our first app
         $indexName = 'index';
-        $firstApp = !file_exists(sfConfig::get('sf_web_dir').'/index.php');
+        $firstApp = !file_exists(\sfConfig::get('sf_web_dir').'/index.php');
         if (!$firstApp) {
             $indexName = $app;
         }
@@ -117,25 +114,25 @@ EOF;
         }
 
         // Set no_script_name value in settings.yml for production environment
-        $finder = sfFinder::type('file')->name('settings.yml');
+        $finder = \sfFinder::type('file')->name('settings.yml');
         $this->getFilesystem()->replaceTokens($finder->in($appDir.'/config'), '##', '##', [
             'NO_SCRIPT_NAME' => $firstApp ? 'true' : 'false',
-            'CSRF_SECRET' => sfYamlInline::dump(sfYamlInline::parseScalar($options['csrf-secret'])),
-            'ESCAPING_STRATEGY' => sfYamlInline::dump((bool) sfYamlInline::parseScalar($options['escaping-strategy'])),
-            'USE_DATABASE' => sfConfig::has('sf_orm') ? 'true' : 'false',
+            'CSRF_SECRET' => \sfYamlInline::dump(\sfYamlInline::parseScalar($options['csrf-secret'])),
+            'ESCAPING_STRATEGY' => \sfYamlInline::dump((bool) \sfYamlInline::parseScalar($options['escaping-strategy'])),
+            'USE_DATABASE' => \sfConfig::has('sf_orm') ? 'true' : 'false',
         ]);
 
-        $this->getFilesystem()->copy($skeletonDir.'/web/index.php', sfConfig::get('sf_web_dir').'/'.$indexName.'.php');
-        $this->getFilesystem()->copy($skeletonDir.'/web/index.php', sfConfig::get('sf_web_dir').'/'.$app.'_dev.php');
+        $this->getFilesystem()->copy($skeletonDir.'/web/index.php', \sfConfig::get('sf_web_dir').'/'.$indexName.'.php');
+        $this->getFilesystem()->copy($skeletonDir.'/web/index.php', \sfConfig::get('sf_web_dir').'/'.$app.'_dev.php');
 
-        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_web_dir').'/'.$indexName.'.php', '##', '##', [
+        $this->getFilesystem()->replaceTokens(\sfConfig::get('sf_web_dir').'/'.$indexName.'.php', '##', '##', [
             'APP_NAME' => $app,
             'ENVIRONMENT' => 'prod',
             'IS_DEBUG' => 'false',
             'IP_CHECK' => '',
         ]);
 
-        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_web_dir').'/'.$app.'_dev.php', '##', '##', [
+        $this->getFilesystem()->replaceTokens(\sfConfig::get('sf_web_dir').'/'.$app.'_dev.php', '##', '##', [
             'APP_NAME' => $app,
             'ENVIRONMENT' => 'dev',
             'IS_DEBUG' => 'true',
@@ -151,12 +148,12 @@ EOF;
 
         $this->getFilesystem()->replaceTokens($appDir.'/config/'.$app.'Configuration.class.php', '##', '##', ['APP_NAME' => $app]);
 
-        $fixPerms = new sfProjectPermissionsTask($this->dispatcher, $this->formatter);
+        $fixPerms = new \sfProjectPermissionsTask($this->dispatcher, $this->formatter);
         $fixPerms->setCommandApplication($this->commandApplication);
         $fixPerms->setConfiguration($this->configuration);
         $fixPerms->run();
 
         // Create test dir
-        $this->getFilesystem()->mkdirs(sfConfig::get('sf_test_dir').'/functional/'.$app);
+        $this->getFilesystem()->mkdirs(\sfConfig::get('sf_test_dir').'/functional/'.$app);
     }
 }

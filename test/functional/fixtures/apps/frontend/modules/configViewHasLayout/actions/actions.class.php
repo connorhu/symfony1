@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class configViewHasLayoutActions extends sfActions
+class configViewHasLayoutActions extends \sfActions
 {
     public function executeWithoutLayout()
     {

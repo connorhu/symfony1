@@ -12,7 +12,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once $_test_dir.'/unit/sfContextMock.class.php';
 
-$t = new lime_test(21);
+$t = new \lime_test(21);
 
 define('ESC_SPECIALCHARS', 'esc_specialchars');
 function esc_specialchars($value)
@@ -30,16 +30,16 @@ class myRequest
 {
     public function getParameterHolder()
     {
-        return new sfParameterHolder();
+        return new \sfParameterHolder();
     }
 }
 
-$context = sfContext::getInstance();
+$context = \sfContext::getInstance();
 $dispatcher = $context->dispatcher;
 
 // ->initialize()
 $t->diag('->initialize()');
-$p = new sfViewParameterHolder($dispatcher);
+$p = new \sfViewParameterHolder($dispatcher);
 $t->is($p->getAll(), [], '->initialize() initializes the parameters as an empty array');
 
 $p->initialize($dispatcher, ['foo' => 'bar']);
@@ -74,7 +74,7 @@ try {
     $p->setEscapingMethod('nonexistant');
     $p->getEscapingMethod();
     $t->fail('->getEscapingMethod() throws an InvalidArgumentException if the escaping method does not exist');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->getEscapingMethod() throws an InvalidArgumentException if the escaping method does not exist');
 }
 
@@ -85,13 +85,13 @@ $a = $p->toArray();
 $t->is($a['foo'], 'bar', '->toArray() returns an array representation of the parameter holder');
 
 // escaping strategies
-$p = new sfViewParameterHolder(new sfEventDispatcher(), ['foo' => 'bar']);
+$p = new \sfViewParameterHolder(new \sfEventDispatcher(), ['foo' => 'bar']);
 
 try {
     $p->setEscaping('null');
     $p->toArray();
     $t->fail('->toArray() throws an InvalidArgumentException if the escaping strategy does not exist');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->toArray() throws an InvalidArgumentException if the escaping strategy does not exist');
 }
 

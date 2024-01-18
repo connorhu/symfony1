@@ -19,23 +19,23 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineMigrateTask extends sfDoctrineBaseTask
+class sfDoctrineMigrateTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('version', sfCommandArgument::OPTIONAL, 'The version to migrate to'),
+            new \sfCommandArgument('version', \sfCommandArgument::OPTIONAL, 'The version to migrate to'),
         ]);
 
         $this->addOptions([
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('up', null, sfCommandOption::PARAMETER_NONE, 'Migrate up one version'),
-            new sfCommandOption('down', null, sfCommandOption::PARAMETER_NONE, 'Migrate down one version'),
-            new sfCommandOption('dry-run', null, sfCommandOption::PARAMETER_NONE, 'Do not persist migrations'),
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('up', null, \sfCommandOption::PARAMETER_NONE, 'Migrate up one version'),
+            new \sfCommandOption('down', null, \sfCommandOption::PARAMETER_NONE, 'Migrate down one version'),
+            new \sfCommandOption('dry-run', null, \sfCommandOption::PARAMETER_NONE, 'Do not persist migrations'),
         ]);
 
         $this->namespace = 'doctrine';
@@ -63,17 +63,14 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
         $config = $this->getCliConfig();
-        $migration = new Doctrine_Migration($config['migrations_path']);
+        $migration = new \Doctrine_Migration($config['migrations_path']);
         $from = $migration->getCurrentVersion();
 
         if (is_numeric($arguments['version'])) {
@@ -107,7 +104,7 @@ EOF;
                     $migration->migrate($i, $options['dry-run']);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
 
         // render errors

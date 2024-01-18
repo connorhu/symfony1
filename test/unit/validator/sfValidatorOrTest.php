@@ -10,32 +10,32 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(18);
+$t = new \lime_test(18);
 
-$v1 = new sfValidatorString(['max_length' => 3]);
-$v2 = new sfValidatorString(['min_length' => 3]);
+$v1 = new \sfValidatorString(['max_length' => 3]);
+$v2 = new \sfValidatorString(['min_length' => 3]);
 
-$v = new sfValidatorOr([$v1, $v2]);
+$v = new \sfValidatorOr([$v1, $v2]);
 
 // __construct()
 $t->diag('__construct()');
-$v = new sfValidatorOr();
+$v = new \sfValidatorOr();
 $t->is($v->getValidators(), [], '->__construct() can take no argument');
-$v = new sfValidatorOr($v1);
+$v = new \sfValidatorOr($v1);
 $t->is($v->getValidators(), [$v1], '->__construct() can take a validator as its first argument');
-$v = new sfValidatorOr([$v1, $v2]);
+$v = new \sfValidatorOr([$v1, $v2]);
 $t->is($v->getValidators(), [$v1, $v2], '->__construct() can take an array of validators as its first argument');
 
 try {
-    $v = new sfValidatorOr('string');
+    $v = new \sfValidatorOr('string');
     $t->fail('_construct() throws an exception when passing a non supported first argument');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('_construct() throws an exception when passing a non supported first argument');
 }
 
 // ->addValidator()
 $t->diag('->addValidator()');
-$v = new sfValidatorOr();
+$v = new \sfValidatorOr();
 $v->addValidator($v1);
 $v->addValidator($v2);
 $t->is($v->getValidators(), [$v1, $v2], '->addValidator() adds a validator');
@@ -49,7 +49,7 @@ try {
     $v->clean(null);
     $t->fail('->clean() throws an sfValidatorError exception if the input value is required');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an sfValidatorError exception if the input value is required');
     $t->is($e->getCode(), 'required', '->clean() throws a sfValidatorError');
 }
@@ -61,11 +61,11 @@ try {
     $v->clean('foo');
     $t->fail('->clean() throws an sfValidatorError exception if all the validators fails');
     $t->skip('', 3);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an sfValidatorError exception if all the validators fails');
     $t->is(count($e), 2, '->clean() throws an exception with all error messages');
     $t->is($e[0]->getCode(), 'max_length', '->clean() throws a sfValidatorSchemaError');
-    $t->ok($e instanceof sfValidatorErrorSchema, '->clean() throws a sfValidatorSchemaError');
+    $t->ok($e instanceof \sfValidatorErrorSchema, '->clean() throws a sfValidatorSchemaError');
 }
 
 try {
@@ -73,10 +73,10 @@ try {
     $v->clean('foo');
     $t->fail('->clean() throws an sfValidatorError exception if one of the validators fails');
     $t->skip('', 2);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('->clean() throws an sfValidatorError exception if one of the validators fails');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError if invalid message is not empty');
-    $t->ok(!$e instanceof sfValidatorErrorSchema, '->clean() throws a sfValidatorError if invalid message is not empty');
+    $t->ok(!$e instanceof \sfValidatorErrorSchema, '->clean() throws a sfValidatorError if invalid message is not empty');
 }
 
 $v1->setOption('max_length', 3);
@@ -85,10 +85,10 @@ $t->is($v->clean('foo'), 'foo', '->clean() returns the string unmodified');
 
 // ->asString()
 $t->diag('->asString()');
-$v1 = new sfValidatorString(['max_length' => 3]);
-$v2 = new sfValidatorString(['min_length' => 3]);
-$v = new sfValidatorOr([$v1, $v2]);
+$v1 = new \sfValidatorString(['max_length' => 3]);
+$v2 = new \sfValidatorString(['min_length' => 3]);
+$v = new \sfValidatorOr([$v1, $v2]);
 $t->is($v->asString(), "(\n  String({ max_length: 3 })\n  or\n  String({ min_length: 3 })\n)", '->asString() returns a string representation of the validator');
 
-$v = new sfValidatorOr([$v1, $v2], [], ['required' => 'This is required.']);
+$v = new \sfValidatorOr([$v1, $v2], [], ['required' => 'This is required.']);
 $t->is($v->asString(), "(\n  String({ max_length: 3 })\n  or({}, { required: 'This is required.' })\n  String({ min_length: 3 })\n)", '->asString() returns a string representation of the validator');

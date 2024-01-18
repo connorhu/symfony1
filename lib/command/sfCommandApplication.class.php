@@ -17,7 +17,7 @@
  */
 abstract class sfCommandApplication
 {
-    /** @var sfCommandManager */
+    /** @var \sfCommandManager */
     protected $commandManager;
 
     /** @var bool */
@@ -41,16 +41,16 @@ abstract class sfCommandApplication
     /** @var array */
     protected $tasks = [];
 
-    /** @var sfTask */
+    /** @var \sfTask */
     protected $currentTask;
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
     /** @var array */
     protected $options = [];
 
-    /** @var sfFormatter */
+    /** @var \sfFormatter */
     protected $formatter;
 
     protected $commandOptions;
@@ -58,11 +58,11 @@ abstract class sfCommandApplication
     /**
      * Constructor.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param sfFormatter       $formatter  A sfFormatter instance
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param \sfFormatter       $formatter  A sfFormatter instance
+     * @param array              $options    An array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null, $options = [])
+    public function __construct(\sfEventDispatcher $dispatcher, \sfFormatter $formatter = null, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = null === $formatter ? $this->guessBestFormatter(STDOUT) : $formatter;
@@ -70,18 +70,18 @@ abstract class sfCommandApplication
 
         $this->fixCgi();
 
-        $argumentSet = new sfCommandArgumentSet([
-            new sfCommandArgument('task', sfCommandArgument::REQUIRED, 'The task to execute'),
+        $argumentSet = new \sfCommandArgumentSet([
+            new \sfCommandArgument('task', \sfCommandArgument::REQUIRED, 'The task to execute'),
         ]);
-        $optionSet = new sfCommandOptionSet([
-            new sfCommandOption('--help', '-H', sfCommandOption::PARAMETER_NONE, 'Display this help message.'),
-            new sfCommandOption('--quiet', '-q', sfCommandOption::PARAMETER_NONE, 'Do not log messages to standard output.'),
-            new sfCommandOption('--trace', '-t', sfCommandOption::PARAMETER_NONE, 'Turn on invoke/execute tracing, enable full backtrace.'),
-            new sfCommandOption('--version', '-V', sfCommandOption::PARAMETER_NONE, 'Display the program version.'),
-            new sfCommandOption('--color', '', sfCommandOption::PARAMETER_NONE, 'Forces ANSI color output.'),
-            new sfCommandOption('--no-debug', '', sfCommandOption::PARAMETER_NONE, 'Disable debug'),
+        $optionSet = new \sfCommandOptionSet([
+            new \sfCommandOption('--help', '-H', \sfCommandOption::PARAMETER_NONE, 'Display this help message.'),
+            new \sfCommandOption('--quiet', '-q', \sfCommandOption::PARAMETER_NONE, 'Do not log messages to standard output.'),
+            new \sfCommandOption('--trace', '-t', \sfCommandOption::PARAMETER_NONE, 'Turn on invoke/execute tracing, enable full backtrace.'),
+            new \sfCommandOption('--version', '-V', \sfCommandOption::PARAMETER_NONE, 'Display the program version.'),
+            new \sfCommandOption('--color', '', \sfCommandOption::PARAMETER_NONE, 'Forces ANSI color output.'),
+            new \sfCommandOption('--no-debug', '', \sfCommandOption::PARAMETER_NONE, 'Disable debug'),
         ]);
-        $this->commandManager = new sfCommandManager($argumentSet, $optionSet);
+        $this->commandManager = new \sfCommandManager($argumentSet, $optionSet);
 
         $this->configure();
 
@@ -108,7 +108,7 @@ abstract class sfCommandApplication
     /**
      * Returns the formatter instance.
      *
-     * @return sfFormatter The formatter instance
+     * @return \sfFormatter The formatter instance
      */
     public function getFormatter()
     {
@@ -118,9 +118,9 @@ abstract class sfCommandApplication
     /**
      * Sets the formatter instance.
      *
-     * @param sfFormatter $formatter The formatter instance
+     * @param \sfFormatter $formatter The formatter instance
      */
-    public function setFormatter(sfFormatter $formatter)
+    public function setFormatter(\sfFormatter $formatter)
     {
         $this->formatter = $formatter;
 
@@ -155,21 +155,21 @@ abstract class sfCommandApplication
     /**
      * Registers a task object.
      *
-     * @param sfTask $task An sfTask object
+     * @param \sfTask $task An sfTask object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
-    public function registerTask(sfTask $task)
+    public function registerTask(\sfTask $task)
     {
         if (isset($this->tasks[$task->getFullName()])) {
-            throw new sfCommandException(sprintf('The task named "%s" in "%s" task is already registered by the "%s" task.', $task->getFullName(), get_class($task), get_class($this->tasks[$task->getFullName()])));
+            throw new \sfCommandException(sprintf('The task named "%s" in "%s" task is already registered by the "%s" task.', $task->getFullName(), get_class($task), get_class($this->tasks[$task->getFullName()])));
         }
 
         $this->tasks[$task->getFullName()] = $task;
 
         foreach ($task->getAliases() as $alias) {
             if (isset($this->tasks[$alias])) {
-                throw new sfCommandException(sprintf('A task named "%s" is already registered.', $alias));
+                throw new \sfCommandException(sprintf('A task named "%s" is already registered.', $alias));
             }
 
             $this->tasks[$alias] = $task;
@@ -185,7 +185,7 @@ abstract class sfCommandApplication
     {
         $tasks = [];
         foreach (get_declared_classes() as $class) {
-            $r = new ReflectionClass($class);
+            $r = new \ReflectionClass($class);
 
             if ($r->isSubclassOf('sfTask') && !$r->isAbstract()) {
                 $tasks[] = new $class($this->dispatcher, $this->formatter);
@@ -210,14 +210,14 @@ abstract class sfCommandApplication
      *
      * @param string $name The task name or alias
      *
-     * @return sfTask An sfTask object
+     * @return \sfTask An sfTask object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getTask($name)
     {
         if (!isset($this->tasks[$name])) {
-            throw new sfCommandException(sprintf('The task "%s" does not exist.', $name));
+            throw new \sfCommandException(sprintf('The task "%s" does not exist.', $name));
         }
 
         return $this->tasks[$name];
@@ -344,13 +344,13 @@ abstract class sfCommandApplication
             );
         }
 
-        $this->dispatcher->notify(new sfEvent($this, 'command.log', $messages));
+        $this->dispatcher->notify(new \sfEvent($this, 'command.log', $messages));
     }
 
     /**
      * Renders an exception.
      *
-     * @param Exception $e An exception object
+     * @param \Exception $e An exception object
      */
     public function renderException($e)
     {
@@ -380,7 +380,7 @@ abstract class sfCommandApplication
         }
         fwrite(STDERR, "\n");
 
-        if (null !== $this->currentTask && $e instanceof sfCommandArgumentsException) {
+        if (null !== $this->currentTask && $e instanceof \sfCommandArgumentsException) {
             fwrite(STDERR, $this->formatter->format(sprintf($this->currentTask->getSynopsis(), $this->getName()), 'INFO', STDERR)."\n");
             fwrite(STDERR, "\n");
         }
@@ -410,7 +410,7 @@ abstract class sfCommandApplication
             fwrite(STDERR, "\n");
         }
 
-        $this->dispatcher->notify(new sfEvent($e, 'application.throw_exception'));
+        $this->dispatcher->notify(new \sfEvent($e, 'application.throw_exception'));
     }
 
     /**
@@ -418,9 +418,9 @@ abstract class sfCommandApplication
      *
      * @param string $name The task name or a task shortcut
      *
-     * @return sfTask A sfTask object
+     * @return \sfTask A sfTask object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getTaskToExecute($name)
     {
@@ -438,10 +438,10 @@ abstract class sfCommandApplication
             $abbrev = $this->getAbbreviations($namespaces);
 
             if (!isset($abbrev[$namespace])) {
-                throw new sfCommandException(sprintf('There are no tasks defined in the "%s" namespace.', $namespace));
+                throw new \sfCommandException(sprintf('There are no tasks defined in the "%s" namespace.', $namespace));
             }
             if (count($abbrev[$namespace]) > 1) {
-                throw new sfCommandException(sprintf('The namespace "%s" is ambiguous (%s).', $namespace, implode(', ', $abbrev[$namespace])));
+                throw new \sfCommandException(sprintf('The namespace "%s" is ambiguous (%s).', $namespace, implode(', ', $abbrev[$namespace])));
             }
 
             $namespace = $abbrev[$namespace][0];
@@ -475,10 +475,10 @@ abstract class sfCommandApplication
         $abbrev = $this->getAbbreviations($aliases);
         $fullName = $namespace ? $namespace.':'.$name : $name;
         if (!isset($abbrev[$fullName])) {
-            throw new sfCommandException(sprintf('Task "%s" is not defined.', $fullName));
+            throw new \sfCommandException(sprintf('Task "%s" is not defined.', $fullName));
         }
         if (count($abbrev[$fullName]) > 1) {
-            throw new sfCommandException(sprintf('Task "%s" is ambiguous (%s).', $fullName, implode(', ', $abbrev[$fullName])));
+            throw new \sfCommandException(sprintf('Task "%s" is ambiguous (%s).', $fullName, implode(', ', $abbrev[$fullName])));
         }
 
         return $this->getTask($abbrev[$fullName][0]);
@@ -497,7 +497,7 @@ abstract class sfCommandApplication
         // the order of option processing matters
 
         if ($this->commandManager->getOptionSet()->hasOption('color') && false !== $this->commandManager->getOptionValue('color')) {
-            $this->setFormatter(new sfAnsiColorFormatter());
+            $this->setFormatter(new \sfAnsiColorFormatter());
         }
 
         if ($this->commandManager->getOptionSet()->hasOption('quiet') && false !== $this->commandManager->getOptionValue('quiet')) {
@@ -655,10 +655,10 @@ abstract class sfCommandApplication
      *
      * @param mixed $stream A stream
      *
-     * @return sfFormatter A formatter instance
+     * @return \sfFormatter A formatter instance
      */
     protected function guessBestFormatter($stream)
     {
-        return $this->isStreamSupportsColors($stream) ? new sfAnsiColorFormatter() : new sfFormatter();
+        return $this->isStreamSupportsColors($stream) ? new \sfAnsiColorFormatter() : new \sfFormatter();
     }
 }

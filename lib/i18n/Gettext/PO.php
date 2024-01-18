@@ -31,13 +31,12 @@ require_once __DIR__.'/TGettext.class.php';
  *
  * @version     $Revision: 9856 $
  */
-class TGettext_PO extends TGettext
+class TGettext_PO extends \TGettext
 {
     /**
      * Constructor.
      *
      * @param   string      path to GNU PO file
-     * @param mixed $file
      *
      * @return object File_Gettext_PO
      */

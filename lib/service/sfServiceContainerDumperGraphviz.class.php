@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
+class sfServiceContainerDumperGraphviz extends \sfServiceContainerDumper
 {
     protected $nodes;
     protected $edges;
@@ -102,13 +102,13 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
     {
         $edges = [];
         foreach ($arguments as $argument) {
-            if (is_object($argument) && $argument instanceof sfServiceParameter) {
+            if (is_object($argument) && $argument instanceof \sfServiceParameter) {
                 $argument = $this->container->hasParameter($argument) ? $this->container->getParameter($argument) : null;
             } elseif (is_string($argument) && preg_match('/^%([^%]+)%$/', $argument, $match)) {
                 $argument = $this->container->hasParameter($match[1]) ? $this->container->getParameter($match[1]) : null;
             }
 
-            if ($argument instanceof sfServiceReference) {
+            if ($argument instanceof \sfServiceReference) {
                 if (!$this->container->hasService((string) $argument)) {
                     $this->nodes[(string) $argument] = ['name' => $name, 'required' => $required, 'class' => '', 'attributes' => $this->options['node.missing']];
                 }
@@ -131,7 +131,7 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
         foreach ($container->getServiceDefinitions() as $id => $definition) {
             $nodes[$id] = ['class' => $this->getValue($definition->getClass()), 'attributes' => array_merge($this->options['node.definition'], ['style' => $definition->isShared() ? 'filled' : 'dotted'])];
 
-            $container->setServiceDefinition($id, new sfServiceDefinition('stdClass'));
+            $container->setServiceDefinition($id, new \sfServiceDefinition('stdClass'));
         }
 
         foreach ($container->getServiceIds() as $id) {

@@ -10,29 +10,29 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(4);
+$t = new \lime_test(4);
 
 $dir = __DIR__.'/fixtures/graphviz';
 
 // ->dump()
 $t->diag('->dump()');
-$dumper = new sfServiceContainerDumperGraphviz($container = new sfServiceContainerBuilder());
+$dumper = new \sfServiceContainerDumperGraphviz($container = new \sfServiceContainerBuilder());
 
 $t->is($dumper->dump(), file_get_contents($dir.'/services1.dot'), '->dump() dumps an empty container as an empty dot file');
 
-$container = new sfServiceContainerBuilder();
-$dumper = new sfServiceContainerDumperGraphviz($container);
+$container = new \sfServiceContainerBuilder();
+$dumper = new \sfServiceContainerDumperGraphviz($container);
 
 $container = include __DIR__.'/fixtures/containers/container9.php';
-$dumper = new sfServiceContainerDumperGraphviz($container);
+$dumper = new \sfServiceContainerDumperGraphviz($container);
 $t->is($dumper->dump(), str_replace('%path%', __DIR__, file_get_contents($dir.'/services9.dot')), '->dump() dumps services');
 
 $container = include __DIR__.'/fixtures/containers/container10.php';
-$dumper = new sfServiceContainerDumperGraphviz($container);
+$dumper = new \sfServiceContainerDumperGraphviz($container);
 $t->is($dumper->dump(), str_replace('%path%', __DIR__, file_get_contents($dir.'/services10.dot')), '->dump() dumps services');
 
 $container = include __DIR__.'/fixtures/containers/container10.php';
-$dumper = new sfServiceContainerDumperGraphviz($container);
+$dumper = new \sfServiceContainerDumperGraphviz($container);
 $t->is($dumper->dump([
     'graph' => ['ratio' => 'normal'],
     'node' => ['fontsize' => 13, 'fontname' => 'Verdana', 'shape' => 'square'],

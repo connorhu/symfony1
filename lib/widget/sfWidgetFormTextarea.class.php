@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormTextarea extends sfWidgetForm
+class sfWidgetFormTextarea extends \sfWidgetForm
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormTextarea extends sfWidgetForm
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -40,7 +40,7 @@ class sfWidgetFormTextarea extends sfWidgetForm
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -23,10 +23,10 @@ class sfGeneratorManager
     /**
      * Class constructor.
      *
-     * @param sfProjectConfiguration $configuration A sfProjectConfiguration instance
-     * @param string                 $basePath      The base path for file generation
+     * @param \sfProjectConfiguration $configuration A sfProjectConfiguration instance
+     * @param string                  $basePath      The base path for file generation
      */
-    public function __construct(sfProjectConfiguration $configuration, $basePath = null)
+    public function __construct(\sfProjectConfiguration $configuration, $basePath = null)
     {
         $this->configuration = $configuration;
         $this->basePath = $basePath;
@@ -35,7 +35,7 @@ class sfGeneratorManager
     /**
      * Returns the current configuration instance.
      *
-     * @return sfProjectConfiguration A sfProjectConfiguration instance
+     * @return \sfProjectConfiguration A sfProjectConfiguration instance
      */
     public function getConfiguration()
     {
@@ -51,7 +51,7 @@ class sfGeneratorManager
     {
         if (null === $this->basePath) {
             // for BC
-            $this->basePath = sfConfig::get('sf_module_cache_dir');
+            $this->basePath = \sfConfig::get('sf_module_cache_dir');
         }
 
         return $this->basePath;
@@ -75,7 +75,7 @@ class sfGeneratorManager
      *
      * @return int
      *
-     * @throws sfCacheException
+     * @throws \sfCacheException
      */
     public function save($path, $content)
     {
@@ -91,7 +91,7 @@ class sfGeneratorManager
         }
 
         if (false === $ret = @file_put_contents($path, $content)) {
-            throw new sfCacheException(sprintf('Failed to write cache file "%s".', $path));
+            throw new \sfCacheException(sprintf('Failed to write cache file "%s".', $path));
         }
 
         return $ret;
@@ -107,7 +107,7 @@ class sfGeneratorManager
      */
     public function generate($generatorClass, $param)
     {
-        /** @var sfGenerator $generator */
+        /** @var \sfGenerator $generator */
         $generator = new $generatorClass($this);
 
         return $generator->generate($param);

@@ -7,6 +7,6 @@
  *
  * @coversNothing
  */
-class UniqueTest extends BaseUniqueTest
+class UniqueTest extends \BaseUniqueTest
 {
 }

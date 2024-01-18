@@ -12,12 +12,12 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $year = date('Y');
 
-$t = new lime_test(64);
+$t = new \lime_test(64);
 
-$dom = new DOMDocument('1.0', 'utf-8');
+$dom = new \DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
-$w = new sfWidgetFormDateTime(['with_time' => true, 'time' => ['with_seconds' => true]]);
+$w = new \sfWidgetFormDateTime(['with_time' => true, 'time' => ['with_seconds' => true]]);
 
 // ->render()
 $t->diag('->render()');
@@ -28,7 +28,7 @@ foreach ([
     'tomorrow 12:30:35' => ['year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400), 'hour' => 12, 'minute' => 30, 'second' => 35],
 ] as $date => $values) {
     $dom->loadHTML($w->render('foo', $date));
-    $css = new sfDomCssSelector($dom);
+    $css = new \sfDomCssSelector($dom);
 
     // selected date / time
     $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
@@ -43,7 +43,7 @@ foreach ([
 $t->diag('selected date / time');
 $values = ['year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35];
 $dom->loadHTML($w->render('foo', $values));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
 $t->is($css->matchSingle('#foo_month option[value="'.$values['month'].'"][selected="selected"]')->getValue(), $values['month'], '->render() renders a select tag for the month');
 $t->is($css->matchSingle('#foo_day option[value="'.$values['day'].'"][selected="selected"]')->getValue(), $values['day'], '->render() renders a select tag for the day');
@@ -55,7 +55,7 @@ $t->is($css->matchSingle('#foo_second option[value="'.$values['second'].'"][sele
 $t->diag('invalid date / time');
 $values = ['year' => null, 'month' => 10, 'hour' => null, 'minute' => 30];
 $dom->loadHTML($w->render('foo', $values));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the year');
 $t->is($css->matchSingle('#foo_month option[value="'.$values['month'].'"][selected="selected"]')->getValue(), $values['month'], '->render() renders a select tag for the month');
 $t->is($css->matchSingle('#foo_day option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the day');
@@ -64,7 +64,7 @@ $t->is($css->matchSingle('#foo_minute option[value="'.$values['minute'].'"][sele
 $t->is($css->matchSingle('#foo_second option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the second');
 
 $dom->loadHTML($w->render('foo', 'invaliddatetime'));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the year');
 $t->is($css->matchSingle('#foo_month option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the month');
 $t->is($css->matchSingle('#foo_day option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the day');
@@ -75,7 +75,7 @@ $t->is($css->matchSingle('#foo_second option[selected="selected"]')->getValue(),
 // number of options in each select
 $t->diag('number of options in each select');
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35'));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo_year option')->getNodes()), 12, '->render() renders a select tag for the 10 years around the current one');
 $t->is(count($css->matchAll('#foo_month option')->getNodes()), 13, '->render() renders a select tag for the 12 months in a year');
 $t->is(count($css->matchAll('#foo_day option')->getNodes()), 32, '->render() renders a select tag for the 31 days in a month');
@@ -94,7 +94,7 @@ $t->diag('change date and time format option');
 $w->setOption('date', ['format' => '%month%-%day%-%year%']);
 $w->setOption('time', ['format' => '%hour%!%minute%!%second%', 'with_seconds' => true]);
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35'));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_day')->getNode()->nextSibling->nodeValue, '-', '__construct() can change the default format');
 $t->like($css->matchSingle('#foo_month')->getNode()->nextSibling->nodeValue, '/^-/', '__construct() can change the default format');
 $t->is($css->matchSingle('#foo_hour')->getNode()->nextSibling->nodeValue, '!', '__construct() can change the default format');
@@ -103,25 +103,25 @@ $t->is($css->matchSingle('#foo_minute')->getNode()->nextSibling->nodeValue, '!',
 // with_time option
 $t->diag('with_time option');
 
-$w = new sfWidgetFormDateTime(['with_time' => false]);
+$w = new \sfWidgetFormDateTime(['with_time' => false]);
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35'));
-$css = new sfDomCssSelector($dom);
+$css = new \sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo_hour')->getNodes()), 0, '->render() does not render the time if the with_time option is disabled');
 
 // date and time options as array
 $t->diag('date and time options as array');
-$w = new sfWidgetFormDateTime(['date' => 'a string']);
+$w = new \sfWidgetFormDateTime(['date' => 'a string']);
 
 try {
     $w->render('foo');
     $t->fail('__construct() throws a InvalidArgumentException if the date/time options is not an array');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('__construct() throws a InvalidArgumentException if the date/time options is not an array');
 }
 
 // attributes
 $t->diag('attributes');
-$w = new sfWidgetFormDateTime();
+$w = new \sfWidgetFormDateTime();
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35', ['date' => ['disabled' => 'disabled'], 'time' => ['disabled' => 'disabled']]));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 5, '->render() takes the attributes into account for all the five embedded widgets');
 
@@ -132,7 +132,7 @@ $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 5, '->r
 
 // id_format
 $t->diag('id_format');
-$w = new sfWidgetFormDateTime();
+$w = new \sfWidgetFormDateTime();
 $w->setIdFormat('id_%s');
 $dom->loadHTML($w->render('foo'));
 $t->is(count($css->matchAll('#id_foo_month')), 1, '->render() month considers id_format');

@@ -15,16 +15,16 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectDisableTask extends sfBaseTask
+class sfProjectDisableTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
         $this->addArguments([
-            new sfCommandArgument('env', sfCommandArgument::REQUIRED, 'The environment name'),
-            new sfCommandArgument('app', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The application name'),
+            new \sfCommandArgument('env', \sfCommandArgument::REQUIRED, 'The environment name'),
+            new \sfCommandArgument('app', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'The application name'),
         ]);
 
         $this->namespace = 'project';
@@ -44,24 +44,21 @@ EOF;
     }
 
     /**
-     * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
+     * @see \sfTask
      */
     protected function execute($arguments = [], $options = [])
     {
-        if (1 == count($arguments['app']) && !file_exists(sfConfig::get('sf_apps_dir').'/'.$arguments['app'][0])) {
+        if (1 == count($arguments['app']) && !file_exists(\sfConfig::get('sf_apps_dir').'/'.$arguments['app'][0])) {
             // support previous task signature
             $applications = [$arguments['env']];
             $env = $arguments['app'][0];
         } else {
-            $applications = count($arguments['app']) ? $arguments['app'] : sfFinder::type('dir')->relative()->maxdepth(0)->in(sfConfig::get('sf_apps_dir'));
+            $applications = count($arguments['app']) ? $arguments['app'] : \sfFinder::type('dir')->relative()->maxdepth(0)->in(\sfConfig::get('sf_apps_dir'));
             $env = $arguments['env'];
         }
 
         foreach ($applications as $app) {
-            $lockFile = sfConfig::get('sf_data_dir').'/'.$app.'_'.$env.'.lck';
+            $lockFile = \sfConfig::get('sf_data_dir').'/'.$app.'_'.$env.'.lck';
             if (file_exists($lockFile)) {
                 $this->logSection('enable', sprintf('%s [%s] is currently DISABLED', $app, $env));
             } else {

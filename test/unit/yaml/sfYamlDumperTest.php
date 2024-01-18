@@ -10,12 +10,12 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-sfYaml::setSpecVersion('1.1');
+\sfYaml::setSpecVersion('1.1');
 
-$t = new lime_test(149);
+$t = new \lime_test(149);
 
-$parser = new sfYamlParser();
-$dumper = new sfYamlDumper();
+$parser = new \sfYamlParser();
+$dumper = new \sfYamlDumper();
 
 $path = __DIR__.'/fixtures';
 $files = $parser->parse(file_get_contents($path.'/index.yml'));
@@ -138,5 +138,5 @@ class A
 {
     public $a = 'foo';
 }
-$a = ['foo' => new A(), 'bar' => 1];
+$a = ['foo' => new \A(), 'bar' => 1];
 $t->is($dumper->dump($a), '{ foo: !!php/object:O:1:"A":1:{s:1:"a";s:3:"foo";}, bar: 1 }', '->dump() is able to dump objects');

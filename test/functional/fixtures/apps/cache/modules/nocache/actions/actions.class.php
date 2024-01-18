@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class nocacheActions extends sfActions
+class nocacheActions extends \sfActions
 {
     /**
      * Executes index action.

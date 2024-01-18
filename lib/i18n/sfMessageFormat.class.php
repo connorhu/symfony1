@@ -53,7 +53,7 @@ class sfMessageFormat
     /**
      * The message source.
      *
-     * @var sfMessageSource
+     * @var \sfMessageSource
      */
     protected $source;
 
@@ -97,10 +97,10 @@ class sfMessageFormat
      * Create a new instance of sfMessageFormat using the messages
      * from the supplied message source.
      *
-     * @param sfMessageSource $source  the source of translation messages
-     * @param string          $charset for the message output
+     * @param \sfMessageSource $source  the source of translation messages
+     * @param string           $charset for the message output
      */
-    public function __construct(sfIMessageSource $source, $charset = 'UTF-8')
+    public function __construct(\sfIMessageSource $source, $charset = 'UTF-8')
     {
         $this->source = $source;
         $this->setCharset($charset);
@@ -148,15 +148,15 @@ class sfMessageFormat
             $charset = $this->getCharset();
         }
 
-        $s = $this->formatString(sfToolkit::I18N_toUTF8($string, $charset), $args, $catalogue);
+        $s = $this->formatString(\sfToolkit::I18N_toUTF8($string, $charset), $args, $catalogue);
 
-        return sfToolkit::I18N_toEncoding($s, $charset);
+        return \sfToolkit::I18N_toEncoding($s, $charset);
     }
 
     /**
      * Gets the message source.
      *
-     * @return MessageSource
+     * @return \MessageSource
      */
     public function getSource()
     {

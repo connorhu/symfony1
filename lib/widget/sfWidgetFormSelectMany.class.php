@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelectMany extends sfWidgetFormSelect
+class sfWidgetFormSelectMany extends \sfWidgetFormSelect
 {
     /**
      * Configures the current widget.
@@ -23,7 +23,7 @@ class sfWidgetFormSelectMany extends sfWidgetFormSelect
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormSelect
+     * @see \sfWidgetFormSelect
      */
     protected function configure($options = [], $attributes = [])
     {

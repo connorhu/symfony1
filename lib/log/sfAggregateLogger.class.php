@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfAggregateLogger extends sfLogger
+class sfAggregateLogger extends \sfLogger
 {
     protected $loggers = [];
 
@@ -26,10 +26,10 @@ class sfAggregateLogger extends sfLogger
      *
      * - loggers: Logger objects that extends sfLogger.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -69,9 +69,9 @@ class sfAggregateLogger extends sfLogger
     /**
      * Adds a logger.
      *
-     * @param sfLoggerInterface $logger The Logger object
+     * @param \sfLoggerInterface $logger The Logger object
      */
-    public function addLogger(sfLoggerInterface $logger)
+    public function addLogger(\sfLoggerInterface $logger)
     {
         $this->loggers[] = $logger;
 
@@ -84,7 +84,7 @@ class sfAggregateLogger extends sfLogger
     public function shutdown()
     {
         foreach ($this->loggers as $logger) {
-            if ($logger instanceof sfLogger) {
+            if ($logger instanceof \sfLogger) {
                 $logger->shutdown();
             }
         }

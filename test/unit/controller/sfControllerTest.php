@@ -12,20 +12,20 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once $_test_dir.'/unit/sfContextMock.class.php';
 
-$t = new lime_test(2);
+$t = new \lime_test(2);
 
-class myController extends sfController
+class myController extends \sfController
 {
     public function execute()
     {
     }
 }
 
-$context = sfContext::getInstance();
+$context = \sfContext::getInstance();
 
-$controller = new myController($context);
+$controller = new \myController($context);
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
-$dispatcherTest = new sfEventDispatcherTest($t);
+$dispatcherTest = new \sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($context->getEventDispatcher(), $controller, 'controller');

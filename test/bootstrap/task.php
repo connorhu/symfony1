@@ -10,14 +10,14 @@
 
 require_once __DIR__.'/unit.php';
 
-require_once sfConfig::get('sf_symfony_lib_dir').'/command/sfCommandApplication.class.php';
+require_once \sfConfig::get('sf_symfony_lib_dir').'/command/sfCommandApplication.class.php';
 
-require_once sfConfig::get('sf_symfony_lib_dir').'/command/sfSymfonyCommandApplication.class.php';
+require_once \sfConfig::get('sf_symfony_lib_dir').'/command/sfSymfonyCommandApplication.class.php';
 
 $tmpDir = sys_get_temp_dir().DIRECTORY_SEPARATOR.'sf_'.rand(11111, 99999);
 mkdir($tmpDir, 0777, true);
 chdir($tmpDir);
 
-$application = new sfSymfonyCommandApplication(new sfEventDispatcher(), new sfFormatter(), [
-    'symfony_lib_dir' => sfConfig::get('sf_symfony_lib_dir'),
+$application = new \sfSymfonyCommandApplication(new \sfEventDispatcher(), new \sfFormatter(), [
+    'symfony_lib_dir' => \sfConfig::get('sf_symfony_lib_dir'),
 ]);

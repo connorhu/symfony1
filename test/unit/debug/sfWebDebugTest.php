@@ -10,14 +10,14 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(10);
+$t = new \lime_test(10);
 
 /**
  * @internal
  *
  * @coversNothing
  */
-class sfWebDebugTest extends sfWebDebug
+class sfWebDebugTest extends \sfWebDebug
 {
     public function __construct()
     {
@@ -26,7 +26,7 @@ class sfWebDebugTest extends sfWebDebug
     }
 }
 
-$debug = new sfWebDebugTest();
+$debug = new \sfWebDebugTest();
 
 // ->injectToolbar()
 $t->diag('->injectToolbar()');

@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputPassword extends sfWidgetFormInput
+class sfWidgetFormInputPassword extends \sfWidgetFormInput
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormInputPassword extends sfWidgetFormInput
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -44,7 +44,7 @@ class sfWidgetFormInputPassword extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
     protected function configure($options = [], $attributes = [])
     {

@@ -19,22 +19,19 @@
  *
  * @coversNothing
  */
-class sfPearRestTest extends sfPearRest
+class sfPearRestTest extends \sfPearRest
 {
     /**
      * @see PEAR_REST::downloadHttp()
      *
-     * @param mixed|null $lastmodified
-     * @param mixed      $url
-     * @param mixed      $accept
-     * @param mixed      $channel
+     * @param \mixed|null $lastmodified
      */
     public function downloadHttp($url, $lastmodified = null, $accept = false, $channel = false)
     {
         try {
-            $file = sfPluginTestHelper::convertUrlToFixture($url);
-        } catch (sfException $e) {
-            return PEAR::raiseError($e->getMessage());
+            $file = \sfPluginTestHelper::convertUrlToFixture($url);
+        } catch (\sfException $e) {
+            return \PEAR::raiseError($e->getMessage());
         }
 
         $headers = [

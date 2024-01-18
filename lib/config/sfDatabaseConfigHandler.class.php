@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDatabaseConfigHandler extends sfYamlConfigHandler
+class sfDatabaseConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -28,8 +28,8 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -71,7 +71,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -101,7 +101,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             // is this category already registered?
             if (in_array($name, $databases)) {
                 // this category is already registered
-                throw new sfParseException(sprintf('Configuration file "%s" specifies previously registered category "%s".', $configFiles[0], $name));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies previously registered category "%s".', $configFiles[0], $name));
             }
 
             // add this database
@@ -110,14 +110,14 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             // let's do our fancy work
             if (!isset($dbConfig['class'])) {
                 // missing class key
-                throw new sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $name));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $name));
             }
 
             if (isset($dbConfig['file'])) {
                 // we have a file to include
                 if (!is_readable($dbConfig['file'])) {
                     // database file doesn't exist
-                    throw new sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $dbConfig['class'], $dbConfig['file']));
+                    throw new \sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $dbConfig['class'], $dbConfig['file']));
                 }
 
                 // append our data

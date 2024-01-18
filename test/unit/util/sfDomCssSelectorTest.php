@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(72);
+$t = new \lime_test(72);
 
 $html = <<<'EOF'
 <html>
@@ -78,11 +78,11 @@ $html = <<<'EOF'
 </html>
 EOF;
 
-$dom = new DOMDocument('1.0', 'utf-8');
+$dom = new \DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 $dom->loadHTML($html);
 
-$c = new sfDomCssSelector($dom);
+$c = new \sfDomCssSelector($dom);
 
 // ->matchAll()
 $t->diag('->matchAll()');

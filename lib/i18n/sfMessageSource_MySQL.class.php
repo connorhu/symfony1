@@ -87,7 +87,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:58:58 EST 2004
  */
-class sfMessageSource_MySQL extends sfMessageSource_Database
+class sfMessageSource_MySQL extends \sfMessageSource_Database
 {
     /**
      * The datasource string, full DSN to the database.
@@ -106,7 +106,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     /**
      * A resource link to the database.
      *
-     * @var db
+     * @var \db
      */
     protected $db;
 
@@ -136,7 +136,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     /**
      * Gets the database connection.
      *
-     * @return db database connection
+     * @return \db database connection
      */
     public function connection()
     {
@@ -356,7 +356,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
         $connect_function = 'mysql_connect';
 
         if (!function_exists($connect_function)) {
-            throw new RuntimeException('The function mysql_connect() does not exist. Please confirm MySQL is enabled in php.ini');
+            throw new \RuntimeException('The function mysql_connect() does not exist. Please confirm MySQL is enabled in php.ini');
         }
 
         if ($dbhost && $user && $pw) {
@@ -370,15 +370,15 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
         }
 
         if (empty($conn)) {
-            throw new sfException(sprintf('Error in connecting to %s.', $dsninfo));
+            throw new \sfException(sprintf('Error in connecting to %s.', $dsninfo));
         }
 
         if ($dsninfo['database']) {
             if (!@mysql_select_db($dsninfo['database'], $conn)) {
-                throw new sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
+                throw new \sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
             }
         } else {
-            throw new sfException('Please provide a database for message translation.');
+            throw new \sfException('Please provide a database for message translation.');
         }
 
         return $conn;
@@ -436,9 +436,6 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
     /**
      * Updates the catalogue last modified time.
-     *
-     * @param mixed $cat_id
-     * @param mixed $variant
      *
      * @return bool true if updated, false otherwise
      */

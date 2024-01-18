@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormDate extends sfWidgetForm
+class sfWidgetFormDate extends \sfWidgetForm
 {
     /**
      * Renders the widget.
@@ -27,7 +27,7 @@ class sfWidgetFormDate extends sfWidgetForm
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
@@ -70,7 +70,7 @@ class sfWidgetFormDate extends sfWidgetForm
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     protected function configure($options = [], $attributes = [])
     {
@@ -94,7 +94,7 @@ class sfWidgetFormDate extends sfWidgetForm
      */
     protected function renderDayWidget($name, $value, $options, $attributes)
     {
-        $widget = new sfWidgetFormSelect($options, $attributes);
+        $widget = new \sfWidgetFormSelect($options, $attributes);
 
         return $widget->render($name, $value);
     }
@@ -109,7 +109,7 @@ class sfWidgetFormDate extends sfWidgetForm
      */
     protected function renderMonthWidget($name, $value, $options, $attributes)
     {
-        $widget = new sfWidgetFormSelect($options, $attributes);
+        $widget = new \sfWidgetFormSelect($options, $attributes);
 
         return $widget->render($name, $value);
     }
@@ -124,7 +124,7 @@ class sfWidgetFormDate extends sfWidgetForm
      */
     protected function renderYearWidget($name, $value, $options, $attributes)
     {
-        $widget = new sfWidgetFormSelect($options, $attributes);
+        $widget = new \sfWidgetFormSelect($options, $attributes);
 
         return $widget->render($name, $value);
     }

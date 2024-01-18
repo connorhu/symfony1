@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(89);
+$t = new \lime_test(89);
 
-class myWebResponse extends sfWebResponse
+class myWebResponse extends \sfWebResponse
 {
     public function getStatusText()
     {
@@ -25,16 +25,16 @@ class myWebResponse extends sfWebResponse
     }
 }
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 
 // ->initialize()
 $t->diag('->initialize()');
-$response = new myWebResponse($dispatcher, ['charset' => 'ISO-8859-1']);
+$response = new \myWebResponse($dispatcher, ['charset' => 'ISO-8859-1']);
 $t->is($response->getContentType(), 'text/html; charset=ISO-8859-1', '->initialize() takes a "charset" option');
-$response = new myWebResponse($dispatcher, ['content_type' => 'text/plain']);
+$response = new \myWebResponse($dispatcher, ['content_type' => 'text/plain']);
 $t->is($response->getContentType(), 'text/plain; charset=utf-8', '->initialize() takes a "content_type" option');
 
-$response = new myWebResponse($dispatcher);
+$response = new \myWebResponse($dispatcher);
 
 // ->getStatusCode() ->setStatusCode()
 $t->diag('->getStatusCode() ->setStatusCode()');
@@ -105,7 +105,7 @@ foreach ([
 // ->getContentType() ->setContentType()
 $t->diag('->getContentType() ->setContentType() ->getCharset()');
 
-$response = new myWebResponse($dispatcher);
+$response = new \myWebResponse($dispatcher);
 $t->is($response->getContentType(), 'text/html; charset=utf-8', '->getContentType() returns a sensible default value');
 $t->is($response->getCharset(), 'utf-8', '->getCharset() returns the current charset of the response');
 
@@ -187,8 +187,8 @@ $t->is($response->getHttpHeader('Cache-Control'), 'max-age=12, no-cache', '->add
 
 // ->copyProperties()
 $t->diag('->copyProperties()');
-$response1 = new myWebResponse($dispatcher);
-$response2 = new myWebResponse($dispatcher);
+$response1 = new \myWebResponse($dispatcher);
+$response2 = new \myWebResponse($dispatcher);
 
 $response1->setHttpHeader('symfony', 'foo');
 $response1->setContentType('text/plain');
@@ -201,7 +201,7 @@ $t->is($response1->getTitle(), $response2->getTitle(), '->copyProperties() merge
 
 // ->addStylesheet()
 $t->diag('->addStylesheet()');
-$response = new myWebResponse($dispatcher);
+$response = new \myWebResponse($dispatcher);
 $response->addStylesheet('test');
 $t->ok(array_key_exists('test', $response->getStylesheets()), '->addStylesheet() adds a new stylesheet for the response');
 $response->addStylesheet('foo', '');
@@ -217,7 +217,7 @@ $t->is($stylesheets['bar'], ['media' => 'print'], '->addStylesheet() takes an ar
 try {
     $response->addStylesheet('last', 'none');
     $t->fail('->addStylesheet() throws an InvalidArgumentException if the position is not first, the empty string, or last');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->addStylesheet() throws an InvalidArgumentException if the position is not first, the empty string, or last');
 }
 
@@ -242,7 +242,7 @@ $t->is($response->getStylesheets(), [], '->clearStylesheets() removes all styles
 
 // ->addJavascript()
 $t->diag('->addJavascript()');
-$response = new myWebResponse($dispatcher);
+$response = new \myWebResponse($dispatcher);
 $response->addJavascript('test');
 $t->ok(array_key_exists('test', $response->getJavascripts()), '->addJavascript() adds a new javascript for the response');
 $response->addJavascript('foo', '', ['raw_name' => true]);
@@ -255,7 +255,7 @@ $t->ok(array_key_exists('last_js', $response->getJavascripts('last')), '->addJav
 try {
     $response->addJavascript('last_js', 'none');
     $t->fail('->addJavascript() throws an InvalidArgumentException if the position is not first, the empty string, or last');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->addJavascript() throws an InvalidArgumentException if the position is not first, the empty string, or last');
 }
 
@@ -285,7 +285,7 @@ $t->is($response->getCookies(), ['foo' => ['name' => 'foo', 'value' => 'bar', 'e
 
 // ->setHeaderOnly() ->getHeaderOnly()
 $t->diag('->setHeaderOnly() ->isHeaderOnly()');
-$response = new myWebResponse($dispatcher);
+$response = new \myWebResponse($dispatcher);
 $t->is($response->isHeaderOnly(), false, '->isHeaderOnly() returns false if the content must be send to the client');
 $response->setHeaderOnly(true);
 $t->is($response->isHeaderOnly(), true, '->setHeaderOnly() changes the current value of header only');

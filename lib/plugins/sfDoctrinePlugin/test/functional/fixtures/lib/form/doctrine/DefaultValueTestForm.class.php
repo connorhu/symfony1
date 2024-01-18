@@ -7,7 +7,7 @@
  *
  * @version    SVN: $Id$
  */
-class DefaultValueTestForm extends BaseDefaultValueTestForm
+class DefaultValueTestForm extends \BaseDefaultValueTestForm
 {
     public function configure()
     {

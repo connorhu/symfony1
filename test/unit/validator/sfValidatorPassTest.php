@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(2);
+$t = new \lime_test(2);
 
-$v = new sfValidatorPass();
+$v = new \sfValidatorPass();
 
 // ->clean()
 $t->diag('->clean()');

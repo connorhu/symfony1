@@ -17,13 +17,10 @@ require_once 'PEAR/REST/11.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearRest11 extends PEAR_REST_11
+class sfPearRest11 extends \PEAR_REST_11
 {
     /**
-     * @see PEAR_REST_11
-     *
-     * @param mixed $config
-     * @param mixed $options
+     * @see \PEAR_REST_11
      */
     public function __construct($config, $options = [])
     {

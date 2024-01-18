@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfMailerMessageLoggerPlugin implements Swift_Events_SendListener
+class sfMailerMessageLoggerPlugin implements \Swift_Events_SendListener
 {
     protected $messages = [];
     protected $dispatcher;
@@ -23,9 +23,9 @@ class sfMailerMessageLoggerPlugin implements Swift_Events_SendListener
     /**
      * Constructor.
      *
-     * @param sfEventDispatcher $dispatcher An event dispatcher instance
+     * @param \sfEventDispatcher $dispatcher An event dispatcher instance
      */
-    public function __construct(sfEventDispatcher $dispatcher)
+    public function __construct(\sfEventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
@@ -61,19 +61,19 @@ class sfMailerMessageLoggerPlugin implements Swift_Events_SendListener
     /**
      * Invoked immediately before the Message is sent.
      */
-    public function beforeSendPerformed(Swift_Events_SendEvent $evt)
+    public function beforeSendPerformed(\Swift_Events_SendEvent $evt)
     {
         $this->messages[] = $message = clone $evt->getMessage();
 
         $to = null === $message->getTo() ? '' : implode(', ', array_keys($message->getTo()));
 
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Sending email "%s" to "%s"', $message->getSubject(), $to)]));
+        $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Sending email "%s" to "%s"', $message->getSubject(), $to)]));
     }
 
     /**
      * Invoked immediately after the Message is sent.
      */
-    public function sendPerformed(Swift_Events_SendEvent $evt)
+    public function sendPerformed(\Swift_Events_SendEvent $evt)
     {
     }
 }

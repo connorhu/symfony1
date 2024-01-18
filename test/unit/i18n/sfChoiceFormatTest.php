@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(90);
+$t = new \lime_test(90);
 
-$n = new sfChoiceFormat();
+$n = new \sfChoiceFormat();
 
 $strings = [
     [
@@ -81,7 +81,7 @@ $t->is($n->isValid(-10000000, '[-Inf,+Inf]'), true, '->isValid() determines if a
 try {
     $n->isValid(1, '[1');
     $t->fail('->isValid() throw an exception if the set is not valid');
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass('->isValid() throw an exception if the set is not valid');
 }
 

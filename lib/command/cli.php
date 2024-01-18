@@ -16,18 +16,18 @@ if (!file_exists($autoload = __DIR__.'/../../../../autoload.php')) {
 // Fall back to classic Symfony loading
 if (!file_exists($autoload)) {
     require_once __DIR__.'/../autoload/sfCoreAutoload.class.php';
-    sfCoreAutoload::register();
+    \sfCoreAutoload::register();
 } else {
     require_once $autoload;
 }
 
 try {
-    $dispatcher = new sfEventDispatcher();
-    $logger = new sfCommandLogger($dispatcher);
+    $dispatcher = new \sfEventDispatcher();
+    $logger = new \sfCommandLogger($dispatcher);
 
-    $application = new sfSymfonyCommandApplication($dispatcher, null, ['symfony_lib_dir' => realpath(__DIR__.'/..')]);
+    $application = new \sfSymfonyCommandApplication($dispatcher, null, ['symfony_lib_dir' => realpath(__DIR__.'/..')]);
     $statusCode = $application->run();
-} catch (Exception $e) {
+} catch (\Exception $e) {
     if (!isset($application)) {
         throw $e;
     }

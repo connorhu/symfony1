@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfParameterHolderValidation extends sfValidation
+class sfParameterHolderValidation extends \sfValidation
 {
     public function getHeader()
     {
@@ -43,14 +43,14 @@ class sfParameterHolderValidation extends sfValidation
     public function validate()
     {
         $found = [];
-        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in([
-            sfConfig::get('sf_apps_dir'),
-            sfConfig::get('sf_lib_dir'),
-            sfConfig::get('sf_test_dir'),
-            sfConfig::get('sf_plugins_dir'),
+        $files = \sfFinder::type('file')->name('*.php')->prune('vendor')->in([
+            \sfConfig::get('sf_apps_dir'),
+            \sfConfig::get('sf_lib_dir'),
+            \sfConfig::get('sf_test_dir'),
+            \sfConfig::get('sf_plugins_dir'),
         ]);
         foreach ($files as $file) {
-            $content = sfToolkit::stripComments(file_get_contents($file));
+            $content = \sfToolkit::stripComments(file_get_contents($file));
 
             if (preg_match('#\b(get|has|remove)(Request)*Parameter\(\s*[\'"][^\),]*?\[[^\),]#', $content)) {
                 $found[$file] = true;

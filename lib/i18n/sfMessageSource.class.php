@@ -59,7 +59,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 19:55:49 EST 2004
  */
-abstract class sfMessageSource implements sfIMessageSource
+abstract class sfMessageSource implements \sfIMessageSource
 {
     /**
      * The culture name for this message source.
@@ -85,7 +85,7 @@ abstract class sfMessageSource implements sfIMessageSource
     /**
      * The translation cache.
      *
-     * @var sfMessageCache
+     * @var \sfMessageCache
      */
     protected $cache;
 
@@ -116,15 +116,15 @@ abstract class sfMessageSource implements sfIMessageSource
      * @param string $source   the location of the resource
      * @param string $filename the filename of the custom message source
      *
-     * @return sfMessageSource a new message source of the specified type
+     * @return \sfMessageSource a new message source of the specified type
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public static function factory($type, $source = '.', $filename = '')
     {
         if ($filename) {
             if (!is_file($filename)) {
-                throw new sfException(sprintf('File %s not found.', $filename));
+                throw new \sfException(sprintf('File %s not found.', $filename));
             }
 
             include_once $filename;
@@ -136,7 +136,7 @@ abstract class sfMessageSource implements sfIMessageSource
 
         $class = 'sfMessageSource_'.$type;
         if (!class_exists($class)) {
-            throw new sfException(sprintf('Unable to find type "%s".', $type));
+            throw new \sfException(sprintf('Unable to find type "%s".', $type));
         }
 
         return new $class($source);
@@ -219,7 +219,7 @@ abstract class sfMessageSource implements sfIMessageSource
     /**
      * Gets the cache handler for this source.
      *
-     * @return sfMessageCache cache handler
+     * @return \sfMessageCache cache handler
      */
     public function getCache()
     {
@@ -229,9 +229,9 @@ abstract class sfMessageSource implements sfIMessageSource
     /**
      * Sets the cache handler for caching the messages.
      *
-     * @param sfCache $cache the cache handler
+     * @param \sfCache $cache the cache handler
      */
-    public function setCache(sfCache $cache)
+    public function setCache(\sfCache $cache)
     {
         $this->cache = $cache;
     }

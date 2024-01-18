@@ -1,11 +1,9 @@
 <?php
 
-class sfValidatorFileMulti extends sfValidatorFile
+class sfValidatorFileMulti extends \sfValidatorFile
 {
     /**
-     * @see sfValidatorBase
-     *
-     * @param mixed $value
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {

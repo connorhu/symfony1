@@ -5,7 +5,7 @@
  *
  * @version    SVN: $Id$
  */
-class CamelCaseForm extends BaseCamelCaseForm
+class CamelCaseForm extends \BaseCamelCaseForm
 {
     public function configure()
     {

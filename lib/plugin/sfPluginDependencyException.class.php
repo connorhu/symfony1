@@ -15,6 +15,6 @@
  *
  * @version    SVN: $Id$
  */
-class sfPluginDependencyException extends sfPluginException
+class sfPluginDependencyException extends \sfPluginException
 {
 }

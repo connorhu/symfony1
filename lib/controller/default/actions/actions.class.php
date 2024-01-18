@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class defaultActions extends sfActions
+class defaultActions extends \sfActions
 {
     /**
      * Congratulations page for creating an application.

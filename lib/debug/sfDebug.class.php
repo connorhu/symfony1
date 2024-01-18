@@ -26,7 +26,7 @@ class sfDebug
     {
         return [
             'version' => SYMFONY_VERSION,
-            'path' => sfConfig::get('sf_symfony_lib_dir'),
+            'path' => \sfConfig::get('sf_symfony_lib_dir'),
         ];
     }
 
@@ -87,7 +87,7 @@ class sfDebug
      */
     public static function settingsAsArray()
     {
-        $config = sfConfig::getAll();
+        $config = \sfConfig::getAll();
 
         ksort($config);
 
@@ -97,11 +97,11 @@ class sfDebug
     /**
      * Returns request parameter holders as an array.
      *
-     * @param sfRequest $request A sfRequest instance
+     * @param \sfRequest $request A sfRequest instance
      *
      * @return array The request parameter holders
      */
-    public static function requestAsArray(sfRequest $request = null)
+    public static function requestAsArray(\sfRequest $request = null)
     {
         if (!$request) {
             return [];
@@ -117,11 +117,11 @@ class sfDebug
     /**
      * Returns response parameters as an array.
      *
-     * @param sfWebResponse $response A sfResponse instance
+     * @param \sfWebResponse $response A sfResponse instance
      *
      * @return array The response parameters
      */
-    public static function responseAsArray(sfResponse $response = null)
+    public static function responseAsArray(\sfResponse $response = null)
     {
         if (!$response) {
             return [];
@@ -142,11 +142,11 @@ class sfDebug
     /**
      * Returns user parameters as an array.
      *
-     * @param sfUser $user A sfUser instance
+     * @param \sfUser $user A sfUser instance
      *
      * @return array The user parameters
      */
-    public static function userAsArray(sfUser $user = null)
+    public static function userAsArray(\sfUser $user = null)
     {
         if (!$user) {
             return [];
@@ -158,7 +158,7 @@ class sfDebug
             'culture' => $user->getCulture(),
         ];
 
-        if ($user instanceof sfBasicSecurityUser) {
+        if ($user instanceof \sfBasicSecurityUser) {
             $data = array_merge($data, [
                 'authenticated' => $user->isAuthenticated(),
                 'credentials' => $user->getCredentials(),
@@ -172,15 +172,15 @@ class sfDebug
     /**
      * Returns a parameter holder as an array.
      *
-     * @param sfParameterHolder $parameterHolder A sfParameterHolder instance
-     * @param bool              $removeObjects   when set to true, objects are removed. default is false for BC.
+     * @param \sfParameterHolder $parameterHolder A sfParameterHolder instance
+     * @param bool               $removeObjects   when set to true, objects are removed. default is false for BC.
      *
      * @return array The parameter holder as an array
      */
     public static function flattenParameterHolder($parameterHolder, $removeObjects = false)
     {
         $values = [];
-        if ($parameterHolder instanceof sfNamespacedParameterHolder) {
+        if ($parameterHolder instanceof \sfNamespacedParameterHolder) {
             foreach ($parameterHolder->getNamespaces() as $ns) {
                 $values[$ns] = [];
                 foreach ($parameterHolder->getAll($ns) as $key => $value) {
@@ -240,7 +240,7 @@ class sfDebug
         }
 
         foreach (['sf_root_dir', 'sf_symfony_lib_dir'] as $key) {
-            if (0 === strpos($file, $value = sfConfig::get($key))) {
+            if (0 === strpos($file, $value = \sfConfig::get($key))) {
                 $file = str_replace($value, strtoupper($key), $file);
 
                 break;

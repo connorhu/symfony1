@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(3);
+$t = new \lime_test(3);
 
-class sfMessageSource_Simple extends sfMessageSource
+class sfMessageSource_Simple extends \sfMessageSource
 {
     public function __construct($source)
     {
@@ -41,8 +41,8 @@ class sfMessageSource_Simple extends sfMessageSource
 
 // ::factory()
 $t->diag('::factory()');
-$source = sfMessageSource::factory('Simple');
-$t->ok($source instanceof sfIMessageSource, '::factory() returns a sfMessageSource instance');
+$source = \sfMessageSource::factory('Simple');
+$t->ok($source instanceof \sfIMessageSource, '::factory() returns a sfMessageSource instance');
 
 // ->getCulture() ->setCulture()
 $t->diag('->getCulture() ->setCulture()');

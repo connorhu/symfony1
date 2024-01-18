@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorIp extends sfValidatorString
+class sfValidatorIp extends \sfValidatorString
 {
     public const IP_V4 = '4';
     public const IP_V6 = '6';
@@ -112,7 +112,7 @@ class sfValidatorIp extends sfValidatorString
         }
 
         if (!filter_var($value, FILTER_VALIDATE_IP, $flag)) {
-            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         return $value;

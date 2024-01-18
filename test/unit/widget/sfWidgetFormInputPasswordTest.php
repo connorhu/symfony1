@@ -10,9 +10,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(3);
+$t = new \lime_test(3);
 
-$w = new sfWidgetFormInputPassword();
+$w = new \sfWidgetFormInputPassword();
 
 // ->render()
 $t->diag('->render()');
