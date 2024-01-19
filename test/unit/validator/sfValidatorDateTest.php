@@ -10,7 +10,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(52);
+$t = new lime_test(58);
 
 $v = new sfValidatorDate();
 
@@ -212,3 +212,28 @@ $clean = $v->clean($date->format(DATE_ATOM));
 // did it convert from the other timezone to the default timezone?
 $date->setTimezone($defaultTimezone);
 $t->is($clean, $date->format('Y-m-d H:i:s'), '->clean() respects incoming and default timezones');
+
+try {
+    $v = new sfValidatorDate();
+    $v->setMessage('invalid', 'Invalid date: "%value%"');
+    $v->clean(array('year' => 2024, 'month' => 11, 'day' => 31));
+    $t->fail('->clean() throws a sfValidatorError if the date is not valid');
+    $t->skip('', 1);
+} catch (sfValidatorError $e) {
+    $t->pass('->clean() throws a sfValidatorError if the date is not valid');
+    $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
+    $t->is($e->getMessage(), 'Invalid date: "2024-11-31"', '->clean() throws a sfValidatorError');
+}
+
+try {
+    $v = new sfValidatorDate();
+    $v->setOption('with_time', true);
+    $v->setMessage('invalid', 'Invalid date: "%value%"');
+    $v->clean(array('year' => 2024, 'month' => 11, 'day' => 31, 'hour' => 21, 'minute' => 11, 'second' => 1));
+    $t->fail('->clean() throws a sfValidatorError if the date is not valid');
+    $t->skip('', 1);
+} catch (sfValidatorError $e) {
+    $t->pass('->clean() throws a sfValidatorError if the date is not valid');
+    $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
+    $t->is($e->getMessage(), 'Invalid date: "2024-11-31 21:11:01"', '->clean() throws a sfValidatorError');
+}
