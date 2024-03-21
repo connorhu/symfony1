@@ -480,6 +480,18 @@ class sfProjectConfiguration
             sfConfig::get('sf_plugins_dir'),
         );
 
+        if (class_exists(Composer\InstalledVersions::class)) {
+            $sf1PluginPackageNames = Composer\InstalledVersions::getInstalledPackagesByType('symfony1-plugin');
+
+            foreach ($sf1PluginPackageNames as $sf1PluginPackageName) {
+                $path = Composer\InstalledVersions::getInstallPath($sf1PluginPackageName);
+
+                if ($path !== null) {
+                    $pluginPaths[basename($path)] = $path;
+                }
+            }
+        }
+
         foreach ($finder->in($dirs) as $path) {
             $pluginPaths[basename($path)] = $path;
         }
