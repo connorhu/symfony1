@@ -1,0 +1,13 @@
+{
+    "name": "friendsofsymfony1/sfDoctrinePlugin",
+    "description": "Doctrine1 plugin for Symfony1",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php" : "^7.4 || ^8.1",
+        "friendsofsymfony1/doctrine1": "^1.4"
+    },
+    "require-dev": {
+        "psr/log": "*"
+    }
+}
