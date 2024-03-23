@@ -45,7 +45,7 @@ class sfActionStack
      *
      * @param int $index An entry index
      *
-     * @return sfActionStackEntry an action stack entry implementation
+     * @return sfActionStackEntry|null an action stack entry implementation
      */
     public function getEntry($index)
     {
@@ -59,9 +59,9 @@ class sfActionStack
     }
 
     /**
-     * Removes the entry at a specific index.
+     * Removes the last entry from the stack.
      *
-     * @return sfActionStackEntry an action stack entry implementation
+     * @return sfActionStackEntry|null an action stack entry implementation
      */
     public function popEntry()
     {
@@ -71,7 +71,7 @@ class sfActionStack
     /**
      * Retrieves the first entry.
      *
-     * @return mixed An action stack entry implementation or null if there is no sfAction instance in the stack
+     * @return sfActionStackEntry|null An action stack entry implementation or null if there is no sfAction instance in the stack
      */
     public function getFirstEntry()
     {
@@ -87,7 +87,7 @@ class sfActionStack
     /**
      * Retrieves the last entry.
      *
-     * @return mixed An action stack entry implementation or null if there is no sfAction instance in the stack
+     * @return sfActionStackEntry|null An action stack entry implementation or null if there is no sfAction instance in the stack
      */
     public function getLastEntry()
     {
