@@ -17,9 +17,21 @@
  *
  * @method sfWebController getController()
  * @method sfWebResponse   getResponse()
+ *
+ * @phpstan-type security-settings array{
+ *     is_secure?: bool,
+ *     credentials?: string|array
+ * }
+ *
+ * @phpstan-type action-name string|"all"
  */
 abstract class sfAction extends sfComponent
 {
+    /**
+     * @var array{
+     *     action-name?: security-settings
+     * }
+     */
     protected $security = [];
 
     /**
@@ -60,7 +72,9 @@ abstract class sfAction extends sfComponent
     /**
      * Forwards current action to the default 404 error action.
      *
-     * @param string $message Message of the generated exception
+     * @param string|null $message Message of the generated exception
+     *
+     * @return void
      *
      * @throws sfError404Exception
      */
@@ -72,8 +86,10 @@ abstract class sfAction extends sfComponent
     /**
      * Forwards current action to the default 404 error action unless the specified condition is true.
      *
-     * @param bool   $condition A condition that evaluates to true or false
-     * @param string $message   Message of the generated exception
+     * @param bool        $condition A condition that evaluates to true or false
+     * @param string|null $message   Message of the generated exception
+     *
+     * @return void
      *
      * @throws sfError404Exception
      */
@@ -87,8 +103,10 @@ abstract class sfAction extends sfComponent
     /**
      * Forwards current action to the default 404 error action if the specified condition is true.
      *
-     * @param bool   $condition A condition that evaluates to true or false
-     * @param string $message   Message of the generated exception
+     * @param bool        $condition A condition that evaluates to true or false
+     * @param string|null $message   Message of the generated exception
+     *
+     * @return void
      *
      * @throws sfError404Exception
      */
@@ -103,10 +121,12 @@ abstract class sfAction extends sfComponent
      * Redirects current action to the default 404 error action (with browser redirection).
      *
      * This method stops the current code flow.
+     *
+     * @return void
      */
     public function redirect404()
     {
-        return $this->redirect('/'.sfConfig::get('sf_error_404_module').'/'.sfConfig::get('sf_error_404_action'));
+        $this->redirect('/'.sfConfig::get('sf_error_404_module').'/'.sfConfig::get('sf_error_404_action'));
     }
 
     /**
@@ -116,6 +136,8 @@ abstract class sfAction extends sfComponent
      *
      * @param string $module A module name
      * @param string $action An action name
+     *
+     * @return void
      *
      * @throws sfStopException
      */
@@ -139,11 +161,13 @@ abstract class sfAction extends sfComponent
      * @param string $module    A module name
      * @param string $action    An action name
      *
+     * @return void
+     *
      * @throws sfStopException
      */
     public function forwardIf($condition, $module, $action)
     {
-        if ($condition) {
+        if ($condition === true) {
             $this->forward($module, $action);
         }
     }
@@ -157,11 +181,13 @@ abstract class sfAction extends sfComponent
      * @param string $module    A module name
      * @param string $action    An action name
      *
+     * @return void
+     *
      * @throws sfStopException
      */
     public function forwardUnless($condition, $module, $action)
     {
-        if (!$condition) {
+        if ($condition === false) {
             $this->forward($module, $action);
         }
     }
@@ -177,6 +203,8 @@ abstract class sfAction extends sfComponent
      *
      * @param string $url        Url
      * @param int    $statusCode Status code (default to 302)
+     *
+     * @return void
      *
      * @throws sfStopException
      */
@@ -202,6 +230,8 @@ abstract class sfAction extends sfComponent
      * @param string $url        Url
      * @param int    $statusCode Status code (default to 302)
      *
+     * @return void
+     *
      * @throws sfStopException
      *
      * @see redirect
@@ -223,6 +253,8 @@ abstract class sfAction extends sfComponent
      * @param bool   $condition  A condition that evaluates to true or false
      * @param string $url        Url
      * @param int    $statusCode Status code (default to 302)
+     *
+     * @return void
      *
      * @throws sfStopException
      *
@@ -281,8 +313,8 @@ abstract class sfAction extends sfComponent
      * If the vars parameter is set then only those values are
      * available in the partial.
      *
-     * @param string $templateName partial name
-     * @param array  $vars         vars
+     * @param string      $templateName partial name
+     * @param array|null  $vars         vars
      *
      * @return string The partial content
      */
@@ -302,12 +334,12 @@ abstract class sfAction extends sfComponent
      *
      * <code>return $this->renderPartial('foo/bar')</code>
      *
-     * @param string $templateName partial name
-     * @param array  $vars         vars
+     * @param string      $templateName partial name
+     * @param array|null  $vars         vars
      *
      * @return string sfView::NONE
      *
-     * @see    getPartial
+     * @see    self::getPartial
      */
     public function renderPartial($templateName, $vars = null)
     {
@@ -323,9 +355,9 @@ abstract class sfAction extends sfComponent
      * If the vars parameter is set then only those values are
      * available in the component.
      *
-     * @param string $moduleName    module name
-     * @param string $componentName component name
-     * @param array  $vars          vars
+     * @param string      $moduleName    module name
+     * @param string      $componentName component name
+     * @param array|null  $vars          vars
      *
      * @return string The component rendered content
      */
@@ -345,13 +377,13 @@ abstract class sfAction extends sfComponent
      *
      * <code>return $this->renderComponent('foo', 'bar')</code>
      *
-     * @param string $moduleName    module name
-     * @param string $componentName component name
-     * @param array  $vars          vars
+     * @param string      $moduleName    module name
+     * @param string      $componentName component name
+     * @param array|null  $vars          vars
      *
      * @return string sfView::NONE
      *
-     * @see    getComponent
+     * @see    self::getComponent
      */
     public function renderComponent($moduleName, $componentName, $vars = null)
     {
@@ -361,7 +393,7 @@ abstract class sfAction extends sfComponent
     /**
      * Returns the security configuration for this module.
      *
-     * @return string Current security configuration as an array
+     * @return array Current security configuration as an array
      */
     public function getSecurityConfiguration()
     {
@@ -372,6 +404,8 @@ abstract class sfAction extends sfComponent
      * Overrides the current security configuration for this module.
      *
      * @param array $security The new security configuration
+     *
+     * @return void
      */
     public function setSecurityConfiguration($security)
     {
@@ -383,6 +417,8 @@ abstract class sfAction extends sfComponent
      *
      * @param string $name    The name of the value to pull from security.yml
      * @param mixed  $default The default value to return if none is found in security.yml
+     *
+     * @return mixed
      */
     public function getSecurityValue($name, $default = null)
     {
@@ -412,7 +448,7 @@ abstract class sfAction extends sfComponent
     /**
      * Gets credentials the user must have to access this action.
      *
-     * @return mixed An array or a string describing the credentials the user must have to access this action
+     * @return array|string|null An array or a string describing the credentials the user must have to access this action
      */
     public function getCredential()
     {
