@@ -442,7 +442,12 @@ abstract class sfAction extends sfComponent
      */
     public function isSecure()
     {
-        return $this->getSecurityValue('is_secure', false);
+        $ret = $this->getSecurityValue('is_secure', false);
+        if (!is_bool($ret)) {
+            $ret = (bool) $ret;
+        }
+
+        return $ret;
     }
 
     /**
